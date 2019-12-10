@@ -5,7 +5,7 @@ syntax: glob
 .idea/*
 env/*
 venv/*
-node_modules/*
+frontend/node_modules/*
 public/static/tmp/*
 db.sqlite3
 assets/bundles
@@ -14,3 +14,4 @@ domainify_v2/settings_privacy.py
 domainify_v2/settings_local.py
 package-lock.json
 webpack-stats.json
+yarn.lock

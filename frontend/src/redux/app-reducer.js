@@ -1,0 +1,40 @@
+import {checkAuthToken} from "./auth-reducer";
+
+const INITIALIZED_SUCCESS = 'app/INITIALIZED_SUCCESS';
+
+
+const initialSate = {
+    initialized: false
+};
+
+
+const appReducer = (state=initialSate, action) => {
+
+    switch (action.type) {
+        case INITIALIZED_SUCCESS:
+            return {
+                ...state,
+                initialized: true,
+            };
+
+        default: return state;
+    }
+};
+
+
+export const initializedSuccess = () => ({
+    type: INITIALIZED_SUCCESS,
+});
+
+
+export const initializeApp = (token) => (dispatch) => {
+    let promise = dispatch(checkAuthToken(token));
+
+    Promise.all([promise]).then(() => {
+        dispatch(initializedSuccess(token));
+    });
+
+};
+
+
+export default appReducer;

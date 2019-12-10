@@ -1,0 +1,18 @@
+.logo {
+  width: 120px;
+  height: 31px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 15px 10px;
+  float: left;
+}
+
+.user{
+  color: white;
+  float: right;
+}
+
+.user .avatar {
+  height: 31px;
+  margin: 15px 24px 15px 0;
+  background-color: #87d068;
+}
