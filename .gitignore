@@ -10,7 +10,7 @@ public/static/tmp/*
 db.sqlite3
 assets/bundles
 celerybeat-schedule
-domainify/settings_privacy.py
-domainify/settings_local.py
+domainify_v2/settings_privacy.py
+domainify_v2/settings_local.py
 package-lock.json
 webpack-stats.json
