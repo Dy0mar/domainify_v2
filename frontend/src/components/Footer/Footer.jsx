@@ -1,10 +1,12 @@
 import React from 'react'
 import { Layout } from 'antd'
-import './Footer.css'
+import css from './Footer.module.css'
 
 const Footer = (props) => {
     return (
-        <Layout.Footer style={{ textAlign: 'center' }}>Domainify_v2 ©2019 Developed by Dy0mar</Layout.Footer>
+        <div className={css.footer}>
+            <Layout.Footer>Domainify_v2 ©2019 Developed by Dy0mar</Layout.Footer>
+        </div>
     )
 };
 

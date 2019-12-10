@@ -1,14 +1,14 @@
 import React from 'react'
 import { Layout, Menu, Avatar } from 'antd'
-import './Header.css'
+import css from './Header.module.css'
 import {NavLink} from "react-router-dom";
 
 const Header = (props) => {
     return (
         <Layout.Header>
-            <div className="logo" />
-            <div className='user'>
-                <Avatar className='avatar' icon="user" />
+            <div className={css.logo} />
+            <div className={css.user}>
+                <Avatar className={css.avatar} icon="user" />
                 <span>userName</span>
                 <NavLink to="/login" activeClassName='active'>Login</NavLink>
             </div>

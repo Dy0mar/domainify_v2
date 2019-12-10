@@ -3,7 +3,6 @@ import {connect} from "react-redux";
 import {login} from "../../redux/auth-reducer";
 import { Form } from 'antd';
 import 'antd/dist/antd.css';
-import './Login.css'
 import LoginForm from "./LoginForm";
 
 const Login = (props) => {

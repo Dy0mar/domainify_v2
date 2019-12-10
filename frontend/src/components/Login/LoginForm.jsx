@@ -1,9 +1,10 @@
 import React from "react";
 import { Form, Icon, Input, Button } from 'antd';
+import css from './Login.module.css'
 
 const LoginForm = ({onSubmit, getFieldDecorator}) => {
     return (
-        <Form onSubmit={onSubmit} className="login-form">
+        <Form onSubmit={onSubmit} className={css.loginForm}>
             <Form.Item>
                 {getFieldDecorator('email', {
                     rules: [{ required: true, message: 'Please input your email!' }],
@@ -26,7 +27,7 @@ const LoginForm = ({onSubmit, getFieldDecorator}) => {
                 )}
             </Form.Item>
             <Form.Item>
-                <Button type="primary" htmlType="submit" className="login-form-button">
+                <Button type="primary" htmlType="submit" className={css.loginFormButton}>
                     Log in
                 </Button>
                 Or <a href="">register now!</a>

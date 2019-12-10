@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import "antd/dist/antd.css";
-import './App.css'
+import css from './App.module.css'
 import { Layout, Breadcrumb } from 'antd'
 import {compose} from "redux";
 import {connect, Provider} from "react-redux";
@@ -67,7 +67,7 @@ class App extends Component {
                         <Breadcrumb.Item>List</Breadcrumb.Item>
                         <Breadcrumb.Item>App</Breadcrumb.Item>
                     </Breadcrumb>
-                    <div className="app-wrapper-content">
+                    <div className={css.appWrapperContent}>
 
                         {!this.props.initialized && <Preloader />}
 
