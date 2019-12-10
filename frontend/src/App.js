@@ -8,59 +8,49 @@ import store from "./redux/redux-store";
 import {initializeApp} from "./redux/app-reducer";
 import {
     BrowserRouter,
-    Redirect,
     Route,
     Switch,
     withRouter
 } from "react-router-dom";
-import Header from "./components/Header/Header";
+import HeaderContainer from "./components/Header/HeaderContainer";
 import Footer from "./components/Footer/Footer";
 import Login from "./components/Login/Login";
-import Preloader from "./components/Common/Preloader/Preloader";
+// import Preloader from "./components/Common/Preloader/Preloader";
 const { Content } = Layout;
 
 class App extends Component {
     constructor(props) {
         super(props);
+        const token = localStorage.getItem('token');
         this.state = {
             isAuth: this.props.isAuth,
-            logged_in: !!localStorage.getItem('token')
+            token: token,
         };
     }
 
     componentDidMount() {
-        if (!this.state.logged_in){
+
+        if (!this.state.isAuth){
             this.props.history.push('/login')
+        } else {
+            this.props.initializeApp(this.state.token);
         }
-        // нужно проверить - мы аутент ?
-        // если токена нет или не verify, то редирект на логин
-
-        /*if (!this.state.logged_in && this.props.token){
-            localStorage.setItem('token', this.props.token);
-            this.state.logged_in = true
-        }
-
-        const token = localStorage.getItem('token')
-            ? localStorage.getItem('token')
-            : this.props.token;
-
-        this.props.initializeApp(token);*/
 
     }
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.token && prevProps.isAuth !== this.props.isAuth){
+        if (this.props.token !== prevProps.token){
             localStorage.setItem('token', this.props.token);
             this.props.history.push('/')
         }
     }
     render () {
 
-        /*if (!this.props.initialized)
-            return <Preloader />;*/
+        // if (!this.props.initialized)
+        //     return <Preloader />;
 
         return (
             <Layout className="layout">
-                <Header />
+                <HeaderContainer />
                 <Content style={{ padding: '0 50px' }}>
                     <Breadcrumb style={{ margin: '16px 0' }}>
                         <Breadcrumb.Item>Home</Breadcrumb.Item>
@@ -69,11 +59,10 @@ class App extends Component {
                     </Breadcrumb>
                     <div className={css.appWrapperContent}>
 
-                        {!this.props.initialized && <Preloader />}
-
                         <Switch>
                             <Route path='/login' render={() => <Login />}/>
                         </Switch>
+
                     </div>
                 </Content>
                 <Footer />

@@ -30,7 +30,7 @@ const LoginForm = ({onSubmit, getFieldDecorator}) => {
                 <Button type="primary" htmlType="submit" className={css.loginFormButton}>
                     Log in
                 </Button>
-                Or <a href="">register now!</a>
+                Or <a href="#register">register now!</a>
             </Form.Item>
         </Form>
     );

@@ -30,12 +30,18 @@ export const setAuthToken = (token, isAuth) => ({
 
 
 export const checkAuthToken = (token) => async (dispatch) => {
-    let data = null;
     if (token){
-        data = await authAPI.verify(token);
+        const response = await authAPI.verify(token);
+        if (response.status === 200){
+            let isAuth = true;
+            dispatch(setAuthToken(token, isAuth))
+        } else {
+            let isAuth = true;
+            const token = null;
+            dispatch(setAuthToken(token, isAuth))
+        }
     }
-    let isAuth = true;
-    dispatch(setAuthToken(token, isAuth))
+
 };
 
 export const login = (email, password) => async (dispatch) => {
@@ -46,6 +52,17 @@ export const login = (email, password) => async (dispatch) => {
         dispatch(setAuthToken(token, isAuth))
     }
 };
+
+export const logout = () => async (dispatch) => {
+    const response = await authAPI.logout();
+    if (response.status === 200){
+        const isAuth = false;
+        const token = null;
+        dispatch(setAuthToken(token, isAuth))
+    }
+};
+
+
 
 
 export default authReducer;

@@ -10,7 +10,10 @@ const Header = (props) => {
             <div className={css.user}>
                 <Avatar className={css.avatar} icon="user" />
                 <span>userName</span>
-                <NavLink to="/login" activeClassName='active'>Login</NavLink>
+                {props.isAuth
+                    ? <a href='#logout' onClick={props.logout}>logout</a>
+                    : <NavLink to="/login" activeClassName='active'>Login</NavLink>
+                }
             </div>
 
             <Menu

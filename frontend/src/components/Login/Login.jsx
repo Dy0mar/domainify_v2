@@ -4,6 +4,7 @@ import {login} from "../../redux/auth-reducer";
 import { Form } from 'antd';
 import 'antd/dist/antd.css';
 import LoginForm from "./LoginForm";
+import {Redirect} from "react-router-dom";
 
 const Login = (props) => {
 
@@ -20,10 +21,15 @@ const Login = (props) => {
     };
 
     return (
-        <LoginForm {...props}
+        <div>
+        {props.isAuth
+            ? <Redirect to='/' />
+            : <LoginForm {...props}
                    getFieldDecorator={getFieldDecorator}
                    onSubmit={onSubmit}
-        />
+            />
+        }
+        </div>
     )
 };
 

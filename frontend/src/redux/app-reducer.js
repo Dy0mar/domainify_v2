@@ -31,7 +31,7 @@ export const initializeApp = (token) => (dispatch) => {
     let promise = dispatch(checkAuthToken(token));
 
     Promise.all([promise]).then(() => {
-        dispatch(initializedSuccess(token));
+        dispatch(initializedSuccess());
     });
 
 };

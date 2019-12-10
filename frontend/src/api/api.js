@@ -20,17 +20,19 @@ export const authAPI = {
     },
 
     verify(token) {
-        return instance.post('api-token-verify', {token})
-            .then(response => response.data)
+        return instance.post('api-token-verify/', { token })
     },
 
     refresh() {
-        return instance.get('api-token-refresh')
+        return instance.get('api-token-refresh/')
             .then(response => response.data)
     },
     login(email, password) {
         return instance.post('auth/login/', {email, password})
             .then(response => response.data)
+    },
+    logout() {
+        return instance.post('auth/logout/')
     }
 };
 
