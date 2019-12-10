@@ -1,0 +1,16 @@
+syntax: glob
+*.save
+*.pyc
+*.log
+.idea/*
+env/*
+venv/*
+node_modules/*
+public/static/tmp/*
+db.sqlite3
+assets/bundles
+celerybeat-schedule
+domainify/settings_privacy.py
+domainify/settings_local.py
+package-lock.json
+webpack-stats.json
