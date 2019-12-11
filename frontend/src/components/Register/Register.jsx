@@ -1,14 +1,13 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {login} from "../../redux/auth-reducer";
+import {register} from "../../redux/auth-reducer";
 import { Form } from 'antd';
 import 'antd/dist/antd.css';
-import LoginForm from "./LoginForm";
-import css from './Login.module.css'
+import RegisterForm from "./RegisterForm";
+import css from './Register.module.css'
 import {Redirect} from "react-router-dom";
-import {compose} from "redux";
 
-const Login = (props) => {
+const Register = (props) => {
 
     const {getFieldDecorator, validateFields} = props.form;
 
@@ -26,7 +25,7 @@ const Login = (props) => {
         <div className={css.outer}>
             {props.isAuth && <Redirect to={'/'} />}
 
-            <LoginForm {...props}
+            <RegisterForm {...props}
                        getFieldDecorator={getFieldDecorator}
                        onSubmit={onSubmit}
             />
@@ -34,12 +33,10 @@ const Login = (props) => {
     )
 };
 
-const LoginComponent = Form.create({ name: 'normal_login',  })(Login);
+const RegisterComponent = Form.create({ name: 'normal_register',  })(Register);
 
 let mapStateToProps = (state) => ({
     isAuth: state.auth.isAuth
 });
 
-export default compose(
-    connect(mapStateToProps, {login}),
-)(LoginComponent);
+export default connect(mapStateToProps, {register})(RegisterComponent);

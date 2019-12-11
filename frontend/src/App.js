@@ -7,13 +7,15 @@ import {connect, Provider} from "react-redux";
 import store from "./redux/redux-store";
 import {
     BrowserRouter,
+    Redirect,
     Route,
-    Switch,
+    Switch
 } from "react-router-dom";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Footer from "./components/Footer/Footer";
 import Login from "./components/Login/Login";
-import {withAuthRedirect} from "./hoc/withAuthRedirect";
+import Register from "./components/Register/Register";
+import ProfileContainer from "./components/Profile/ProfileContainer";
 const { Content } = Layout;
 
 class App extends Component {
@@ -33,6 +35,11 @@ class App extends Component {
 
                         <Switch>
                             <Route path='/login' render={() => <Login />}/>
+                            <Route path='/register' render={() => <Register />}/>
+
+                            <Route path='/profile' render={() => <ProfileContainer />}/>
+                            <Redirect from="/" to="/profile" />
+                            <Route path='*' render={() => <div>404 Not Found</div>}/>
                         </Switch>
 
                     </div>
@@ -50,7 +57,6 @@ const mapStateToProps = (state) => ({
 
 let AppContainer = compose(
     connect(mapStateToProps),
-    withAuthRedirect,
 )(App);
 
 

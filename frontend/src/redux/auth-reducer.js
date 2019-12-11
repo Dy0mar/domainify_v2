@@ -47,7 +47,7 @@ export const login = (email, password) => async (dispatch) => {
         dispatch(setAuthToken(isAuth));
         localStorage.setItem("token", data.token)
     } else {
-        debugger
+        console.log(data.message)
     }
 };
 
@@ -59,6 +59,16 @@ export const logout = () => async (dispatch) => {
         localStorage.removeItem("token")
     }
 };
+
+export const register = () => async (dispatch) => {
+    const response = await authAPI.register();
+    if (response.status === 200){
+        const isAuth = false;
+        dispatch(setAuthToken(isAuth));
+        localStorage.removeItem("token")
+    }
+};
+
 
 
 
