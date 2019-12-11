@@ -2,6 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import Login from "../components/Login/Login";
 import {initializeApp} from "../redux/app-reducer";
+import Preloader from "../components/Common/Preloader/Preloader";
 
 let mapStateToPropsForRedirect = (state) => ({
     initialized: state.app.initialized,
@@ -20,7 +21,7 @@ export const withAuthRedirect = (Component) => {
         }
 
         render(){
-            if(!this.props.initialized) return <div>wait...</div>;
+            if(!this.props.initialized) return <Preloader />;
 
             if (!this.props.isAuth) return <Login />;
 
