@@ -4,6 +4,8 @@
   background: rgba(255, 255, 255, 0.2);
   margin: 15px 10px;
   float: left;
+  line-height: 34px;
+  color: antiquewhite;
 }
 
 .user{

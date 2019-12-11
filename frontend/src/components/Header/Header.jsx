@@ -6,7 +6,7 @@ import {NavLink} from "react-router-dom";
 const Header = (props) => {
     return (
         <Layout.Header>
-            <div className={css.logo} />
+            <div className={css.logo}> Domainify</div>
             <div className={css.user}>
                 <Avatar className={css.avatar} icon="user" />
                 <span>userName</span>
