@@ -40,8 +40,8 @@ export const verifyToken = (token) => async (dispatch) => {
 
 };
 
-export const login = (email, password) => async (dispatch) => {
-    const data = await authAPI.login(email, password);
+export const login = (username, password) => async (dispatch) => {
+    const data = await authAPI.login(username, password);
     if (data.token){
         const isAuth = true;
         dispatch(setAuthToken(isAuth));

@@ -8,12 +8,12 @@ const LoginForm = ({onSubmit, getFieldDecorator}) => {
         <Form onSubmit={onSubmit}>
             <h1>Login</h1>
             <Form.Item>
-                {getFieldDecorator('email', {
-                    rules: [{ required: true, message: 'Please input your email!' }],
+                {getFieldDecorator('username', {
+                    rules: [{ required: true, message: 'Please input your username!' }],
                 })(
                     <Input
-                        prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        placeholder="Email"
+                        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                        placeholder="Username"
                     />,
                 )}
             </Form.Item>

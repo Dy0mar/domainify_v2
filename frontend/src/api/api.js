@@ -27,8 +27,8 @@ export const authAPI = {
         return instance.get('api-token-refresh/')
             .then(response => response.data)
     },
-    login(email, password) {
-        return instance.post('auth/login/', {email, password})
+    login(username, password) {
+        return instance.post('auth/login/', {username, password})
             .then(response => response.data)
     },
     logout() {

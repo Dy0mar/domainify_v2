@@ -17,7 +17,7 @@ const Login = (props) => {
 
         validateFields((err, values) => {
             if (!err) {
-                props.login(values.email, values.password);
+                props.login(values.username, values.password);
             }
         });
     };
