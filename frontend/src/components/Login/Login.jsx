@@ -34,7 +34,7 @@ const Login = (props) => {
     )
 };
 
-const LoginComponent = Form.create({ name: 'normal_login',  })(Login);
+const LoginComponent = Form.create({ name: 'login_form',  })(Login);
 
 let mapStateToProps = (state) => ({
     isAuth: state.auth.isAuth

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {connect} from "react-redux";
 import {register} from "../../redux/auth-reducer";
 import { Form } from 'antd';
@@ -9,16 +9,40 @@ import {Redirect} from "react-router-dom";
 
 const Register = (props) => {
 
-    const {getFieldDecorator, validateFields} = props.form;
+    let [confirmDirty, setConfirmDirty] = useState(false);
 
-    const onSubmit = (e) => {
+    const {
+        getFieldDecorator, validateFieldsAndScroll, getFieldValue,
+        validateFields,
+    } = props.form;
+
+    const handleSubmit = e => {
         e.preventDefault();
-
-        validateFields((err, values) => {
+        validateFieldsAndScroll((err, values) => {
             if (!err) {
-                props.login(values.email, values.password);
+                console.log('Received values of form: ', values);
             }
         });
+    };
+
+    const handleConfirmBlur = e => {
+        const { value } = e.target;
+        setConfirmDirty({ confirmDirty: confirmDirty || !!value });
+    };
+
+    const compareToFirstPassword = (rule, value, callback) => {
+        if (value && value !== getFieldValue('password')) {
+            callback('Two passwords that you enter is inconsistent!');
+        } else {
+            callback();
+        }
+    };
+
+    const validateToNextPassword = (rule, value, callback) => {
+        if (value && confirmDirty) {
+            validateFields(['confirm'], { force: true });
+        }
+        callback();
     };
 
     return (
@@ -26,14 +50,17 @@ const Register = (props) => {
             {props.isAuth && <Redirect to={'/'} />}
 
             <RegisterForm {...props}
-                       getFieldDecorator={getFieldDecorator}
-                       onSubmit={onSubmit}
+                          getFieldDecorator={getFieldDecorator}
+                          handleSubmit={handleSubmit}
+                          handleConfirmBlur={handleConfirmBlur}
+                          compareToFirstPassword={compareToFirstPassword}
+                          validateToNextPassword={validateToNextPassword}
             />
         </div>
     )
 };
 
-const RegisterComponent = Form.create({ name: 'normal_register',  })(Register);
+const RegisterComponent = Form.create({ name: 'register_form',  })(Register);
 
 let mapStateToProps = (state) => ({
     isAuth: state.auth.isAuth

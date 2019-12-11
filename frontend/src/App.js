@@ -23,29 +23,29 @@ class App extends Component {
     render () {
 
         return (
-            <Layout className="layout">
-                <HeaderContainer />
-                <Content style={{ padding: '0 50px' }}>
-                    <Breadcrumb style={{ margin: '16px 0' }}>
-                        <Breadcrumb.Item>Home</Breadcrumb.Item>
-                        <Breadcrumb.Item>List</Breadcrumb.Item>
-                        <Breadcrumb.Item>App</Breadcrumb.Item>
-                    </Breadcrumb>
-                    <div className={css.appWrapperContent}>
+            <Switch>
+                <Route path='/login' render={() => <Login />}/>
+                <Route path='/register' render={() => <Register />}/>
 
-                        <Switch>
-                            <Route path='/login' render={() => <Login />}/>
-                            <Route path='/register' render={() => <Register />}/>
+                <Layout className="layout">
+                    <HeaderContainer />
+                    <Content style={{ padding: '0 50px' }}>
+                        <Breadcrumb style={{ margin: '16px 0' }}>
+                            <Breadcrumb.Item>Home</Breadcrumb.Item>
+                            <Breadcrumb.Item>List</Breadcrumb.Item>
+                            <Breadcrumb.Item>App</Breadcrumb.Item>
+                        </Breadcrumb>
+                        <div className={css.appWrapperContent}>
+                                <Route path='/profile' render={() => <ProfileContainer />}/>
+                                <Redirect from="/" to="/profile" />
+                                <Route path='*' render={() => <div>404 Not Found</div>}/>
 
-                            <Route path='/profile' render={() => <ProfileContainer />}/>
-                            <Redirect from="/" to="/profile" />
-                            <Route path='*' render={() => <div>404 Not Found</div>}/>
-                        </Switch>
 
-                    </div>
-                </Content>
-                <Footer />
-            </Layout>
+                        </div>
+                    </Content>
+                    <Footer />
+                </Layout>
+            </Switch>
         )
     }
 }
