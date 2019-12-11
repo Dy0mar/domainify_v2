@@ -1,4 +1,4 @@
-import {authAPI} from "../api/api";
+import {authAPI, usersAPI} from "../api/api";
 
 
 const SET_USER_DATA = 'auth/SET_USER_DATA';
@@ -28,8 +28,8 @@ export const setAuthToken = (isAuth) => ({
 });
 
 
-export const verifyToken = (token) => async (dispatch) => {
-    const response = await authAPI.verify(token);
+export const verifyToken = () => async (dispatch) => {
+    const response = await authAPI.verify();
     if (response.status === 200){
         let isAuth = true;
         dispatch(setAuthToken(isAuth))
@@ -60,8 +60,8 @@ export const logout = () => async (dispatch) => {
     }
 };
 
-export const register = () => async (dispatch) => {
-    const response = await authAPI.register();
+export const register = (username, email, password, pidgin) => async (dispatch) => {
+    const response = await usersAPI.register(username, email, password, pidgin);
     if (response.status === 200){
         const isAuth = false;
         dispatch(setAuthToken(isAuth));

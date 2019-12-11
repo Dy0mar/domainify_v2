@@ -30,7 +30,7 @@ export const initializedSuccess = () => ({
 export const initializeApp = () => (dispatch) => {
     const token = localStorage.token;
     const verifyTokenPromise = token
-        ? dispatch(verifyToken(token))
+        ? dispatch(verifyToken())
         : new Promise((resolve, reject) => resolve(1));
 
 
