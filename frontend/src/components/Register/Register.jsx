@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {connect} from "react-redux";
-import {register} from "../../redux/auth-reducer";
+import {register} from "../../redux/user-reducer";
 import { Form } from 'antd';
 import 'antd/dist/antd.css';
 import RegisterForm from "./RegisterForm";

@@ -60,17 +60,4 @@ export const logout = () => async (dispatch) => {
     }
 };
 
-export const register = (username, email, password, pidgin) => async (dispatch) => {
-    const response = await usersAPI.register(username, email, password, pidgin);
-    if (response.status === 200){
-        const isAuth = false;
-        dispatch(setAuthToken(isAuth));
-        localStorage.removeItem("token")
-    }
-};
-
-
-
-
-
 export default authReducer;

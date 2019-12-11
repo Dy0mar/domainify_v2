@@ -153,7 +153,7 @@ JWT_AUTH = {
     # JWT_VERIFY_EXPIRATION to False.
     # If set to False, JWTs will last forever meaning a leaked token
     # could be used by an attacker indefinitely.
-    'JWT_VERIFY_EXPIRATION': True,
+    'JWT_VERIFY_EXPIRATION': False,
 
     # This is an instance of Python's datetime.timedelta.
     # This will be added to datetime.utcnow() to set the expiration time.

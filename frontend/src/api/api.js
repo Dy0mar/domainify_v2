@@ -15,9 +15,8 @@ instance.defaults.headers.common['Authorization'] = token;
 
 
 export const usersAPI = {
-    register(username, email, password, pidgin) {
-        return instance.post('users/', {username, email, password, pidgin})
-            .then(response => response.data)
+    register(username, email, password, profile) {
+        return instance.post('users/', {username, email, password, profile})
     },
 };
 
