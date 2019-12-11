@@ -27,9 +27,9 @@ const userReducer = (state=initialSate, action) => {
     }
 };
 
-export const setCurrentUser = (username, email, profile, settings) => ({
+export const setCurrentUser = (username, email) => ({
     type: SET_CURRENT_USER,
-    payload: {username, email, profile, settings}
+    payload: {username, email}
 });
 
 
@@ -40,13 +40,21 @@ export const register = (username, email, password, pidgin) => async (dispatch) 
     const response = await usersAPI.register(username, email, password, profile);
 
     if (response.status === 201){
-        const data = response.data;
-        const profile = data.profile;
-        const settings = data.settings;
-
-        dispatch(setCurrentUser(username, email, profile, profile, settings));
+        dispatch(setCurrentUser(username, email));
         dispatch(login(username, password));
     }
 };
+
+export const getCurrentUser = () => async (dispatch) => {
+
+    const response = await usersAPI.getUser();
+
+    if (response.status === 200){
+
+        const {username, email} = response.data;
+        dispatch(setCurrentUser(username, email));
+    }
+};
+
 
 export default userReducer;

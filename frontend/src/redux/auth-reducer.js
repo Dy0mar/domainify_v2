@@ -1,4 +1,4 @@
-import {authAPI, usersAPI} from "../api/api";
+import {authAPI} from "../api/api";
 
 
 const SET_USER_DATA = 'auth/SET_USER_DATA';
@@ -34,8 +34,9 @@ export const verifyToken = () => async (dispatch) => {
         let isAuth = true;
         dispatch(setAuthToken(isAuth))
     } else {
-        let isAuth = true;
-        dispatch(setAuthToken(isAuth))
+        let isAuth = false;
+        dispatch(setAuthToken(isAuth));
+        return Promise.reject(response.data.message)
     }
 
 };

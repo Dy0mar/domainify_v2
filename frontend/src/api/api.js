@@ -11,13 +11,16 @@ const instance = axios.create({
     },
 });
 
-instance.defaults.headers.common['Authorization'] = token;
+instance.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 
 
 export const usersAPI = {
     register(username, email, password, profile) {
         return instance.post('users/', {username, email, password, profile})
     },
+    getUser(){
+        return instance.get('auth/user/')
+    }
 };
 
 
