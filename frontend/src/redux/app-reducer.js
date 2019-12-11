@@ -1,4 +1,4 @@
-import {checkAuthToken} from "./auth-reducer";
+import {verifyToken} from "./auth-reducer";
 
 const INITIALIZED_SUCCESS = 'app/INITIALIZED_SUCCESS';
 
@@ -27,10 +27,14 @@ export const initializedSuccess = () => ({
 });
 
 
-export const initializeApp = (token) => (dispatch) => {
-    let promise = dispatch(checkAuthToken(token));
+export const initializeApp = () => (dispatch) => {
+    const token = localStorage.token;
+    const verifyTokenPromise = token
+        ? dispatch(verifyToken(token))
+        : new Promise((resolve, reject) => resolve(1));
 
-    Promise.all([promise]).then(() => {
+
+    Promise.all([verifyTokenPromise]).then(() => {
         dispatch(initializedSuccess());
     });
 

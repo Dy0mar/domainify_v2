@@ -4,7 +4,8 @@ import css from './Login.module.css'
 
 const LoginForm = ({onSubmit, getFieldDecorator}) => {
     return (
-        <Form onSubmit={onSubmit} className={css.loginForm}>
+        <Form onSubmit={onSubmit}>
+            <h1>Login</h1>
             <Form.Item>
                 {getFieldDecorator('email', {
                     rules: [{ required: true, message: 'Please input your email!' }],
@@ -28,7 +29,7 @@ const LoginForm = ({onSubmit, getFieldDecorator}) => {
             </Form.Item>
             <Form.Item>
                 <Button type="primary" htmlType="submit" className={css.loginFormButton}>
-                    Log in
+                    Sign in
                 </Button>
                 Or <a href="#register">register now!</a>
             </Form.Item>

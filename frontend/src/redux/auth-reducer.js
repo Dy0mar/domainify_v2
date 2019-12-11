@@ -5,7 +5,6 @@ const SET_USER_DATA = 'auth/SET_USER_DATA';
 
 
 const initialSate = {
-    token: null,
     isAuth: false,
 };
 
@@ -23,23 +22,20 @@ const authReducer = (state=initialSate, action) => {
     }
 };
 
-export const setAuthToken = (token, isAuth) => ({
+export const setAuthToken = (isAuth) => ({
     type: SET_USER_DATA,
-    payload: {token, isAuth}
+    payload: {isAuth}
 });
 
 
-export const checkAuthToken = (token) => async (dispatch) => {
-    if (token){
-        const response = await authAPI.verify(token);
-        if (response.status === 200){
-            let isAuth = true;
-            dispatch(setAuthToken(token, isAuth))
-        } else {
-            let isAuth = true;
-            const token = null;
-            dispatch(setAuthToken(token, isAuth))
-        }
+export const verifyToken = (token) => async (dispatch) => {
+    const response = await authAPI.verify(token);
+    if (response.status === 200){
+        let isAuth = true;
+        dispatch(setAuthToken(isAuth))
+    } else {
+        let isAuth = true;
+        dispatch(setAuthToken(isAuth))
     }
 
 };
@@ -48,8 +44,10 @@ export const login = (email, password) => async (dispatch) => {
     const data = await authAPI.login(email, password);
     if (data.token){
         const isAuth = true;
-        const token = data.token;
-        dispatch(setAuthToken(token, isAuth))
+        dispatch(setAuthToken(isAuth));
+        localStorage.setItem("token", data.token)
+    } else {
+        debugger
     }
 };
 
@@ -57,8 +55,8 @@ export const logout = () => async (dispatch) => {
     const response = await authAPI.logout();
     if (response.status === 200){
         const isAuth = false;
-        const token = null;
-        dispatch(setAuthToken(token, isAuth))
+        dispatch(setAuthToken(isAuth));
+        localStorage.removeItem("token")
     }
 };
 

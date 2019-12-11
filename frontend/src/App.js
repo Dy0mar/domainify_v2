@@ -5,48 +5,20 @@ import { Layout, Breadcrumb } from 'antd'
 import {compose} from "redux";
 import {connect, Provider} from "react-redux";
 import store from "./redux/redux-store";
-import {initializeApp} from "./redux/app-reducer";
 import {
     BrowserRouter,
     Route,
     Switch,
-    withRouter
 } from "react-router-dom";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Footer from "./components/Footer/Footer";
 import Login from "./components/Login/Login";
-// import Preloader from "./components/Common/Preloader/Preloader";
+import {withAuthRedirect} from "./hoc/withAuthRedirect";
 const { Content } = Layout;
 
 class App extends Component {
-    constructor(props) {
-        super(props);
-        const token = localStorage.getItem('token');
-        this.state = {
-            isAuth: this.props.isAuth,
-            token: token,
-        };
-    }
 
-    componentDidMount() {
-
-        if (!this.state.isAuth){
-            this.props.history.push('/login')
-        } else {
-            this.props.initializeApp(this.state.token);
-        }
-
-    }
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.token !== prevProps.token){
-            localStorage.setItem('token', this.props.token);
-            this.props.history.push('/')
-        }
-    }
     render () {
-
-        // if (!this.props.initialized)
-        //     return <Preloader />;
 
         return (
             <Layout className="layout">
@@ -73,13 +45,12 @@ class App extends Component {
 
 const mapStateToProps = (state) => ({
     initialized: state.app.initialized,
-    token: state.auth.token,
     isAuth: state.auth.isAuth,
 });
 
 let AppContainer = compose(
-    connect(mapStateToProps, {initializeApp}),
-    withRouter
+    connect(mapStateToProps),
+    withAuthRedirect,
 )(App);
 
 
