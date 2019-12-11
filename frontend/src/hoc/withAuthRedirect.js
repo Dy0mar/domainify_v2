@@ -11,10 +11,6 @@ let mapStateToPropsForRedirect = (state) => ({
 
 export const withAuthRedirect = (Component) => {
     class RedirectComponent extends React.Component {
-        constructor(props) {
-            super(props);
-
-        }
 
         componentDidMount() {
             this.props.initializeApp()
