@@ -41,7 +41,10 @@ export const register = (username, email, password, pidgin) => async (dispatch) 
 
     if (response.status === 201){
         const data = response.data;
-        dispatch(setCurrentUser(username, email, data.profile, data.settings));
+        const profile = data.profile;
+        const settings = data.settings;
+
+        dispatch(setCurrentUser(username, email, profile, profile, settings));
         dispatch(login(username, password));
     }
 };

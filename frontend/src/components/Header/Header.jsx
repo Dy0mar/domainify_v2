@@ -6,10 +6,12 @@ import {NavLink} from "react-router-dom";
 const Header = (props) => {
     return (
         <Layout.Header>
-            <div className={css.logo}> Domainify</div>
+            <div className={css.logo}>
+                <div className={css.text}>Domainify</div>
+            </div>
             <div className={css.user}>
                 <Avatar className={css.avatar} icon="user" />
-                <span>userName</span>
+                <span>{props.username} </span>
                 {props.isAuth
                     ? <a href='#logout' onClick={props.logout}>logout</a>
                     : <NavLink to="/login" activeClassName='active'>Login</NavLink>

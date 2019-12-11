@@ -8,6 +8,10 @@
   color: antiquewhite;
 }
 
+.text{
+  padding-left: 10px;
+}
+
 .user{
   color: white;
   float: right;

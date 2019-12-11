@@ -11,7 +11,7 @@ import {
     Route,
     Switch
 } from "react-router-dom";
-import HeaderContainer from "./components/Header/HeaderContainer";
+import Header from "./components/Header/HeaderContainer";
 import Footer from "./components/Footer/Footer";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
@@ -28,7 +28,7 @@ class App extends Component {
                 <Route path='/register' render={() => <Register />}/>
 
                 <Layout className="layout">
-                    <HeaderContainer />
+                    <Header />
                     <Content style={{ padding: '0 50px' }}>
                         <Breadcrumb style={{ margin: '16px 0' }}>
                             <Breadcrumb.Item>Home</Breadcrumb.Item>
