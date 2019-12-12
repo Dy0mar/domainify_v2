@@ -1,12 +1,12 @@
 import React from "react";
-import { Form, Icon, Input, Button } from 'antd';
+import {Form, Icon, Input, Button, Divider} from 'antd';
 import css from './Login.module.css'
 import {NavLink} from "react-router-dom";
 
 const LoginForm = ({onSubmit, getFieldDecorator}) => {
     return (
         <Form onSubmit={onSubmit}>
-            <h1>Login</h1>
+            <Divider>Login</Divider>
             <Form.Item>
                 {getFieldDecorator('username', {
                     rules: [{ required: true, message: 'Please input your username!' }],

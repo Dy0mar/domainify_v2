@@ -8,6 +8,7 @@ import {
     Tooltip,
     Icon,
     Button,
+    Divider,
 } from 'antd';
 import {NavLink} from "react-router-dom";
 
@@ -45,7 +46,7 @@ const RegistrationForm = (props) => {
 
     return (
         <Form {...formItemLayout} onSubmit={handleSubmit}>
-            <h1 className={css.formText}>Register</h1>
+            <Divider>Register</Divider>
             <Form.Item
                 label={
                     <span>
