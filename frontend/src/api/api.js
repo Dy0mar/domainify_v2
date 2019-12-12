@@ -1,7 +1,6 @@
 import * as axios from "axios";
 
 
-const token = localStorage.getItem("token");
 
 const instance = axios.create({
     baseURL: 'http://localhost:8000/api/',
@@ -11,9 +10,17 @@ const instance = axios.create({
     },
 });
 
-if (token){
-    instance.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-}
+instance.interceptors.request.use(
+    function (config) {
+        const token = localStorage.getItem("token");
+        if (token)
+            config.headers.Authorization = `Bearer ${token}`;
+        return config;
+    },
+    function (error) {
+        return Promise.reject (error);
+    }
+);
 
 
 export const usersAPI = {
@@ -33,7 +40,7 @@ export const authAPI = {
     },
 
     verify() {
-        return instance.post('api-token-verify/', {token})
+        return instance.post('api-token-verify/', {'token': localStorage.getItem("token")})
     },
 
     refresh() {
