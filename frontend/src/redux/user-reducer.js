@@ -34,6 +34,7 @@ export const setCurrentUser = (username, email) => ({
 
 
 export const register = (username, email, password, pidgin) => async (dispatch) => {
+    // todo: show error message
     const profile = {'profile': {
         'pidgin': pidgin,
     }};

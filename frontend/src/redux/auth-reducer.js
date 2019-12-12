@@ -43,6 +43,7 @@ export const verifyToken = () => async (dispatch) => {
 };
 
 export const login = (username, password) => async (dispatch) => {
+    // todo: show error message
     const data = await authAPI.login(username, password);
     if (data.token){
         const isAuth = true;
