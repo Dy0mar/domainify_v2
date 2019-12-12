@@ -11,7 +11,9 @@ const instance = axios.create({
     },
 });
 
-instance.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+if (token){
+    instance.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+}
 
 
 export const usersAPI = {
