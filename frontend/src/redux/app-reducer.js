@@ -35,10 +35,14 @@ export const initializeApp = () => (dispatch) => {
         : new Promise((resolve, reject) => reject(1));
 
 
-    Promise.all([verifyTokenPromise]).then(() => {
-        dispatch(getCurrentUser());
-        dispatch(initializedSuccess());
-    });
+    Promise.all([verifyTokenPromise]).then(
+        () => {
+            dispatch(getCurrentUser());
+            dispatch(initializedSuccess());
+            },
+        () => {
+            dispatch(initializedSuccess());
+        });
 
 };
 
