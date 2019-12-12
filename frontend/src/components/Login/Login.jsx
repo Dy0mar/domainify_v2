@@ -8,7 +8,7 @@ import css from './Login.module.css'
 import {Redirect} from "react-router-dom";
 import {compose} from "redux";
 
-const Login = (props) => {
+const LoginContainer = (props) => {
 
     const {getFieldDecorator, validateFields} = props.form;
 
@@ -34,7 +34,7 @@ const Login = (props) => {
     )
 };
 
-const LoginComponent = Form.create({ name: 'login_form',  })(Login);
+const Login = Form.create({ name: 'login_form',  })(LoginContainer);
 
 let mapStateToProps = (state) => ({
     isAuth: state.auth.isAuth
@@ -42,4 +42,4 @@ let mapStateToProps = (state) => ({
 
 export default compose(
     connect(mapStateToProps, {login}),
-)(LoginComponent);
+)(Login);

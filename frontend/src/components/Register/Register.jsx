@@ -6,8 +6,9 @@ import 'antd/dist/antd.css';
 import RegisterForm from "./RegisterForm";
 import css from './Register.module.css'
 import {Redirect} from "react-router-dom";
+import {compose} from "redux";
 
-const Register = (props) => {
+const RegisterContainer = (props) => {
 
     let [confirmDirty, setConfirmDirty] = useState(false);
 
@@ -60,10 +61,12 @@ const Register = (props) => {
     )
 };
 
-const RegisterComponent = Form.create({ name: 'register_form',  })(Register);
+const Register = Form.create({ name: 'register_form',  })(RegisterContainer);
 
 let mapStateToProps = (state) => ({
     isAuth: state.auth.isAuth
 });
 
-export default connect(mapStateToProps, {register})(RegisterComponent);
+export default compose(
+    connect(mapStateToProps, {register})
+)(Register);
