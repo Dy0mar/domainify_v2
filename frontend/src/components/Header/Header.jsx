@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, Menu, Avatar } from 'antd'
+import {Layout, Menu, Avatar, Button} from 'antd'
 import css from './Header.module.css'
 import {NavLink} from "react-router-dom";
 
@@ -13,7 +13,7 @@ const Header = (props) => {
                 <Avatar className={css.avatar} icon="user" />
                 <span>{props.username} </span>
                 {props.isAuth
-                    ? <a href='#logout' onClick={props.logout}>logout</a>
+                    ? <Button onClick={props.logout} type="link">Logout</Button>
                     : <NavLink to="/login" activeClassName='active'>Login</NavLink>
                 }
             </div>
