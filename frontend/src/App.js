@@ -16,11 +16,19 @@ import Footer from "./components/Footer/Footer";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import ProfileContainer from "./components/Profile/ProfileContainer";
+import {initializeApp} from "./redux/app-reducer";
+import Preloader from "./components/Common/Preloader/Preloader";
 const { Content } = Layout;
 
 class App extends Component {
 
+    componentDidMount() {
+        this.props.initializeApp();
+    }
+
     render () {
+        if (!this.props.initialized)
+            return <Preloader />;
 
         return (
             <Layout className="layout">
@@ -53,7 +61,7 @@ const mapStateToProps = (state) => ({
 });
 
 let AppContainer = compose(
-    connect(mapStateToProps),
+    connect(mapStateToProps, {initializeApp}),
 )(App);
 
 
