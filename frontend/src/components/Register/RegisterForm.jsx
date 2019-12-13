@@ -57,7 +57,7 @@ const RegistrationForm = (props) => {
                 }
             >
                 {getFieldDecorator('username', {
-                    rules: [{ required: true, message: 'Please input your username!', whitespace: true }],
+                    rules: [{ required: true, message: 'Please input your username!'}],
                 })(<Input />)}
             </Form.Item>
 
@@ -115,7 +115,7 @@ const RegistrationForm = (props) => {
                 }
             >
                 {getFieldDecorator('pidgin', {
-                    rules: [{ required: true, message: 'Please input your pidgin!', whitespace: true }],
+                    rules: [{ required: true, message: 'Please input your pidgin!' }],
                 })(<Input />)}
             </Form.Item>
 
