@@ -1,5 +1,5 @@
 import {authAPI} from "../api/api";
-import {getCurrentUser, setCurrentUser} from "./user-reducer";
+import {setCurrentUserAction} from "./user-reducer";
 
 
 const SET_AUTH_COMPLETE = 'auth/SET_AUTH_COMPLETE';
@@ -32,11 +32,9 @@ export const setAuthComplete = (isAuth) => ({
 export const verifyToken = () => async (dispatch) => {
     const response = await authAPI.verify();
     if (response.status === 200){
-        let isAuth = true;
-        dispatch(setAuthComplete(isAuth))
+        dispatch(setAuthComplete(true))
     } else {
-        let isAuth = false;
-        dispatch(setAuthComplete(isAuth));
+        dispatch(setAuthComplete(false));
         return Promise.reject(response.data.message)
     }
 
@@ -46,10 +44,11 @@ export const login = (username, password) => async (dispatch) => {
     // todo: show error message
     const data = await authAPI.login(username, password);
     if (data.token){
-        const isAuth = true;
-        dispatch(setAuthComplete(isAuth));
+        dispatch(setAuthComplete(true));
         localStorage.setItem("token", data.token);
-        dispatch(getCurrentUser());
+
+        const {pk, username, email} = data.user;
+        dispatch(setCurrentUserAction(pk, username, email));
     } else {
         console.log(data.message)
     }
@@ -58,9 +57,8 @@ export const login = (username, password) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
     const response = await authAPI.logout();
     if (response.status === 200){
-        const isAuth = false;
-        dispatch(setAuthComplete(isAuth));
-        dispatch(setCurrentUser("", ""));
+        dispatch(setAuthComplete(false));
+        dispatch(setCurrentUserAction(null, "", ""));
         localStorage.removeItem("token")
     }
 };

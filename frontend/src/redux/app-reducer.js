@@ -1,5 +1,5 @@
 import {verifyToken} from "./auth-reducer";
-import {getCurrentUser} from "./user-reducer";
+import {setCurrentUser} from "./user-reducer";
 
 const INITIALIZED_SUCCESS = 'app/INITIALIZED_SUCCESS';
 
@@ -37,7 +37,7 @@ export const initializeApp = () => (dispatch) => {
 
     Promise.all([verifyTokenPromise]).then(
         () => {
-            dispatch(getCurrentUser());
+            dispatch(setCurrentUser());
             dispatch(initializedSuccess());
             },
         () => {

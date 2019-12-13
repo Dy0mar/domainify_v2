@@ -27,8 +27,8 @@ export const usersAPI = {
     register(username, email, password, profile) {
         return instance.post('users/', {username, email, password, profile})
     },
-    getUser(){
-        return instance.get('auth/user/')
+    me(pk){
+        return instance.get(`users/${pk}`)
     }
 };
 
