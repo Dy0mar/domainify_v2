@@ -27,7 +27,7 @@ class User(AbstractUser):
     email = models.EmailField(_('email address'), blank=False)
 
     def __str__(self):
-        return "{}".format(self.email)
+        return "{}".format(self.username)
 
 
 class UserProfile(models.Model):
@@ -51,4 +51,4 @@ class UserSettings(models.Model):
     email = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.user
+        return 'Settings for {}'.format(self.user)
