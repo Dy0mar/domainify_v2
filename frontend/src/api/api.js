@@ -30,10 +30,12 @@ export const usersAPI = {
     me(){
         return instance.get('auth/user/')
     },
+    get_user_info(pk){
+        return instance.get(`users/${pk}/`)
+    },
     patch_field(pk, data){
         return instance.patch(`users/${pk}/`, {...data})
     }
-
 };
 
 

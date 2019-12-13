@@ -1,6 +1,5 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import css from './Register.module.css'
 
 import {
     Form,

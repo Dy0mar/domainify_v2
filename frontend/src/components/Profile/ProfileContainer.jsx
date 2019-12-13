@@ -15,8 +15,11 @@ const ProfileContainer = (props) => {
 
     useEffect(() => {
         setUsername(props.username);
+    }, [props.username]);
+
+    useEffect(() => {
         setEmail(props.email)
-    }, [props.username, props.email]);
+    }, [props.email]);
 
     const onChangeUsername = (value) => {
         setUsername(value)
@@ -24,7 +27,6 @@ const ProfileContainer = (props) => {
     const onChangeEmail = (value) => {
         setEmail(value);
         props.patchUserField(props.pk, {'email': value})
-
     };
 
     return (

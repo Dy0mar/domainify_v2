@@ -1,5 +1,5 @@
 import {verifyToken} from "./auth-reducer";
-import {setCurrentUser} from "./user-reducer";
+import {setCurrentUser, setUserInfo} from "./user-reducer";
 
 const INITIALIZED_SUCCESS = 'app/INITIALIZED_SUCCESS';
 

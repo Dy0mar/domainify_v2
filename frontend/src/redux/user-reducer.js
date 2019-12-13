@@ -2,6 +2,7 @@ import {usersAPI} from "../api/api";
 import {login} from "./auth-reducer";
 
 const SET_CURRENT_USER = 'user/SET_CURRENT_USER';
+const SET_USER_INFO = 'user/SET_CURRENT_USER';
 
 
 const initialSate = {
@@ -11,7 +12,10 @@ const initialSate = {
     profile: {
         pidgin: ""
     },
-    settings: null,
+    settings: {
+        "pidgin": null,
+        "email": null
+    },
 };
 
 
@@ -31,6 +35,11 @@ const userReducer = (state=initialSate, action) => {
 export const setCurrentUserAction = (pk, username, email) => ({
     type: SET_CURRENT_USER,
     payload: {pk, username, email}
+});
+
+export const setUserInfoAction = (profile, settings) => ({
+    type: SET_USER_INFO,
+    payload: {profile, settings}
 });
 
 
@@ -55,6 +64,16 @@ export const setCurrentUser = () => async (dispatch) => {
     if (response.status === 200){
         const {pk, username, email} = response.data;
         dispatch(setCurrentUserAction(pk, username, email));
+        dispatch(setUserInfo(pk));
+    }
+};
+
+export const setUserInfo = (pk) => async (dispatch) => {
+    const response = await usersAPI.get_user_info(pk);
+
+    if (response.status === 200){
+        const {profile, settings} = response.data;
+        dispatch(setUserInfoAction(profile, settings));
     }
 };
 
