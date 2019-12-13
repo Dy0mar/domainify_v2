@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react'
 import {compose} from "redux";
 import {connect} from "react-redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
-import {Divider, Row, Col, Typography} from 'antd';
+import {Divider, Row, Col} from 'antd';
 import "antd/dist/antd.css";
 import UserInfo from "./UserInfo/UserInfo";
+import {patchUserField} from "../../redux/user-reducer";
 
-const {Paragraph, Text} = Typography;
 
 const ProfileContainer = (props) => {
 
@@ -22,7 +22,9 @@ const ProfileContainer = (props) => {
         setUsername(value)
     };
     const onChangeEmail = (value) => {
-        setEmail(value)
+        setEmail(value);
+        props.patchUserField(props.pk, {'email': value})
+
     };
 
     return (
@@ -37,7 +39,6 @@ const ProfileContainer = (props) => {
                     />
                 </Col>
             </Row>
-
         </div>
     )
 };
@@ -52,6 +53,6 @@ let mapStateToProps = (state) => ({
 });
 
 export default compose(
-    connect(mapStateToProps, {}),
-    withAuthRedirect
+    withAuthRedirect,
+    connect(mapStateToProps, {patchUserField}),
 )(ProfileContainer);

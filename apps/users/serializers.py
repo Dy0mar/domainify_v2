@@ -36,10 +36,10 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         return user
 
     def update(self, instance, validated_data):
-        profile_data = validated_data.pop('profile')
+        profile_data = validated_data.pop('profile', {})
         profile = instance.profile
 
-        settings_data = validated_data.pop('settings')
+        settings_data = validated_data.pop('settings', {})
         settings = instance.settings
 
         instance.email = validated_data.get('email', instance.email)

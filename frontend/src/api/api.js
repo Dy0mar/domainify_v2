@@ -27,9 +27,13 @@ export const usersAPI = {
     register(username, email, password, profile) {
         return instance.post('users/', {username, email, password, profile})
     },
-    me(pk){
-        return instance.get(`users/${pk}`)
+    me(){
+        return instance.get('auth/user/')
+    },
+    patch_field(pk, data){
+        return instance.patch(`users/${pk}/`, {...data})
     }
+
 };
 
 

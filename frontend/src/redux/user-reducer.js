@@ -42,21 +42,31 @@ export const register = (username, email, password, pidgin) => async (dispatch) 
     const response = await usersAPI.register(username, email, password, profile);
 
     if (response.status === 201){
-        const id = response.data.id;
-        dispatch(setCurrentUserAction(id, username, email));
+        const pk = response.data.pk;
+        dispatch(setCurrentUserAction(pk, username, email));
         dispatch(login(username, password));
     }
 };
 
-export const setCurrentUser = () => async (dispatch, getState) => {
+export const setCurrentUser = () => async (dispatch) => {
 
-    const response = await usersAPI.me(getState().user.pk);
+    const response = await usersAPI.me();
 
     if (response.status === 200){
+        const {pk, username, email} = response.data;
+        dispatch(setCurrentUserAction(pk, username, email));
+    }
+};
+
+export const patchUserField = (pk, data) => async (dispatch) => {
+
+    const response = await usersAPI.patch_field(pk, data);
+
+    if (response.status === 200){
+
         const {id, username, email} = response.data;
         dispatch(setCurrentUserAction(id, username, email));
     }
 };
-
 
 export default userReducer;
