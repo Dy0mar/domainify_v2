@@ -36,19 +36,23 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         return user
 
     def update(self, instance, validated_data):
+
+        email = validated_data.get('email', '')
+        if email != instance.email:
+            instance.email = validated_data.get('email', instance.email)
+            instance.save()
+
         profile_data = validated_data.pop('profile', {})
-        profile = instance.profile
+        if profile_data:
+            profile = instance.profile
+            profile.pidgin = profile_data.get('pidgin', profile.pidgin)
+            profile.save()
 
         settings_data = validated_data.pop('settings', {})
-        settings = instance.settings
-
-        instance.email = validated_data.get('email', instance.email)
-        instance.save()
-
-        profile.pidgin = profile_data.get('pidgin', profile.pidgin)
-        profile.save()
-
-        settings.pidgin = settings_data.get('pidgin', settings.pidgin)
-        settings.email = settings_data.get('email', settings.email)
+        if settings_data:
+            settings = instance.settings
+            settings.pidgin = settings_data.get('pidgin', settings.pidgin)
+            settings.email = settings_data.get('email', settings.email)
+            settings.save()
 
         return instance
