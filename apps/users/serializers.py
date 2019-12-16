@@ -38,7 +38,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     def update(self, instance, validated_data):
 
         email = validated_data.get('email', '')
-        if email != instance.email:
+        if email and email != instance.email:
             instance.email = validated_data.get('email', instance.email)
             instance.save()
 

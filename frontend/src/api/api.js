@@ -35,7 +35,10 @@ export const usersAPI = {
     },
     patch_field(pk, data){
         return instance.patch(`users/${pk}/`, {...data})
-    }
+    },
+    update_profile(pk, data){
+        return instance.put(`users/${pk}/`, {...data})
+    },
 };
 
 

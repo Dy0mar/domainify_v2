@@ -1,44 +1,73 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {compose} from "redux";
 import {connect} from "react-redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {Divider, Row, Col} from 'antd';
 import "antd/dist/antd.css";
 import UserInfo from "./UserInfo/UserInfo";
-import {patchUserField} from "../../redux/user-reducer";
+import {updateUserProfile} from "../../redux/user-reducer";
+import UserInfoForm from "./UserInfoForm/UserInfoForm";
 
 
 const ProfileContainer = (props) => {
+    /*
+    let onChangeField = (fields) => {
+        const wrap = (value) => {
+             let data = {};
+             let old_key = '';
 
-    let [username, setUsername] = useState(props.username);
-    let [email, setEmail] = useState(props.email);
-
-    useEffect(() => {
-        setUsername(props.username);
-    }, [props.username]);
-
-    useEffect(() => {
-        setEmail(props.email)
-    }, [props.email]);
-
-    const onChangeUsername = (value) => {
-        setUsername(value)
+             for (let key of fields) {
+                 if (old_key){
+                     data[old_key] = {[key]: value};
+                 } else {
+                     data = Object.assign({}, {[key]: value});
+                     old_key = key
+                 }
+             }
+            props.updateUserProfile(data);
+        };
+        return wrap
     };
-    const onChangeEmail = (value) => {
-        setEmail(value);
-        props.patchUserField(props.pk, {'email': value})
+    const onChangeEmail = onChangeField(['email']);
+    const onChangePidgin = onChangeField(['profile', 'pidgin']);
+    */
+
+    let [editMode, setEditMode] = useState(false);
+
+    const activateEditMode = () => {
+        setEditMode(true)
     };
+    const deActivateEditMode = () => {
+        setEditMode(false)
+    };
+
+    const gutters = 16;
+    const vgutters = 16;
 
     return (
         <div>
             <Divider>Profile here</Divider>
             <Row>
                 <Col span={12}>
-                    <UserInfo username={username}
-                              email={email}
-                              onChangeUsername={onChangeUsername}
-                              onChangeEmail={onChangeEmail}
-                    />
+
+                    {!editMode && <UserInfo
+                        username={props.username}
+                        email={props.email}
+                        pidgin={props.profile.pidgin}
+                        activateEditMode={activateEditMode}
+                        gutters={gutters}
+                        vgutters={vgutters}
+                    />}
+
+                    {editMode && <UserInfoForm
+                        deActivateEditMode={deActivateEditMode}
+                        username={props.username}
+                        email={props.email}
+                        pidgin={props.profile.pidgin}
+                        gutters={gutters}
+                        vgutters={vgutters}
+                        updateUserProfile={props.updateUserProfile}
+                    />}
                 </Col>
             </Row>
         </div>
@@ -47,6 +76,7 @@ const ProfileContainer = (props) => {
 
 let mapStateToProps = (state) => ({
     isAuth: state.auth.isAuth,
+    user: state.user,
     pk: state.user.pk,
     username: state.user.username,
     email: state.user.email,
@@ -56,5 +86,5 @@ let mapStateToProps = (state) => ({
 
 export default compose(
     withAuthRedirect,
-    connect(mapStateToProps, {patchUserField}),
+    connect(mapStateToProps, {updateUserProfile}),
 )(ProfileContainer);

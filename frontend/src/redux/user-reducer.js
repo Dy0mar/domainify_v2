@@ -13,8 +13,8 @@ const initialSate = {
         pidgin: ""
     },
     settings: {
-        "pidgin": null,
-        "email": null
+        pidgin: null,
+        email: null
     },
 };
 
@@ -27,7 +27,11 @@ const userReducer = (state=initialSate, action) => {
                 ...state,
                 ...action.payload,
             };
-
+        case SET_USER_INFO:
+            return {
+                ...state,
+                ...action.payload,
+            };
         default: return state;
     }
 };
@@ -45,9 +49,9 @@ export const setUserInfoAction = (profile, settings) => ({
 
 export const register = (username, email, password, pidgin) => async (dispatch) => {
     // todo: show error message
-    const profile = {'profile': {
+    const profile = {
         'pidgin': pidgin,
-    }};
+    };
     const response = await usersAPI.register(username, email, password, profile);
 
     if (response.status === 201){
@@ -77,14 +81,32 @@ export const setUserInfo = (pk) => async (dispatch) => {
     }
 };
 
-export const patchUserField = (pk, data) => async (dispatch) => {
+export const updateUserProfile = (data) => async (dispatch, getState) => {
 
-    const response = await usersAPI.patch_field(pk, data);
+    const user = getState().user;
+
+    const pk = user.pk;
+    const {email, pidgin, settingsPidgin, settingsEmail} = data;
+
+    const profile = {};
+    if (pidgin && pidgin !== user.profile.pidgin){
+        profile.pidgin = pidgin;
+    }
+
+    const settings = {};
+    if (typeof(settingsPidgin) === 'boolean')
+        settings.settings['pidgin'] = settingsPidgin;
+
+    if (typeof(settingsEmail) === 'boolean')
+        settings.settings['email'] = settingsEmail;
+
+    const response = await usersAPI.patch_field(pk, {email, profile, settings});
 
     if (response.status === 200){
 
-        const {id, username, email} = response.data;
-        dispatch(setCurrentUserAction(id, username, email));
+        const {pk, username, email, profile, settings} = response.data;
+        dispatch(setCurrentUserAction(pk, username, email));
+        dispatch(setUserInfoAction(profile, settings));
     }
 };
 
