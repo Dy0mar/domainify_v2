@@ -6,13 +6,13 @@ from .models import User, UserProfile, UserSettings
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ('pidgin', )
+        fields = ('jabber_nick', )
 
 
 class UserSettingsSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserSettings
-        fields = ('pidgin', 'email', )
+        fields = ('jabber', 'email', )
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -45,13 +45,15 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         profile_data = validated_data.pop('profile', {})
         if profile_data:
             profile = instance.profile
-            profile.pidgin = profile_data.get('pidgin', profile.pidgin)
+            profile.jabber_nick = profile_data.get(
+                'jabber_nick', profile.jabber_nick
+            )
             profile.save()
 
         settings_data = validated_data.pop('settings', {})
         if settings_data:
             settings = instance.settings
-            settings.pidgin = settings_data.get('pidgin', settings.pidgin)
+            settings.jabber = settings_data.get('jabber', settings.jabber)
             settings.email = settings_data.get('email', settings.email)
             settings.save()
 

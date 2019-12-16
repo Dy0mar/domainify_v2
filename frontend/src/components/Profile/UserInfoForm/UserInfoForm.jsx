@@ -7,7 +7,7 @@ import css_form from './UserInfoForm.module.css'
 const {Text, Paragraph} = Typography;
 
 const UserInfoForm = (props) => {
-    const {username, email, pidgin, deActivateEditMode, gutters, vgutters, updateUserProfile} = props;
+    const {username, email, jabber_nick, deActivateEditMode, gutters, vgutters, updateUserProfile} = props;
     const {getFieldDecorator, validateFields} = props.form;
 
     const onSubmit = (e) => {
@@ -56,12 +56,12 @@ const UserInfoForm = (props) => {
                                     </Col>
                                 </Row>
                                 <Row gutter={[gutters, vgutters]}>
-                                    <Col span={3}><div><Text strong>Pidgin:</Text></div></Col>
+                                    <Col span={3}><div><Text strong>Jabber nick:</Text></div></Col>
                                     <Col span={21}>
                                         <Form.Item className={css_form.formItem}>
-                                            {getFieldDecorator('pidgin', {
-                                                rules: [{ required: true, message: 'Please input your pidgin!' }],
-                                                initialValue: pidgin
+                                            {getFieldDecorator('jabber_nick', {
+                                                rules: [{ required: true, message: 'Please input your jabber nick!' }],
+                                                initialValue: jabber_nick
                                             })(<Input />)}
                                         </Form.Item>
                                     </Col>

@@ -107,15 +107,15 @@ const RegistrationForm = (props) => {
             <Form.Item
                 label={
                     <span>
-              pidgin&nbsp;
-                        <Tooltip title="What is your pidgin( username@im.dungeon.cave )?">
+              Jabber nick&nbsp;
+                        <Tooltip title="What is your jabber_nick( username@im.dungeon.cave )?">
                 <Icon type="question-circle-o" />
               </Tooltip>
             </span>
                 }
             >
-                {getFieldDecorator('pidgin', {
-                    rules: [{ required: true, message: 'Please input your pidgin!' }],
+                {getFieldDecorator('jabber_nick', {
+                    rules: [{ required: true, message: 'Please input your jabber nick!' }],
                 })(<Input />)}
             </Form.Item>
 

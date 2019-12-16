@@ -10,10 +10,10 @@ const initialSate = {
     username: "",
     email: "",
     profile: {
-        pidgin: ""
+        jabber_nick: ""
     },
     settings: {
-        pidgin: null,
+        jabber: null,
         email: null
     },
 };
@@ -47,10 +47,10 @@ export const setUserInfoAction = (profile, settings) => ({
 });
 
 
-export const register = (username, email, password, pidgin) => async (dispatch) => {
+export const register = (username, email, password, jabber_nick) => async (dispatch) => {
     // todo: show error message
     const profile = {
-        'pidgin': pidgin,
+        'jabber_nick': jabber_nick,
     };
     const response = await usersAPI.register(username, email, password, profile);
 
@@ -86,16 +86,16 @@ export const updateUserProfile = (data) => async (dispatch, getState) => {
     const user = getState().user;
 
     const pk = user.pk;
-    const {email, pidgin, settingsPidgin, settingsEmail} = data;
+    const {email, jabber_nick, settingsJabber, settingsEmail} = data;
 
     const profile = {};
-    if (pidgin && pidgin !== user.profile.pidgin){
-        profile.pidgin = pidgin;
+    if (jabber_nick && jabber_nick !== user.profile.jabber_nick){
+        profile.jabber_nick = jabber_nick;
     }
 
     const settings = {};
-    if (typeof(settingsPidgin) === 'boolean')
-        settings.settings['pidgin'] = settingsPidgin;
+    if (typeof(settingsJabber) === 'boolean')
+        settings.settings['jabber'] = settingsJabber;
 
     if (typeof(settingsEmail) === 'boolean')
         settings.settings['email'] = settingsEmail;

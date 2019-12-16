@@ -37,7 +37,7 @@ class UserProfile(models.Model):
         related_name='profile'
     )
 
-    pidgin = models.CharField(max_length=255, blank=True)
+    jabber_nick = models.CharField(max_length=255, blank=True)
 
 
 class UserSettings(models.Model):
@@ -47,7 +47,7 @@ class UserSettings(models.Model):
         related_name='settings'
     )
 
-    pidgin = models.BooleanField(default=True)
+    jabber = models.BooleanField(default=True)
     email = models.BooleanField(default=False)
 
     def __str__(self):

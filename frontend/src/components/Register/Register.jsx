@@ -21,7 +21,7 @@ const RegisterContainer = (props) => {
         e.preventDefault();
         validateFieldsAndScroll((err, values) => {
             if (!err) {
-                props.register(values.username, values.email, values.password, values.pidgin);
+                props.register(values.username, values.email, values.password, values.jabber_nick);
             }
         });
     };

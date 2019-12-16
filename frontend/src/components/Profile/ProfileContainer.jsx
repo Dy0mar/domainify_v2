@@ -53,7 +53,7 @@ const ProfileContainer = (props) => {
                     {!editMode && <UserInfo
                         username={props.username}
                         email={props.email}
-                        pidgin={props.profile.pidgin}
+                        jabber_nick={props.profile.jabber_nick}
                         activateEditMode={activateEditMode}
                         gutters={gutters}
                         vgutters={vgutters}
@@ -63,7 +63,7 @@ const ProfileContainer = (props) => {
                         deActivateEditMode={deActivateEditMode}
                         username={props.username}
                         email={props.email}
-                        pidgin={props.profile.pidgin}
+                        jabber_nick={props.profile.jabber_nick}
                         gutters={gutters}
                         vgutters={vgutters}
                         updateUserProfile={props.updateUserProfile}
