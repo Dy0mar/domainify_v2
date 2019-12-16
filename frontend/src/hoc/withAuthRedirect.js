@@ -1,6 +1,5 @@
 import React from "react";
 import {connect} from "react-redux";
-import {initializeApp} from "../redux/app-reducer";
 import {Redirect} from "react-router-dom";
 
 let mapStateToPropsForRedirect = (state) => ({
@@ -16,7 +15,7 @@ export const withAuthRedirect = (Component) => {
         }
     }
 
-    let ConnectedAuthRedirectComponent = connect(mapStateToPropsForRedirect, {initializeApp})(RedirectComponent);
+    let ConnectedAuthRedirectComponent = connect(mapStateToPropsForRedirect)(RedirectComponent);
 
     return ConnectedAuthRedirectComponent
 };
