@@ -5,10 +5,10 @@ import css from '../Profile.module.css'
 
 
 export const BoxTitle = (props) => {
-    const {editMode, iconType} = props;
+    const {boxTitleText, onClick, iconType} = props;
     return (
         <section className={css.boxTitle}>
-            User info <Icon onClick={editMode} type={iconType} />
+            {boxTitleText} <Icon onClick={onClick} type={iconType} />
         </section>
     )
 };
