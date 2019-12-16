@@ -2,7 +2,7 @@ import React from 'react'
 import {Row, Col} from 'antd';
 import "antd/dist/antd.css";
 import css from '../Profile.module.css'
-import RowInfo from "../UserInfoRow/UserInfoRow";
+import RowInfo from "./UserInfoRow/UserInfoRow";
 
 const UserInfo = (props) => {
     const {

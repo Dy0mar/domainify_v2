@@ -1,7 +1,7 @@
 import React from 'react'
 import {Row, Col, Form, Input, Button} from 'antd';
 import "antd/dist/antd.css";
-import css from '../Profile.module.css'
+import css from '../../Profile.module.css'
 import css_form from './UserInfoForm.module.css'
 import RowInfo from "../UserInfoRow/UserInfoRow";
 
