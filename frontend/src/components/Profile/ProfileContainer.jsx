@@ -7,9 +7,12 @@ import "antd/dist/antd.css";
 import UserInfo from "./UserInfo/UserInfo";
 import {updateUserProfile} from "../../redux/user-reducer";
 import UserInfoForm from "./UserInfoForm/UserInfoForm";
+import css from "./Profile.module.css";
+import {BoxTitle} from "./UserInfoBoxTitle/BoxTitle";
 
 
 const ProfileContainer = (props) => {
+
     /*
     let onChangeField = (fields) => {
         const wrap = (value) => {
@@ -31,6 +34,8 @@ const ProfileContainer = (props) => {
     const onChangeEmail = onChangeField(['email']);
     const onChangePidgin = onChangeField(['profile', 'pidgin']);
     */
+    const label_size = 4;
+    const text_size = 20;
 
     let [editMode, setEditMode] = useState(false);
 
@@ -43,31 +48,40 @@ const ProfileContainer = (props) => {
 
     const gutters = 16;
     const vgutters = 16;
+    const username=props.username;
+    const email=props.email;
+    const jabber_nick= props.profile.jabber_nick;
+    const _props = {
+        gutters, vgutters, label_size, text_size, username, email, jabber_nick
+    };
 
     return (
         <div>
             <Divider>Profile here</Divider>
             <Row>
                 <Col span={12}>
+                    <section className={css.box}>
+                        <section className={css.boxContainer}>
 
-                    {!editMode && <UserInfo
-                        username={props.username}
-                        email={props.email}
-                        jabber_nick={props.profile.jabber_nick}
-                        activateEditMode={activateEditMode}
-                        gutters={gutters}
-                        vgutters={vgutters}
-                    />}
+                            {!editMode && <div>
+                                <BoxTitle editMode={activateEditMode} iconType={'edit'} />
+                                <UserInfo
+                                    {..._props}
+                                    activateEditMode={activateEditMode}
+                                />
+                            </div>}
 
-                    {editMode && <UserInfoForm
-                        deActivateEditMode={deActivateEditMode}
-                        username={props.username}
-                        email={props.email}
-                        jabber_nick={props.profile.jabber_nick}
-                        gutters={gutters}
-                        vgutters={vgutters}
-                        updateUserProfile={props.updateUserProfile}
-                    />}
+
+                            {editMode && <div>
+                                <BoxTitle editMode={deActivateEditMode} iconType={'close-circle'} />
+                                <UserInfoForm
+                                {..._props}
+                                deActivateEditMode={deActivateEditMode}
+                                updateUserProfile={props.updateUserProfile}
+                            />
+                            </div>}
+                        </section>
+                    </section>
                 </Col>
             </Row>
         </div>
