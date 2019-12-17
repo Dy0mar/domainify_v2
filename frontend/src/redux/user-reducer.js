@@ -76,7 +76,8 @@ export const setUserInfo = (pk) => async (dispatch) => {
     const response = await usersAPI.get_user_info(pk);
 
     if (response.status === 200){
-        const {profile, settings} = response.data;
+        let {profile, settings} = response.data;
+        settings = settings ? settings : {};
         dispatch(setUserInfoAction(profile, settings));
     }
 };
@@ -84,23 +85,7 @@ export const setUserInfo = (pk) => async (dispatch) => {
 export const updateUserProfile = (data) => async (dispatch, getState) => {
 
     const user = getState().user;
-
-    const pk = user.pk;
-    const {email, jabber_nick, settingsJabber, settingsEmail} = data;
-
-    const profile = {};
-    if (jabber_nick && jabber_nick !== user.profile.jabber_nick){
-        profile.jabber_nick = jabber_nick;
-    }
-
-    const settings = {};
-    if (typeof(settingsJabber) === 'boolean')
-        settings.settings['jabber'] = settingsJabber;
-
-    if (typeof(settingsEmail) === 'boolean')
-        settings.settings['email'] = settingsEmail;
-
-    const response = await usersAPI.patch_field(pk, {email, profile, settings});
+    const response = await usersAPI.patch_field(user.pk, {...data});
 
     if (response.status === 200){
 

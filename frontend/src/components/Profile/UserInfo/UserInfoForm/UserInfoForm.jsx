@@ -2,12 +2,18 @@ import React from 'react'
 import {Row, Col, Form, Input, Button} from 'antd';
 import "antd/dist/antd.css";
 import css_form from './UserInfoForm.module.css'
-import RowInfo from "../UserInfoRow/UserInfoRow";
+import {RowItem} from "../../RowItem/RowItem";
+
+const getUserData = values => ({
+    'email': values.email,
+    'profile': {
+        'jabber_nick': values.jabber_nick
+    }
+});
 
 const UserInfoForm = (props) => {
     const {
-        username, email, jabber_nick, deActivateEditMode, gutters, vgutters,
-        updateUserProfile, label_size, text_size
+        username, email, jabber_nick, deActivateEditMode, updateUserProfile,
     } = props;
     const {getFieldDecorator, validateFields} = props.form;
 
@@ -16,7 +22,7 @@ const UserInfoForm = (props) => {
 
         validateFields((err, values) => {
             if (!err) {
-                updateUserProfile(values);
+                updateUserProfile(getUserData(values));
                 deActivateEditMode()
             }
         });
@@ -55,18 +61,14 @@ const UserInfoForm = (props) => {
             <Col span={24}>
                 <Form onSubmit={onSubmit}>
                     {data.map((row, index) => {
-                        return <RowInfo
-                            gutters={gutters}
-                            vgutters={vgutters}
-                            label_size={label_size}
-                            text_size={text_size}
+                        return <RowItem
                             label={row[0]}
                             text={row[1]}
                             key={index}
                         />
                     })}
 
-                    <Row gutter={[gutters, vgutters]}>
+                    <Row>
                         <Col span={24}>
                             <Form.Item className={css_form.formItem} style={{textAlign:'center'}}>
                                 <Button className={css_form.buttonForm} type="primary" htmlType="submit">
@@ -84,6 +86,6 @@ const UserInfoForm = (props) => {
     )
 };
 
-const UserInfoFormComponent = Form.create({ name: 'user_info_form',  })(UserInfoForm);
+const UserInfoFormComponent = Form.create({ name: 'user_info_form', })(UserInfoForm);
 
 export default UserInfoFormComponent;
