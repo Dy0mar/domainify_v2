@@ -1,5 +1,6 @@
 import {usersAPI} from "../api/api";
 import {login} from "./auth-reducer";
+import {addMessage} from "./app-reducer";
 
 const SET_CURRENT_USER = 'user/SET_CURRENT_USER';
 const SET_USER_INFO = 'user/SET_CURRENT_USER';
@@ -92,6 +93,12 @@ export const updateUserProfile = (data) => async (dispatch, getState) => {
         const {pk, username, email, profile, settings} = response.data;
         dispatch(setCurrentUserAction(pk, username, email));
         dispatch(setUserInfoAction(profile, settings));
+
+        dispatch(addMessage({
+            id: 1,
+            type: 'success',
+            message: Object.keys(data) + ' data was updated successfully'
+        }));
     }
 };
 

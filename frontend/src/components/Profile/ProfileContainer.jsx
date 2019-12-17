@@ -4,6 +4,7 @@ import "antd/dist/antd.css";
 import UserInfoContainer from "./UserInfo/UserInfoContainer";
 import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import {showMessage} from "../../hoc/showMessage";
 import SettingsContainer from "./Settings/SettingsContainer";
 
 
@@ -26,5 +27,6 @@ const ProfileContainer = (props) => {
 };
 
 export default compose(
-    withAuthRedirect
+    withAuthRedirect,
+    showMessage
 )(ProfileContainer);
