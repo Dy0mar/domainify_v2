@@ -87,6 +87,6 @@ const UserInfoForm = (props) => {
     )
 };
 
-const UserInfoFormComponent = Form.create({ name: 'login_form',  })(UserInfoForm);
+const UserInfoFormComponent = Form.create({ name: 'user_info_form',  })(UserInfoForm);
 
 export default UserInfoFormComponent;
