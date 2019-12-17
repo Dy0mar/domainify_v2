@@ -4,9 +4,7 @@ import "antd/dist/antd.css";
 import RowInfo from "./UserInfoRow/UserInfoRow";
 
 const UserInfo = (props) => {
-    const {
-        username, email, jabber_nick, gutters, vgutters, label_size, text_size
-    } = props;
+    const { username, email, jabber_nick } = props;
 
     const data = [
         ['Username', username],
@@ -19,10 +17,6 @@ const UserInfo = (props) => {
             <Col span={24}>
                 {data.map((row, index) => {
                     return <RowInfo
-                        gutters={gutters}
-                        vgutters={vgutters}
-                        label_size={label_size}
-                        text_size={text_size}
                         label={row[0]}
                         text={row[1]}
                         key={index}
