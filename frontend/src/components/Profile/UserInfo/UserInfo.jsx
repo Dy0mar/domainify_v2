@@ -1,15 +1,28 @@
 import React from 'react'
-import {Row, Col} from 'antd';
+import {Row, Col, Button} from 'antd';
 import "antd/dist/antd.css";
 import {RowItem} from "../RowItem/RowItem";
+
+const checkItem = (value, handleOnclick) => (
+    <Row>
+        <Col span={12}>{value}</Col>
+        <Col span={12}>
+            <Button onClick={handleOnclick} type="dashed">Check</Button>
+        </Col>
+    </Row>
+);
 
 const UserInfo = (props) => {
     const { username, email, jabber_nick } = props;
 
+    const handleOnclick = (e) => {
+        alert('todo it')
+    };
+
     const data = [
         ['Username', username],
-        ['Email', email],
-        ['Jabber nick', jabber_nick],
+        ['Email', checkItem(email, handleOnclick)],
+        ['Jabber nick', checkItem(jabber_nick, handleOnclick)],
     ];
 
     return (

@@ -8,12 +8,11 @@ import {RowItem} from "../RowItem/RowItem";
 
 const {Text} = Typography;
 
-const checkBoxItem = (name, checked, handleChange, text) => {
-    return (
-        <Checkbox name={name} checked={checked} onClick={handleChange}>
-            {text}
-        </Checkbox>)
-};
+const checkBoxItem = (name, checked, handleChange, text) => (
+    <Checkbox name={name} checked={checked} onClick={handleChange}>
+        {text}
+    </Checkbox>
+);
 
 const SettingsContainer = (props) => {
     const handleChange = (e) => {
