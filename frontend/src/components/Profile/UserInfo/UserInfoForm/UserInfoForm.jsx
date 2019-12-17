@@ -1,7 +1,6 @@
 import React from 'react'
 import {Row, Col, Form, Input, Button} from 'antd';
 import "antd/dist/antd.css";
-import css from '../../Profile.module.css'
 import css_form from './UserInfoForm.module.css'
 import RowInfo from "../UserInfoRow/UserInfoRow";
 
@@ -52,38 +51,36 @@ const UserInfoForm = (props) => {
         ['Jabber nick', text_jabber_nick],
     ];
     return (
-        <section className={css.boxDescription}>
-            <Row>
-                <Col span={24}>
-                    <Form onSubmit={onSubmit}>
-                        {data.map((row, index) => {
-                            return <RowInfo
-                                gutters={gutters}
-                                vgutters={vgutters}
-                                label_size={label_size}
-                                text_size={text_size}
-                                label={row[0]}
-                                text={row[1]}
-                                key={index}
-                            />
-                        })}
+        <Row>
+            <Col span={24}>
+                <Form onSubmit={onSubmit}>
+                    {data.map((row, index) => {
+                        return <RowInfo
+                            gutters={gutters}
+                            vgutters={vgutters}
+                            label_size={label_size}
+                            text_size={text_size}
+                            label={row[0]}
+                            text={row[1]}
+                            key={index}
+                        />
+                    })}
 
-                        <Row gutter={[gutters, vgutters]}>
-                            <Col span={24}>
-                                <Form.Item className={css_form.formItem} style={{textAlign:'center'}}>
-                                    <Button className={css_form.buttonForm} type="primary" htmlType="submit">
-                                        Save
-                                    </Button>
-                                    <Button className={css_form.buttonForm} type="default" htmlType="button" onClick={deActivateEditMode}>
-                                        Cancel
-                                    </Button>
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                    </Form>
-                </Col>
-            </Row>
-        </section>
+                    <Row gutter={[gutters, vgutters]}>
+                        <Col span={24}>
+                            <Form.Item className={css_form.formItem} style={{textAlign:'center'}}>
+                                <Button className={css_form.buttonForm} type="primary" htmlType="submit">
+                                    Save
+                                </Button>
+                                <Button className={css_form.buttonForm} type="default" htmlType="button" onClick={deActivateEditMode}>
+                                    Cancel
+                                </Button>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </Form>
+            </Col>
+        </Row>
     )
 };
 

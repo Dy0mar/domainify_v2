@@ -6,6 +6,7 @@ import {updateUserProfile} from "../../../redux/user-reducer";
 import UserInfoForm from "./UserInfoForm/UserInfoForm";
 import css from "../Profile.module.css";
 import {BoxTitle} from "../BoxTitle/BoxTitle";
+import {Box} from "../Box/Box";
 
 const UserInfoContainer = (props) => {
 
@@ -34,28 +35,22 @@ const UserInfoContainer = (props) => {
     };
 
     return (
-        <section className={css.box}>
-            <section className={css.boxContainer}>
+        <Box onClickMethod={editMode ? deActivateEditMode : activateEditMode}
+             boxTitleText={'User info'}
+             icon={editMode ? 'close-circle': 'edit'}
+        >
+            {!editMode && <UserInfo
+                {..._props}
+                activateEditMode={activateEditMode}
+            />}
 
-                {!editMode && <div>
-                    <BoxTitle editMode={activateEditMode} iconType={'edit'} />
-                    <UserInfo
-                        {..._props}
-                        activateEditMode={activateEditMode}
-                    />
-                </div>}
+            {editMode && <UserInfoForm
+                {..._props}
+                deActivateEditMode={deActivateEditMode}
+                updateUserProfile={props.updateUserProfile}
+            />}
 
-
-                {editMode && <div>
-                    <BoxTitle editMode={deActivateEditMode} iconType={'close-circle'} />
-                    <UserInfoForm
-                        {..._props}
-                        deActivateEditMode={deActivateEditMode}
-                        updateUserProfile={props.updateUserProfile}
-                    />
-                </div>}
-            </section>
-        </section>
+        </Box>
     )
 };
 

@@ -1,10 +1,10 @@
 import React from 'react'
 import {Divider, Row, Col} from 'antd';
 import "antd/dist/antd.css";
-import css from "./Profile.module.css";
 import UserInfoContainer from "./UserInfo/UserInfoContainer";
 import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import SettingsContainer from "./Settings/SettingsContainer";
 
 
 const ProfileContainer = (props) => {
@@ -18,11 +18,7 @@ const ProfileContainer = (props) => {
                 </Col>
 
                 <Col span={12}>
-                    <section className={css.box}>
-                        <section className={css.boxContainer}>
-
-                        </section>
-                    </section>
+                    <SettingsContainer />
                 </Col>
             </Row>
         </div>
