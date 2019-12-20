@@ -1,13 +1,14 @@
 import {authAPI} from "../api/api";
 import {setCurrentUserAction, setUserInfo} from "./user-reducer";
-import {addErrorMessage} from "./app-reducer";
 
 
 const SET_AUTH_COMPLETE = 'auth/SET_AUTH_COMPLETE';
+const LOGIN_ERROR_MESSAGES = 'auth/LOGIN_ERROR_MESSAGES';
 
 
 const initialSate = {
     isAuth: false,
+    loginErrors: '',
 };
 
 
@@ -15,6 +16,11 @@ const authReducer = (state=initialSate, action) => {
 
     switch (action.type) {
         case SET_AUTH_COMPLETE:
+            return {
+                ...state,
+                ...action.payload,
+            };
+        case LOGIN_ERROR_MESSAGES:
             return {
                 ...state,
                 ...action.payload,
@@ -29,6 +35,11 @@ export const setAuthComplete = (isAuth) => ({
     payload: {isAuth}
 });
 
+export const loginErrorsAction = (loginErrors) => ({
+    type: LOGIN_ERROR_MESSAGES,
+    payload: {loginErrors}
+});
+
 
 export const verifyToken = () => async (dispatch) => {
     const response = await authAPI.verify();
@@ -38,7 +49,6 @@ export const verifyToken = () => async (dispatch) => {
         dispatch(setAuthComplete(false));
         return Promise.reject(response.data.message)
     }
-
 };
 
 export const login = (username, password) => async (dispatch) => {
@@ -55,7 +65,7 @@ export const login = (username, password) => async (dispatch) => {
     } catch (e) {
         const response = e.response;
         const errors = response.data.non_field_errors;
-        errors.forEach(msg => dispatch(addErrorMessage(msg)))
+        dispatch(loginErrorsAction(errors))
     }
 };
 
