@@ -64,7 +64,8 @@ const RegisterContainer = (props) => {
 const Register = Form.create({ name: 'register_form',  })(RegisterContainer);
 
 let mapStateToProps = (state) => ({
-    isAuth: state.auth.isAuth
+    isAuth: state.auth.isAuth,
+    registerErrors: state.user.registerErrors
 });
 
 export default compose(

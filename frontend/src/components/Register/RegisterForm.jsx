@@ -15,7 +15,7 @@ import {NavLink} from "react-router-dom";
 const RegistrationForm = (props) => {
 
     const {
-        handleSubmit, getFieldDecorator, validateToNextPassword,
+        handleSubmit, getFieldDecorator, validateToNextPassword, registerErrors,
         compareToFirstPassword, handleConfirmBlur
     } = props;
 
@@ -47,21 +47,28 @@ const RegistrationForm = (props) => {
         <Form {...formItemLayout} onSubmit={handleSubmit}>
             <Divider>Register</Divider>
             <Form.Item
+                {...registerErrors.username && {
+                    help: registerErrors.username,
+                    validateStatus: 'error',
+                }}
                 label={
-                    <span>
-              Username&nbsp;
+                    <span>Username&nbsp;
                         <Tooltip title="What do you want others to call you?">
-                <Icon type="question-circle-o" />
-              </Tooltip>
-            </span>
-                }
-            >
+                            <Icon type="question-circle-o" />
+                        </Tooltip>
+                    </span>
+                }>
                 {getFieldDecorator('username', {
                     rules: [{ required: true, message: 'Please input your username!'}],
                 })(<Input />)}
             </Form.Item>
 
-            <Form.Item label="E-mail">
+            <Form.Item
+                {...registerErrors.email && {
+                    help: registerErrors.email,
+                    validateStatus: 'error',
+                }}
+                label="E-mail">
                 {getFieldDecorator('email', {
                     rules: [
                         {
@@ -76,7 +83,12 @@ const RegistrationForm = (props) => {
                 })(<Input />)}
             </Form.Item>
 
-            <Form.Item label="Password" hasFeedback>
+            <Form.Item
+                {...registerErrors.password && {
+                    help: registerErrors.password,
+                    validateStatus: 'error',
+                }}
+                label="Password" hasFeedback>
                 {getFieldDecorator('password', {
                     rules: [
                         {
@@ -105,15 +117,18 @@ const RegistrationForm = (props) => {
             </Form.Item>
 
             <Form.Item
+                {...registerErrors.jabber_nick && {
+                    help: registerErrors.jabber_nick,
+                    validateStatus: 'error',
+                }}
                 label={
                     <span>
-              Jabber nick&nbsp;
+                        Jabber nick&nbsp;
                         <Tooltip title="What is your jabber_nick( username@im.dungeon.cave )?">
-                <Icon type="question-circle-o" />
-              </Tooltip>
-            </span>
-                }
-            >
+                            <Icon type="question-circle-o" />
+                        </Tooltip>
+                    </span>
+                }>
                 {getFieldDecorator('jabber_nick', {
                     rules: [{ required: true, message: 'Please input your jabber nick!' }],
                 })(<Input />)}

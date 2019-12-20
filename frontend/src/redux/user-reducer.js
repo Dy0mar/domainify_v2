@@ -1,9 +1,10 @@
 import {usersAPI} from "../api/api";
-import {login} from "./auth-reducer";
+import {login, loginErrorsAction} from "./auth-reducer";
 import {addSuccessMessage} from "./app-reducer";
 
 const SET_CURRENT_USER = 'user/SET_CURRENT_USER';
 const SET_USER_INFO = 'user/SET_CURRENT_USER';
+const REGISTER_ERROR_MESSAGES = 'user/REGISTER_ERROR_MESSAGES';
 
 
 const initialSate = {
@@ -17,6 +18,7 @@ const initialSate = {
         jabber: null,
         email: null
     },
+    registerErrors: {}
 };
 
 
@@ -24,11 +26,8 @@ const userReducer = (state=initialSate, action) => {
 
     switch (action.type) {
         case SET_CURRENT_USER:
-            return {
-                ...state,
-                ...action.payload,
-            };
         case SET_USER_INFO:
+        case REGISTER_ERROR_MESSAGES:
             return {
                 ...state,
                 ...action.payload,
@@ -47,6 +46,11 @@ export const setUserInfoAction = (profile, settings) => ({
     payload: {profile, settings}
 });
 
+export const registerErrorsAction = (registerErrors) => ({
+    type: REGISTER_ERROR_MESSAGES,
+    payload: {registerErrors}
+});
+
 
 export const register = (username, email, password, jabber_nick) => async (dispatch) => {
     // todo: show error message
@@ -62,7 +66,9 @@ export const register = (username, email, password, jabber_nick) => async (dispa
             dispatch(login(username, password));
         }
     } catch (e) {
-        debugger
+        const response = e.response;
+        const errors = response.data;
+        dispatch(registerErrorsAction(errors))
     }
 
 };
