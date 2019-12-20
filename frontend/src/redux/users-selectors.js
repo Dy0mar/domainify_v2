@@ -5,5 +5,5 @@ export const getLastMessage = (state) => {
 };
 
 export const getLastMessageID = createSelector(getLastMessage, (message)=>{
-    return message.id ? message.id : 1
+    return message ? message.id : 1
 });
