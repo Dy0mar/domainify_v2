@@ -1,6 +1,6 @@
 import {usersAPI} from "../api/api";
 import {login} from "./auth-reducer";
-import {addMessage} from "./app-reducer";
+import {addSuccessMessage} from "./app-reducer";
 
 const SET_CURRENT_USER = 'user/SET_CURRENT_USER';
 const SET_USER_INFO = 'user/SET_CURRENT_USER';
@@ -53,13 +53,18 @@ export const register = (username, email, password, jabber_nick) => async (dispa
     const profile = {
         'jabber_nick': jabber_nick,
     };
-    const response = await usersAPI.register(username, email, password, profile);
+    try{
+        const response = await usersAPI.register(username, email, password, profile);
 
-    if (response.status === 201){
-        const pk = response.data.pk;
-        dispatch(setCurrentUserAction(pk, username, email));
-        dispatch(login(username, password));
+        if (response.status === 201){
+            const pk = response.data.pk;
+            dispatch(setCurrentUserAction(pk, username, email));
+            dispatch(login(username, password));
+        }
+    } catch (e) {
+        debugger
     }
+
 };
 
 export const setCurrentUser = () => async (dispatch) => {
@@ -93,12 +98,8 @@ export const updateUserProfile = (data) => async (dispatch, getState) => {
         const {pk, username, email, profile, settings} = response.data;
         dispatch(setCurrentUserAction(pk, username, email));
         dispatch(setUserInfoAction(profile, settings));
-
-        dispatch(addMessage({
-            id: 1,
-            type: 'success',
-            message: Object.keys(data) + ' data was updated successfully'
-        }));
+        const msg = Object.keys(data) + ' data was updated successfully';
+        dispatch(addSuccessMessage(msg));
     }
 };
 

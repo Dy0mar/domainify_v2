@@ -1,5 +1,6 @@
 import {authAPI} from "../api/api";
-import {setCurrentUserAction} from "./user-reducer";
+import {setCurrentUserAction, setUserInfo} from "./user-reducer";
+import {addErrorMessage} from "./app-reducer";
 
 
 const SET_AUTH_COMPLETE = 'auth/SET_AUTH_COMPLETE';
@@ -41,16 +42,20 @@ export const verifyToken = () => async (dispatch) => {
 };
 
 export const login = (username, password) => async (dispatch) => {
-    // todo: show error message
-    const data = await authAPI.login(username, password);
-    if (data.token){
-        dispatch(setAuthComplete(true));
-        localStorage.setItem("token", data.token);
+    try {
+        const response = await authAPI.login(username, password);
+        if (response.status === 200 && response.data.token){
+            dispatch(setAuthComplete(true));
+            localStorage.setItem("token", response.data.token);
 
-        const {pk, username, email} = data.user;
-        dispatch(setCurrentUserAction(pk, username, email));
-    } else {
-        console.log(data.message)
+            const {pk, username, email} = response.data.user;
+            dispatch(setCurrentUserAction(pk, username, email));
+            dispatch(setUserInfo(pk));
+        }
+    } catch (e) {
+        const response = e.response;
+        const errors = response.data.non_field_errors;
+        errors.forEach(msg => dispatch(addErrorMessage(msg)))
     }
 };
 

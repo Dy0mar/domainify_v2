@@ -1,5 +1,6 @@
 import {verifyToken} from "./auth-reducer";
 import {setCurrentUser} from "./user-reducer";
+import {newMessage} from "./users-selectors";
 
 const INITIALIZED_SUCCESS = 'app/INITIALIZED_SUCCESS';
 const SHOW_MESSAGE = 'app/SHOW_MESSAGE';
@@ -8,17 +9,7 @@ const ADD_MESSAGE = 'app/ADD_MESSAGE';
 
 const initialSate = {
     initialized: false,
-    messages: [{
-        id: 1,
-        type: 'success',
-        message: 'success 1'
-    },
-        {
-            id: 2,
-            type: 'warning',
-            message: 'warning 2'
-        }
-    ]
+    messages: []
 };
 
 
@@ -60,11 +51,17 @@ export const addMessageAction = (message) => ({
     message
 });
 
-export const showedMessage = (message) => async (dispatch) => {
+export const showedMessage = (message) => (dispatch) => {
     dispatch(showMessageAction(message))
 };
 
-export const addMessage = (message) => async (dispatch) => {
+export const addSuccessMessage = (msg) => (dispatch, getState) => {
+    const message = newMessage(getState(), 'success', msg);
+    dispatch(addMessageAction(message))
+};
+
+export const addErrorMessage = (msg) => (dispatch, getState) => {
+    const message = newMessage(getState(), 'error', msg);
     dispatch(addMessageAction(message))
 };
 

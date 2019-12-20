@@ -18,6 +18,7 @@ import Register from "./components/Register/Register";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import {initializeApp} from "./redux/app-reducer";
 import Preloader from "./components/Common/Preloader/Preloader";
+import {showMessage} from "./hoc/showMessage";
 const { Content } = Layout;
 
 class App extends Component {
@@ -62,6 +63,7 @@ const mapStateToProps = (state) => ({
 
 let AppContainer = compose(
     connect(mapStateToProps, {initializeApp}),
+    showMessage,
 )(App);
 
 
