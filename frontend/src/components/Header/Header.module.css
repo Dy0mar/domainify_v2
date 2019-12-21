@@ -17,7 +17,9 @@
   float: right;
 }
 
-.user .avatar {
+.avatar {
+    color: white;
+
   height: 31px;
   background-color: #87d068;
 }
