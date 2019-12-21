@@ -14,6 +14,7 @@ import {
 import Header from "./components/Header/HeaderContainer";
 import Footer from "./components/Footer/Footer";
 import Login from "./components/Login/Login";
+import Users from "./components/Users/UsersContainer";
 import Register from "./components/Register/Register";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import {initializeApp} from "./redux/app-reducer";
@@ -45,6 +46,7 @@ class App extends Component {
                             <Route path='/login' render={() => <Login />}/>
                             <Route path='/register' render={() => <Register />}/>
                             <Route path='/profile/:userId?' render={() => <ProfileContainer />}/>
+                            <Route path='/users' render={() => <Users />}/>
                             <Redirect from="/" to="/profile" />
                             <Route path='*' render={() => <div>404 Not Found</div>}/>
                         </Switch>

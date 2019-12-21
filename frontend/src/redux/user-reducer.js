@@ -1,5 +1,5 @@
 import {usersAPI} from "../api/api";
-import {login, loginErrorsAction} from "./auth-reducer";
+import {login} from "./auth-reducer";
 import {addSuccessMessage} from "./app-reducer";
 
 const SET_CURRENT_USER = 'user/SET_CURRENT_USER';
