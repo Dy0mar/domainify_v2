@@ -3,26 +3,25 @@ import "antd/dist/antd.css";
 import {Box} from "../Box/Box";
 import {connect} from "react-redux";
 import {updateUserProfile} from "../../../redux/user-reducer";
-import {Row, Col, Checkbox, Typography} from 'antd';
+import {Row, Col, Typography, Switch} from 'antd';
 import {RowItem} from "../RowItem/RowItem";
 
 const {Text} = Typography;
 
-const checkBoxItem = (name, checked, handleChange, text) => (
-    <Checkbox name={name} checked={checked} onClick={handleChange}>
-        {text}
-    </Checkbox>
+const switchItem = (name, checked, handleChange) => (
+    <Switch name={name} size='small' checked={checked} onClick={handleChange} />
 );
 
+
 const SettingsContainer = (props) => {
-    const handleChange = (e) => {
+    const handleChange = (value, e) => {
         e.preventDefault();
-        props.updateUserProfile({'settings' : {[e.target.name]: e.target.checked}})
+        props.updateUserProfile({'settings' : {[e.target.name]: value}})
     };
 
     const data = [
-        ['Jabber', checkBoxItem('jabber', props.settings.jabber, handleChange)],
-        ['Email', checkBoxItem('email', props.settings.email, handleChange)],
+        ['Jabber', switchItem('jabber', props.settings.jabber, handleChange)],
+        ['Email', switchItem('email', props.settings.email, handleChange)],
     ];
 
     return (
