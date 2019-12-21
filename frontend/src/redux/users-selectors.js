@@ -15,3 +15,11 @@ export const newMessage = (state, type, msg) => {
         message: msg
     };
 };
+
+// export const getUserJabberNickS = (state) => {
+//     return state.user.jabber_nick
+// }
+
+export const getUserListS = (state) => {
+    return state.user.users.filter((u, index) => u)
+};

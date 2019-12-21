@@ -39,6 +39,9 @@ export const usersAPI = {
     update_profile(pk, data){
         return instance.put(`users/${pk}/`, {...data})
     },
+    get_user_list(){
+        return instance.get('users/')
+    },
 };
 
 
