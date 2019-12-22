@@ -20,7 +20,12 @@ const initialSate = {
         email: null
     },
     registerErrors: {},
-    users: []
+    users: {
+        count: 0,
+        next: null,
+        previous: null,
+        results: []
+    }
 };
 
 
@@ -60,8 +65,8 @@ export const userListAction = (users) => ({
 });
 
 
-export const getUserList = () => async (dispatch) => {
-    const response = await usersAPI.get_user_list();
+export const getUserList = (page) => async (dispatch) => {
+    const response = await usersAPI.get_user_list(page);
     if (response.status === 200) {
         dispatch(userListAction(response.data));
     }

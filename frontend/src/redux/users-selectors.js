@@ -21,5 +21,10 @@ export const newMessage = (state, type, msg) => {
 // }
 
 export const getUserListS = (state) => {
-    return state.user.users.filter((u, index) => u)
+    return state.user.users.results
+    // return state.user.users.results.filter(u => u.pk !== state.user.pk)
+};
+
+export const getUserListPageTotalS = (state) => {
+    return state.user.users.count
 };
