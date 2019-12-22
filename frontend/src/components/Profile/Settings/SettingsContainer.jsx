@@ -3,10 +3,9 @@ import "antd/dist/antd.css";
 import {Box} from "../Box/Box";
 import {connect} from "react-redux";
 import {updateUserProfile} from "../../../redux/user-reducer";
-import {Row, Col, Typography, Switch} from 'antd';
+import {Row, Col, Switch} from 'antd';
 import {RowItem} from "../RowItem/RowItem";
 
-const {Text} = Typography;
 
 const switchItem = (name, checked, handleChange) => (
     <Switch name={name} size='small' checked={checked} onClick={handleChange} />
@@ -25,11 +24,9 @@ const SettingsContainer = (props) => {
     ];
 
     return (
-        <Box boxTitleText={'Settings'} icon={'edit'} onClickMethod={null}>
+        <Box boxTitleText={'Notification method'} icon={'edit'} onClickMethod={null}>
             <Row>
                 <Col span={24}>
-                    <Text strong>Notification method:</Text>
-
                     {data.map((row, index) => {
                         return <RowItem
                             label={row[0]}
