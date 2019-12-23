@@ -55,13 +55,17 @@ const DomainsContainer = (props) => {
                 },
                 {
                     title: 'Company name',
-                    dataIndex: 'company_name',
-                    key: 'company_name',
+                    dataIndex: 'company.name',
+                    key: 'company.name',
+                    render: (name, row) => (row.company
+                            ? <NavLink to={getUrlOr404S(row.company.url)} >{name}</NavLink>
+                            : '--'
+                    )
                 },
                 {
                     title: 'Company address',
-                    dataIndex: 'company_address',
-                    key: 'company_address',
+                    dataIndex: 'company.address',
+                    key: 'company.address',
                 },
                 {
                     title: 'Alexa status',
