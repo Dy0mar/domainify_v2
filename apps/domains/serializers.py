@@ -1,27 +1,36 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
+
+from users.models import User
 from .models import Domain, Telephone, Email
 
 
-class TelephoneSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
+
+    def get_url(self, obj, view_name, request, format):
+        return 'users/9/'
+
     class Meta:
-        model = Telephone
-        fields = ('telephone', )
+        model = User
+        depth = 1
+        fields = ('username', 'url')
 
 
-class EmailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Email
-        fields = ('email', )
-
-
-class DomainSerializer(serializers.HyperlinkedModelSerializer):
-    profile = TelephoneSerializer(required=False)
-    settings = EmailSerializer(required=False)
+class DomainSerializer(serializers.ModelSerializer):
+    telephones = serializers.StringRelatedField(many=True)
+    emails = serializers.StringRelatedField(many=True)
+    manager = UserSerializer()
 
     class Meta:
         model = Domain
-        fields = '__all__'
+        fields = (
+            "url", "name", "company_name", "company_address", "alexa_status",
+            "alexa_comment", "redirect", "register_date", "expire_date",
+            "created_at", "updated_at", "status", "manager",
+            "telephones", "emails"
+        )
+
+        extra_fields = ['pk', 'telephone', 'email']
 
     def create(self, validated_data):
         telephone_data = validated_data.pop('telephone')

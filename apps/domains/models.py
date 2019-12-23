@@ -65,11 +65,19 @@ class Domain(models.Model):
 
 
 class Telephone(models.Model):
-    domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
+    domain = models.ForeignKey(
+        Domain, on_delete=models.CASCADE, related_name='telephones')
     telephone = models.CharField(
         max_length=255, blank=True, null=True, default='')
 
+    def __str__(self):
+        return "{}".format(self.telephone)
+
 
 class Email(models.Model):
-    domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
+    domain = models.ForeignKey(
+        Domain, on_delete=models.CASCADE, related_name='emails')
     email = models.EmailField(blank=True, null=True, default='')
+
+    def __str__(self):
+        return "{}".format(self.email)
