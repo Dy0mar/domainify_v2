@@ -8,19 +8,25 @@ const initialSate = {
     next: null,
     previous: null,
     results: [{
-        url: '',
-        name: '',
-        company_name: '',
-        company_address: '',
-        alexa_status: '',
-        alexa_comment: '',
-        redirect: '',
-        register_date: '',
-        expire_date: '',
-        created_at: '',
-        updated_at: '',
-        status: '',
-        manager: '',
+        url: "",
+        name: "",
+        company: {
+            name: "",
+            address: "",
+            url: ""
+        },
+        alexa_status: "",
+        emails: [],
+        telephones: [],
+        alexa_comment: "",
+        redirect: "",
+        register_date: "",
+        expire_date: "",
+        status: "",
+        manager: {
+            "username": "",
+            "url": ""
+        }
     }],
     isLoading: true,
 };
