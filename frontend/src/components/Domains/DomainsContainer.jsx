@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Divider, Row, Col, Table, Typography, Tag} from 'antd';
+import {Divider, Row, Col, Table} from 'antd';
 import "antd/dist/antd.css";
 import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
@@ -7,28 +7,24 @@ import {connect} from "react-redux";
 import {NavLink, withRouter} from "react-router-dom";
 import {getDomainList} from "../../redux/domain-reducer";
 import {
+    getDomainIsLoadingS,
     getDomainListPageTotalS,
     getDomainListS, getUrlOr404S
 } from "../../redux/domains-selectors";
 
-const {Text} = Typography;
 
 const DomainsContainer = (props) => {
-    const {domains, total, getDomainList} = props;
+    const {domains, total, getDomainList, isLoading} = props;
 
     const [page, setPage] = useState(1);
     useEffect(() => {
         getDomainList(page)
     }, [page, getDomainList]);
 
-    const changePage = (page) => {
-        setPage(page);
-    };
-
-    const [loading, setLoading] = useState(!domains.length);
+    const [loading, setLoading] = useState(isLoading);
     useEffect(()=>{
-        setLoading(!domains.length)
-    }, [domains.length]);
+        setLoading(isLoading)
+    }, [isLoading]);
 
     const [config, setConfig] = useState({});
     useEffect(() => {
@@ -37,7 +33,7 @@ const DomainsContainer = (props) => {
             pagination : {
                 total: total,
                 pageSize: 10,
-                onChange: changePage,
+                onChange: page => setPage(page),
                 position: total >= 10 ? 'bottom' : 'none'
             },
             loading: loading,
@@ -52,7 +48,10 @@ const DomainsContainer = (props) => {
                     title: 'manager',
                     dataIndex: 'manager',
                     key: 'manager',
-                    render: manager => <NavLink to={getUrlOr404S(manager.url)} >{manager.username}</NavLink>
+                    render: manager => (manager
+                            ? <NavLink to={getUrlOr404S(manager.url)} >{manager.username}</NavLink>
+                            : '--'
+                    )
                 },
                 {
                     title: 'Company name',
@@ -95,8 +94,8 @@ const DomainsContainer = (props) => {
                     key: 'status',
                 },
             ],
-            dataSource: domains,
-            rowKey: d => d.name
+            dataSource: loading ? [] : domains,
+            rowKey: row => row.name
         })
     }, [page, loading, domains, total]);
 
@@ -114,7 +113,8 @@ const DomainsContainer = (props) => {
 
 const mapStateToProps = (state) => ({
     domains: getDomainListS(state),
-    total: getDomainListPageTotalS(state)
+    total: getDomainListPageTotalS(state),
+    isLoading: getDomainIsLoadingS(state)
 });
 
 export default compose(

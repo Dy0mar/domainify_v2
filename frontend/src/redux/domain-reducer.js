@@ -21,7 +21,8 @@ const initialSate = {
         updated_at: '',
         status: '',
         manager: '',
-    }]
+    }],
+    isLoading: true,
 };
 
 
@@ -38,6 +39,11 @@ const domainsReducer = (state=initialSate, action) => {
 };
 
 // Actions
+export const isLoadingAction = (isLoading) => ({
+    type: GET_DOMAIN_LIST,
+    payload: {isLoading}
+});
+
 export const domainListAction = ({count, next, previous, results}) => ({
     type: GET_DOMAIN_LIST,
     payload: {count, next, previous, results}
@@ -46,9 +52,15 @@ export const domainListAction = ({count, next, previous, results}) => ({
 
 // Thunks
 export const getDomainList = (page) => async (dispatch) => {
-    const response = await domainsAPI.get_domain_list(page);
-    if (response.status === 200) {
-        dispatch(domainListAction(response.data));
+    dispatch(isLoadingAction(true));
+    try{
+        const response = await domainsAPI.get_domain_list(page);
+        if (response.status === 200) {
+            dispatch(domainListAction(response.data));
+            dispatch(isLoadingAction(false));
+        }
+    } catch (e) {
+        dispatch(isLoadingAction(false));
     }
 };
 
