@@ -4,7 +4,7 @@ from domains.models import Domain
 
 class DomainItem(admin.ModelAdmin):
     list_display = (
-        'name', 'manager', 'company_name', 'created_at'
+        'name', 'manager', 'created_at'
     )
     list_filter = ('manager',)
 

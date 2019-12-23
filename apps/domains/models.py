@@ -4,6 +4,15 @@ from django.urls import reverse
 from users.models import User
 
 
+class Company(models.Model):
+    name = models.CharField(max_length=255, blank=True, null=True, default='')
+    address = models.CharField(
+        max_length=500, blank=True, null=True, default='')
+
+    def __str__(self):
+        return "{}".format(self.name)
+
+
 class Domain(models.Model):
     ACTIVE = 'ACTIVE'
     EXPIRES_ON = 'EXPIRES_ON'
@@ -30,11 +39,12 @@ class Domain(models.Model):
         User, on_delete=models.SET_NULL, blank=True, null=True,
         related_name='manager')
 
-    company_name = models.CharField(
-        max_length=255, blank=True, null=True, default='')
-
-    company_address = models.CharField(
+    custom_company_address = models.CharField(
         max_length=500, blank=True, null=True, default='')
+
+    company = models.ForeignKey(
+        Company, on_delete=models.SET_NULL, blank=True, null=True,
+        related_name='company')
 
     alexa_status = models.CharField(
         max_length=255, choices=ALEXA_STATUS, default=ALEXA_OFF)

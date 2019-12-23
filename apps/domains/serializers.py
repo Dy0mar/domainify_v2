@@ -2,14 +2,17 @@
 from rest_framework import serializers
 
 from users.models import User
-from .models import Domain, Telephone, Email
+from .models import Domain, Telephone, Email, Company
+
+
+class CompanySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        depth = 1
+        fields = ('name', 'address', 'url')
 
 
 class UserSerializer(serializers.ModelSerializer):
-
-    def get_url(self, obj, view_name, request, format):
-        return 'users/9/'
-
     class Meta:
         model = User
         depth = 1
@@ -19,15 +22,15 @@ class UserSerializer(serializers.ModelSerializer):
 class DomainSerializer(serializers.ModelSerializer):
     telephones = serializers.StringRelatedField(many=True)
     emails = serializers.StringRelatedField(many=True)
+    company = CompanySerializer()
     manager = UserSerializer()
 
     class Meta:
         model = Domain
         fields = (
-            "url", "name", "company_name", "company_address", "alexa_status",
+            "url", "name", "company", "alexa_status", "emails", "telephones",
             "alexa_comment", "redirect", "register_date", "expire_date",
-            "created_at", "updated_at", "status", "manager",
-            "telephones", "emails"
+            "created_at", "updated_at", "status", "manager"
         )
 
         extra_fields = ['pk', 'telephone', 'email']
