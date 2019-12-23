@@ -4,3 +4,4 @@ sqlparse==0.3.0
 djangorestframework==3.10.3
 djangorestframework-jwt==1.11.0
 django-rest-auth==0.9.5
+mysqlclient==1.4.6
