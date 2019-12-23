@@ -3,6 +3,7 @@ import {applyMiddleware, combineReducers, compose, createStore} from "redux";
 import authReducer from "./auth-reducer";
 import appReducer from "./app-reducer";
 import userReducer from "./user-reducer";
+import domainsReducer from "./domain-reducer";
 import thunkMiddleware from "redux-thunk";
 
 
@@ -18,6 +19,7 @@ let reducers = combineReducers({
     auth: authReducer,
     app: appReducer,
     user: userReducer,
+    domains: domainsReducer,
 });
 
 let store = createStore(reducers, composeEnhancers(applyMiddleware(thunkMiddleware)));
