@@ -30,7 +30,7 @@ class DomainSerializer(serializers.ModelSerializer):
         fields = (
             "url", "name", "company", "alexa_status", "emails", "telephones",
             "alexa_comment", "redirect", "register_date", "expire_date",
-            "created_at", "updated_at", "status", "manager"
+            "status", "manager"
         )
 
         extra_fields = ['pk', 'telephone', 'email']
