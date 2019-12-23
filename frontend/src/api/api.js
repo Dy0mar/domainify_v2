@@ -44,6 +44,19 @@ export const usersAPI = {
     },
 };
 
+export const domainsAPI = {
+
+    get_domain_info(pk){
+        return instance.get(`domains/${pk}/`)
+    },
+    patch_field(pk, data){
+        return instance.patch(`domains/${pk}/`, {...data})
+    },
+    get_domain_list(page){
+        return instance.get(`domains/?page=${page}`)
+    },
+};
+
 
 export const authAPI = {
     auth() {
