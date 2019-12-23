@@ -20,7 +20,7 @@ const Header = (props) => {
                 <div className={css.text}>Domainify</div>
             </div>
             <Menu onClick={handleClick} theme="dark" mode="horizontal" style={{ lineHeight: '64px' }} selectedKeys={currentItem} selectable={false} >
-                <Item disabled={disabled} key="domain_list">Domain list</Item>
+                <Item disabled={disabled} key="domain_list"><NavLink to='/domains'>Domain list</NavLink></Item>
                 <Item disabled={disabled} key="tasks">Tasks</Item>
                 <Item disabled={disabled} key="user_list"><NavLink to='/users'>Users</NavLink></Item>
 
