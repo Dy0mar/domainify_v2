@@ -11,6 +11,7 @@ import {
     getDomainListPageTotalS,
     getDomainListS, getUrlOr404S
 } from "../../redux/domains-selectors";
+import style from "./Domains.module.css";
 
 
 const DomainsContainer = (props) => {
@@ -37,6 +38,7 @@ const DomainsContainer = (props) => {
                 position: total >= 10 ? 'bottom' : 'none'
             },
             loading: loading,
+            rowClassName: record => style['highlight'+record.status],
             columns: [
                 {
                     title: 'Name',
