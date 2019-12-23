@@ -9,7 +9,7 @@ from rest_framework.permissions import AllowAny
 from api.permissions import IsLoggedInUserOrAdmin, IsAdminUser
 
 
-class LargeResultsSetPagination(PageNumberPagination):
+class UserPagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = 'page_size'
 
@@ -17,7 +17,7 @@ class LargeResultsSetPagination(PageNumberPagination):
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    pagination_class = LargeResultsSetPagination
+    pagination_class = UserPagination
 
     def get_permissions(self):
         permission_classes = []
