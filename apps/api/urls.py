@@ -2,6 +2,8 @@
 
 from django.urls import path, include
 from rest_framework import routers
+
+from domains.views import DomainViewSet
 from users.views import UserViewSet
 from rest_framework_jwt.views import (
     obtain_jwt_token, refresh_jwt_token, verify_jwt_token
@@ -9,6 +11,7 @@ from rest_framework_jwt.views import (
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
+router.register(r'domains', DomainViewSet)
 
 urlpatterns = [
     path(r'', include(router.urls)),
