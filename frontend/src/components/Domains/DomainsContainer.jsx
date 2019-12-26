@@ -9,35 +9,39 @@ import {getDomainList} from "../../redux/domain-reducer";
 import {
     getDomainIsLoadingS,
     getDomainListPageTotalS,
-    getDomainListS, getUrlOr404S
+    getDomainListS, getManagersListS, getUrlOr404S
 } from "../../redux/domains-selectors";
 import style from "./Domains.module.css";
 
 
 const DomainsContainer = (props) => {
-    const {domains, total, getDomainList, isLoading} = props;
+    const {domains, managers, total, getDomainList, isLoading} = props;
 
-    const [page, setPage] = useState(1);
+    const [page] = useState(1);
     useEffect(() => {
         getDomainList(page)
     }, [page, getDomainList]);
 
-    const [loading, setLoading] = useState(isLoading);
-    useEffect(()=>{
-        setLoading(isLoading)
-    }, [isLoading]);
+    // function onApplyFilter(pagination, filters, sorter, extra) {
+    //     getDomainList(pagination.current, filters)
+    // }
+
+    const onApplyFilter = (pagination, filters, sorter, extra) => {
+        console.log(pagination, filters, sorter, extra)
+        getDomainList(pagination.current, filters)
+    }
 
     const [config, setConfig] = useState({});
     useEffect(() => {
         setConfig({
+            onChange: onApplyFilter,
             bordered: true,
             pagination : {
                 total: total,
                 pageSize: 10,
-                onChange: page => setPage(page),
                 position: total >= 10 ? 'bottom' : 'none'
             },
-            loading: loading,
+            loading: isLoading,
             rowClassName: record => style['highlight'+record.status],
             columns: [
                 {
@@ -45,11 +49,13 @@ const DomainsContainer = (props) => {
                     dataIndex: 'name',
                     key: 'name',
                     render: (text, row) => <NavLink to={getUrlOr404S(row.url)} >{text}</NavLink>
+
                 },
                 {
                     title: 'manager',
                     dataIndex: 'manager',
                     key: 'manager',
+                    filters: managers,
                     render: manager => (manager
                             ? <NavLink to={getUrlOr404S(manager.url)} >{manager.username}</NavLink>
                             : '--'
@@ -100,10 +106,10 @@ const DomainsContainer = (props) => {
                     key: 'status',
                 },
             ],
-            dataSource: loading ? [] : domains,
+            dataSource: isLoading ? [] : domains,
             rowKey: row => row.name
         })
-    }, [page, loading, domains, total]);
+    }, [page, isLoading, domains, total, managers]);
 
     return (
         <div>
@@ -120,7 +126,8 @@ const DomainsContainer = (props) => {
 const mapStateToProps = (state) => ({
     domains: getDomainListS(state),
     total: getDomainListPageTotalS(state),
-    isLoading: getDomainIsLoadingS(state)
+    isLoading: getDomainIsLoadingS(state),
+    managers: getManagersListS(state),
 });
 
 export default compose(

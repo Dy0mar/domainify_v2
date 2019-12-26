@@ -52,9 +52,17 @@ export const domainsAPI = {
     patch_field(pk, data){
         return instance.patch(`domains/${pk}/`, {...data})
     },
-    get_domain_list(page){
-        return instance.get(`domains/?page=${page}`)
+    get_domain_list(page, filters=[]){
+        let url = `domains/?page=${page}`;
+        let part_url = convertObjectToUrl(filters);
+
+        if (part_url !== '')
+            url += part_url;
+        return instance.get(url)
     },
+    managers_list(){
+        return instance.get('domains/managers_list/')
+    }
 };
 
 
@@ -80,3 +88,19 @@ export const authAPI = {
     },
 };
 
+function convertObjectToUrl(objList) {
+    // objList = [{param: ['value1', 'value2', ...]}, {...}]
+    if (objList.length === 0 && Object.entries(objList[0]).length === 0)
+        return '';
+
+    let url = '';
+    objList.forEach(paramObj => {
+        for (let [param, values] of Object.entries(paramObj)){
+            if (values.length !== 0){
+                let separator = '&' + param + '=';
+                values.forEach(item => url += separator + item)
+            }
+        }
+    });
+    return url
+}

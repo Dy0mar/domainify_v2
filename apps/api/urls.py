@@ -5,6 +5,7 @@ from rest_framework import routers
 
 from domains.views import DomainViewSet, CompanyViewSet
 from users.views import UserViewSet
+from domains import views
 from rest_framework_jwt.views import (
     obtain_jwt_token, refresh_jwt_token, verify_jwt_token
 )
@@ -15,6 +16,7 @@ router.register(r'domains', DomainViewSet)
 router.register(r'companies', CompanyViewSet)
 
 urlpatterns = [
+    path(r'domains/managers_list/', views.managers_list, name='managers-list'),
     path(r'', include(router.urls)),
     path(r'auth/', include('rest_auth.urls')),
 
