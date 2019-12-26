@@ -98,7 +98,7 @@ function convertObjectToUrl(objList) {
         for (let [param, values] of Object.entries(paramObj)){
             if (values.length !== 0){
                 let separator = '&' + param + '=';
-                values.forEach(item => url += separator + item)
+                url += separator + values.join(separator);
             }
         }
     });

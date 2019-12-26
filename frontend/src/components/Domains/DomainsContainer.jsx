@@ -17,24 +17,19 @@ import style from "./Domains.module.css";
 const DomainsContainer = (props) => {
     const {domains, managers, total, getDomainList, isLoading} = props;
 
-    const [page] = useState(1);
+    // load
     useEffect(() => {
-        getDomainList(page)
-    }, [page, getDomainList]);
+        getDomainList()
+    }, [getDomainList]);
 
-    // function onApplyFilter(pagination, filters, sorter, extra) {
-    //     getDomainList(pagination.current, filters)
-    // }
 
     const onApplyFilter = (pagination, filters, sorter, extra) => {
-        console.log(pagination, filters, sorter, extra)
         getDomainList(pagination.current, filters)
-    }
+    };
 
     const [config, setConfig] = useState({});
     useEffect(() => {
         setConfig({
-            onChange: onApplyFilter,
             bordered: true,
             pagination : {
                 total: total,
@@ -109,14 +104,14 @@ const DomainsContainer = (props) => {
             dataSource: isLoading ? [] : domains,
             rowKey: row => row.name
         })
-    }, [page, isLoading, domains, total, managers]);
+    }, [isLoading, domains, total, managers]);
 
     return (
         <div>
             <Divider>Domains here</Divider>
             <Row>
                 <Col span={24}>
-                    <Table {...config} />
+                    <Table {...config} onChange={onApplyFilter}/>
                 </Col>
             </Row>
         </div>
