@@ -30,7 +30,11 @@ const initialSate = {
         }
     }],
     isLoading: true,
-    managers: []
+    managers: [],
+    statuses: [],
+    alexa_statuses: [],
+    companies: [],
+    createFormErrors: []
 };
 
 
