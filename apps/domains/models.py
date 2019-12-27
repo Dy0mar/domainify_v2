@@ -39,6 +39,7 @@ class Domain(models.Model):
         User, on_delete=models.SET_NULL, blank=True, null=True,
         related_name='manager')
 
+    use_custom_address = models.BooleanField(default=False)
     custom_company_address = models.CharField(
         max_length=500, blank=True, null=True, default='')
 
