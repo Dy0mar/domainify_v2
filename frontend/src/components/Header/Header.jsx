@@ -21,6 +21,7 @@ const Header = (props) => {
             </div>
             <Menu onClick={handleClick} theme="dark" mode="horizontal" style={{ lineHeight: '64px' }} selectedKeys={currentItem} selectable={false} >
                 <Item disabled={disabled} key="domain_list"><NavLink to='/domains'>Domain list</NavLink></Item>
+                <Item disabled={disabled} key="domain_create"><NavLink to='/domains/create'>Domain create</NavLink></Item>
                 <Item disabled={disabled} key="tasks">Tasks</Item>
                 <Item disabled={disabled} key="user_list"><NavLink to='/users'>Users</NavLink></Item>
 

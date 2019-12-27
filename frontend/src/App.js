@@ -11,6 +11,8 @@ import {
     Route,
     Switch
 } from "react-router-dom";
+import {initializeApp} from "./redux/app-reducer";
+import {showMessage} from "./hoc/showMessage";
 import Header from "./components/Header/HeaderContainer";
 import Footer from "./components/Footer/Footer";
 import Login from "./components/Login/Login";
@@ -18,9 +20,11 @@ import Users from "./components/Users/UsersContainer";
 import Register from "./components/Register/Register";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import DomainsContainer from "./components/Domains/DomainsContainer";
-import {initializeApp} from "./redux/app-reducer";
+import DomainCreateComponent from "./components/Domain/DomainCreator";
+
 import Preloader from "./components/Common/Preloader/Preloader";
-import {showMessage} from "./hoc/showMessage";
+
+
 const { Content } = Layout;
 
 class App extends Component {
@@ -48,6 +52,7 @@ class App extends Component {
                             <Route path='/register' render={() => <Register />}/>
                             <Route path='/profile/:userId?' render={() => <ProfileContainer />}/>
                             <Route path='/users' render={() => <Users />}/>
+                            <Route path='/domains/create' render={() => <DomainCreateComponent />}/>
                             <Route path='/domains' render={() => <DomainsContainer />}/>
                             <Redirect from="/" to="/profile" />
                             <Route path='*' render={() => <div>404 Not Found</div>}/>
