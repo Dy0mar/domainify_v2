@@ -14,7 +14,10 @@ import Checkbox from "antd/es/checkbox";
 
 const { Option } = Select;
 
-const DomainForm = ({onSubmit, getFieldDecorator, createFormErrors}) => {
+const DomainForm = (props) => {
+    const {
+        onSubmit, getFieldDecorator, createFormErrors, managers
+    } = props;
     const formItemLayout = {
         labelCol: { span: 8 },
         wrapperCol: { span: 16 },
@@ -30,11 +33,9 @@ const DomainForm = ({onSubmit, getFieldDecorator, createFormErrors}) => {
                         })( <Input  placeholder="example.com" /> )}
                     </Form.Item>
                     <Form.Item label="Manager" {...formItemLayout}>
-                        {getFieldDecorator('manager', {initialValue: '1'})(
+                        {getFieldDecorator('manager', {initialValue: '--'})(
                             <Select>
-                                <Option value="1">manager 1</Option>
-                                <Option value="2">manager 2</Option>
-                                <Option value="3">manager 3</Option>
+                                {managers && managers.map((manager, index) => <Option key={index} value={manager.value}>{manager.text}</Option>)}
                             </Select>
                         )}
                     </Form.Item>
@@ -68,7 +69,7 @@ const DomainForm = ({onSubmit, getFieldDecorator, createFormErrors}) => {
                 </Col>
                 <Col span={7}>
                     <Form.Item label="Alexa status" {...formItemLayout}>
-                        {getFieldDecorator('manager', {
+                        {getFieldDecorator('alexa_status', {
                             initialValue: 'lucy'
                         })(
                             <Select>

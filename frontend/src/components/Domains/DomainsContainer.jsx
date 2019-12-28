@@ -9,18 +9,22 @@ import {getDomainList} from "../../redux/domain-reducer";
 import {
     getDomainIsLoadingS,
     getDomainListPageTotalS,
-    getDomainListS, getManagersListS, getUrlOr404S
+    getDomainListS, getUrlOr404S
 } from "../../redux/domains-selectors";
 import style from "./Domains.module.css";
+import {getManagersListS} from "../../redux/users-selectors";
+import {getManagersList} from "../../redux/user-reducer";
 
 
 const DomainsContainer = (props) => {
-    const {domains, managers, total, getDomainList, isLoading} = props;
+    const {domains, managers, total, isLoading} = props;
+    const {getDomainList, getManagersList } = props;
 
     // load
     useEffect(() => {
-        getDomainList()
-    }, [getDomainList]);
+        getDomainList();
+        getManagersList()
+    }, [getDomainList, getManagersList]);
 
 
     const onApplyFilter = (pagination, filters, sorter, extra) => {
@@ -128,5 +132,5 @@ const mapStateToProps = (state) => ({
 export default compose(
     withAuthRedirect,
     withRouter,
-    connect(mapStateToProps, {getDomainList})
+    connect(mapStateToProps, {getDomainList, getManagersList})
 )(DomainsContainer);

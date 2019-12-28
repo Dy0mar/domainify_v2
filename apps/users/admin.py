@@ -31,7 +31,11 @@ class UserAdmin(BaseUserAdmin):
             'fields': ('email', 'password1', 'password2'),
         }),
     )
-    list_display = ('email', 'first_name', 'last_name', 'is_staff')
+    list_display = (
+        'username', 'email', 'jabber_nick', 'is_staff', 'is_superuser')
     search_fields = ('email', 'first_name', 'last_name')
     ordering = ('email',)
     inlines = (UserProfileInline, UserSettingInline)
+
+    def jabber_nick(self, x):
+        return x.profile.jabber_nick

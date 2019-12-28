@@ -42,6 +42,9 @@ export const usersAPI = {
     get_user_list(page){
         return instance.get(`users/?page=${page}`)
     },
+    managers_list(){
+        return instance.get('users/managers_list/')
+    }
 };
 
 export const domainsAPI = {

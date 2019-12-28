@@ -16,15 +16,22 @@ export const newMessage = (state, type, msg) => {
     };
 };
 
-// export const getUserJabberNickS = (state) => {
-//     return state.user.jabber_nick
-// }
-
-export const getUserListS = (state) => {
-    return state.user.users.results
-    // return state.user.users.results.filter(u => u.pk !== state.user.pk)
-};
+export const getUserListS = state => state.user.users.results;
 
 export const getUserListPageTotalS = (state) => {
     return state.user.users.count
 };
+
+export const getCurrentUserS = (state) => {
+    return {
+        pk: state.user.pk,
+        username: state.user.username,
+        email: state.user.email,
+        profile: state.profile,
+        settings: state.settings
+    }
+};
+
+export const getManagersListS = (state) => (
+    state.user.managers.map(u => ({text: u, value: u,}))
+);
