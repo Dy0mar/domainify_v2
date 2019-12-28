@@ -12,19 +12,17 @@ import {
     getDomainListS, getUrlOr404S
 } from "../../redux/domains-selectors";
 import style from "./Domains.module.css";
-import {getManagersListS} from "../../redux/users-selectors";
-import {getManagersList} from "../../redux/user-reducer";
+import {getManagerListS} from "../../redux/users-selectors";
 
 
 const DomainsContainer = (props) => {
     const {domains, managers, total, isLoading} = props;
-    const {getDomainList, getManagersList } = props;
+    const {getDomainList } = props;
 
     // load
     useEffect(() => {
         getDomainList();
-        getManagersList()
-    }, [getDomainList, getManagersList]);
+    }, [getDomainList]);
 
 
     const onApplyFilter = (pagination, filters, sorter, extra) => {
@@ -126,11 +124,11 @@ const mapStateToProps = (state) => ({
     domains: getDomainListS(state),
     total: getDomainListPageTotalS(state),
     isLoading: getDomainIsLoadingS(state),
-    managers: getManagersListS(state),
+    managers: getManagerListS(state),
 });
 
 export default compose(
     withAuthRedirect,
     withRouter,
-    connect(mapStateToProps, {getDomainList, getManagersList})
+    connect(mapStateToProps, {getDomainList})
 )(DomainsContainer);
