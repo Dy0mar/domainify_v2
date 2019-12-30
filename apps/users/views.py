@@ -36,9 +36,10 @@ class UserViewSet(ModelViewSet):
         return [permission() for permission in permission_classes]
 
 
-class ManagersList(BaseViewSetMixin, ModelViewSet):
+class ManagerList(BaseViewSetMixin, ModelViewSet):
     queryset = User.objects.filter(
-        is_staff=True, is_superuser=False).values_list('username', flat=True)
+        is_staff=True, is_superuser=False
+    ).values_list('pk', 'username',)
 
     serializer_class = UserSerializer
     permission_classes = [IsLoggedInUserOrAdmin]
@@ -47,4 +48,4 @@ class ManagersList(BaseViewSetMixin, ModelViewSet):
         return Response(list(self.get_queryset()))
 
 
-managers_list = ManagersList.as_view({'get': 'list'})
+manager_list = ManagerList.as_view({'get': 'list'})
