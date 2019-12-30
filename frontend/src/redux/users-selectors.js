@@ -33,12 +33,19 @@ export const getCurrentUserS = (state) => {
 };
 
 export const getManagerListS = (state) => {
-    let managers = state.user.managers.map(u => ({pk: u[0], username: u[1]}));
+    let managers = state.user.managers.map(u => ({
+        text: u[1],
+        value: u[0],
+        pk: u[0],
+        username: u[1],
+    }));
     const currentUser = state.user;
-    if (managers.filter(u => u.pk === currentUser.pk ).length === 0){
+    if (currentUser.pk && managers.filter(u => u.pk === currentUser.pk ).length === 0){
         managers.push({
+            text: currentUser.username,
+            value: currentUser.pk,
             pk: currentUser.pk,
-            username: currentUser.username
+            username: currentUser.username,
         });
     }
     return managers

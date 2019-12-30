@@ -1,6 +1,11 @@
 import {verifyToken} from "./auth-reducer";
-import {setCurrentUser} from "./user-reducer";
+import {getManagerList, setCurrentUser} from "./user-reducer";
 import {newMessage} from "./users-selectors";
+import {
+    getAlexaStatusList,
+    getCompanyList,
+    getDomainStatusList
+} from "./domain-reducer";
 
 const INITIALIZED_SUCCESS = 'app/INITIALIZED_SUCCESS';
 const SHOW_MESSAGE = 'app/SHOW_MESSAGE';
@@ -71,7 +76,15 @@ export const initializeApp = () => (dispatch) => {
         ? dispatch(verifyToken())
         : new Promise((resolve, reject) => reject(1));
 
-    Promise.all([verifyTokenPromise]).then(
+    const setManagers = dispatch(getManagerList());
+    const setDomainStatuses = dispatch(getDomainStatusList());
+    const setAlexaStatuses = dispatch(getAlexaStatusList());
+    const setCompanies = dispatch(getCompanyList());
+
+    Promise.all([
+        verifyTokenPromise, setManagers, setDomainStatuses, setAlexaStatuses,
+        setCompanies
+    ]).then(
         () => {
             dispatch(setCurrentUser());
             dispatch(initializedSuccess());

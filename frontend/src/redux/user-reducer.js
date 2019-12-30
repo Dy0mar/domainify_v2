@@ -6,7 +6,7 @@ const SET_CURRENT_USER = 'user/SET_CURRENT_USER';
 const SET_USER_INFO = 'user/SET_CURRENT_USER';
 const REGISTER_ERROR_MESSAGES = 'user/REGISTER_ERROR_MESSAGES';
 const GET_USER_LIST = 'user/GET_USER_LIST';
-const GET_MANAGERS_LIST = 'user/GET_MANAGERS_LIST';
+const GET_MANAGER_LIST = 'user/GET_MANAGER_LIST';
 
 
 const initialSate = {
@@ -38,7 +38,7 @@ const userReducer = (state=initialSate, action) => {
         case SET_USER_INFO:
         case REGISTER_ERROR_MESSAGES:
         case GET_USER_LIST:
-        case GET_MANAGERS_LIST:
+        case GET_MANAGER_LIST:
             return {
                 ...state,
                 ...action.payload,
@@ -69,18 +69,18 @@ export const userListAction = (users) => ({
 });
 
 export const managersListAction = (managers) => ({
-    type: GET_MANAGERS_LIST,
+    type: GET_MANAGER_LIST,
     payload: {managers}
 });
 
 
 // Thunks
-export const getManagersList = (update=false) => async (dispatch, getState) => {
+export const getManagerList = (update=false) => async (dispatch, getState) => {
     const managers = getState().user.managers;
     if (!update && managers.length !== 0)
         return;
     try {
-        const response = await usersAPI.managers_list();
+        const response = await usersAPI.manager_list();
         dispatch(managersListAction(response.data))
     } catch (e) {
         console.log(e)

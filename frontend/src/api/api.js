@@ -42,13 +42,15 @@ export const usersAPI = {
     get_user_list(page){
         return instance.get(`users/?page=${page}`)
     },
-    managers_list(){
-        return instance.get('users/managers_list/')
+    manager_list(){
+        return instance.get('users/manager_list/')
     }
 };
 
 export const domainsAPI = {
-
+    create(data){
+        return instance.post('domains/', {...data})
+    },
     get_domain_info(pk){
         return instance.get(`domains/${pk}/`)
     },
@@ -63,9 +65,15 @@ export const domainsAPI = {
             url += part_url;
         return instance.get(url)
     },
-    managers_list(){
-        return instance.get('domains/managers_list/')
-    }
+    status_list(){
+        return instance.get('domains/status_list/')
+    },
+    alexa_status_list(){
+        return instance.get('domains/alexa_status_list/')
+    },
+    company_list(){
+        return instance.get('domains/company_list/')
+    },
 };
 
 

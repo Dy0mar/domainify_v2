@@ -1,6 +1,14 @@
-
-
 export const getDomainListS = (state) => state.domains.results;
+
+export const getDomainStatusListS = (state) => (
+    state.domains.statuses.map(u => ({text: u[0], value: u[1]}))
+);
+
+export const getCompanyListS = state => state.domains.companies;
+
+export const getAlexaStatusListS = (state) => (
+    state.domains.alexa_statuses.map(u => ({text: u[0], value: u[1]}))
+);
 
 export const getDomainListPageTotalS = (state) => state.domains.count;
 

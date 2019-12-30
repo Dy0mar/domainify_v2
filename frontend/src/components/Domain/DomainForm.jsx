@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {
     Alert,
     Button,
@@ -16,8 +16,19 @@ const { Option } = Select;
 
 const DomainForm = (props) => {
     const {
-        onSubmit, getFieldDecorator, createFormErrors, managers
+        onSubmit, getFieldDecorator, createFormErrors, managers, statuses,
+        alexa_statuses, currentUser, companies
     } = props;
+
+    const [companyAddress, setCompanyAddress] = useState('--');
+    const [customAddress, setCustomAddress] = useState(true);
+
+    const onChangeAddress = (value) => {
+        const company = companies.filter(v => v.pk === value)[0];
+        setCompanyAddress(company.address)
+    };
+
+
     const formItemLayout = {
         labelCol: { span: 8 },
         wrapperCol: { span: 16 },
@@ -28,59 +39,62 @@ const DomainForm = (props) => {
             <Row>
                 <Col span={7}>
                     <Form.Item label="Domain name" {...formItemLayout}>
-                        {getFieldDecorator('domain', {
+                        {getFieldDecorator('name', {
                             rules: [{ required: true, message: 'Please input domain name!' }],
                         })( <Input  placeholder="example.com" /> )}
                     </Form.Item>
                     <Form.Item label="Manager" {...formItemLayout}>
-                        {getFieldDecorator('manager', {initialValue: '--'})(
+                        {getFieldDecorator('manager', {initialValue: currentUser.pk})(
                             <Select>
-                                {managers && managers.map((manager, index) => <Option key={index} value={manager.value}>{manager.text}</Option>)}
+                                {managers && managers.map((manager, index) => <Option key={index} value={manager.pk}>{manager.username}</Option>)}
                             </Select>
                         )}
                     </Form.Item>
                     <Form.Item label="Status" {...formItemLayout}>
-                        {getFieldDecorator('status', {initialValue: '1'})(
+                        {getFieldDecorator('status', {initialValue: 'ACTIVE'})(
                             <Select>
-                                <Option value="1">status 1</Option>
-                                <Option value="2">status 2</Option>
-                                <Option value="3">status 3</Option>
+                                {statuses && statuses.map((status, index) => <Option key={index} value={status.value}>{status.text}</Option>)}
                             </Select>
                         )}
                     </Form.Item>
                 </Col>
                 <Col span={7}>
                     <Form.Item label="Company" {...formItemLayout}>
-                        {getFieldDecorator('company', {initialValue: '1'})(
-                            <Select>
-                                <Option value="1">company 1</Option>
-                                <Option value="2">company 2</Option>
-                                <Option value="3">company 3</Option>
+                        {getFieldDecorator('company', {initialValue: ''})(
+                            <Select onChange={onChangeAddress}>
+                                {companies && companies.map((company, index) => <Option key={index} value={company.pk}>{company.name}</Option>)}
                             </Select>
                         )}
                     </Form.Item>
-                    <Form.Item label="Check" {...formItemLayout}>
-                        <Checkbox onChange={alert}>Use custom address instead Company</Checkbox>
+                    <Form.Item label="Company Address" {...formItemLayout}>
+                        <span>{companyAddress}</span>
                     </Form.Item>
-                    <Form.Item label="Domain name" {...formItemLayout}>
-                        {getFieldDecorator('custom_address', {})( <Input  placeholder="custom address" /> )}
+                    <Form.Item label="Check" {...formItemLayout}>
+                        {getFieldDecorator('use_custom_address', {
+                            valuePropName: 'checked',
+                            initialValue: false,
+                            onChange: (e) => setCustomAddress(!e.target.checked)
+                        })(<Checkbox>Use custom address instead Company address</Checkbox>)}
+                    </Form.Item>
+                    <Form.Item label="Custom address" {...formItemLayout}>
+                        {getFieldDecorator('custom_address', {
+                            initialValue: '',
+                        })( <Input disabled={customAddress} placeholder="custom address" /> )}
                     </Form.Item>
 
                 </Col>
                 <Col span={7}>
                     <Form.Item label="Alexa status" {...formItemLayout}>
                         {getFieldDecorator('alexa_status', {
-                            initialValue: 'lucy'
+                            initialValue: 'OFF'
                         })(
                             <Select>
-                                <Option value="jack">Jack</Option>
-                                <Option value="lucy">Lucy</Option>
-                                <Option value="betty">betty</Option>
+                                {alexa_statuses && alexa_statuses.map((status, index) => <Option key={index} value={status.value}>{status.text}</Option>)}
                             </Select>
                         )}
                     </Form.Item>
                     <Form.Item label="Alexa Comment" {...formItemLayout}>
-                        {getFieldDecorator('alexa_comment', {})( <Input  placeholder="custom address" /> )}
+                        {getFieldDecorator('alexa_comment', {initialValue: ''})( <Input  placeholder="Comment ..." /> )}
                     </Form.Item>
                 </Col>
             </Row>

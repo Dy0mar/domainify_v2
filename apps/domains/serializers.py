@@ -9,21 +9,21 @@ class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
         depth = 1
-        fields = ('name', 'address', 'url')
+        fields = ('pk', 'name', 'address', 'url')
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         depth = 1
-        fields = ('username', 'url')
+        fields = ('pk', 'username', 'url')
 
 
 class DomainSerializer(serializers.ModelSerializer):
-    telephones = serializers.StringRelatedField(many=True)
-    emails = serializers.StringRelatedField(many=True)
-    company = CompanySerializer()
-    manager = UserSerializer()
+    telephones = serializers.StringRelatedField(many=True, required=False)
+    emails = serializers.StringRelatedField(many=True, required=False)
+    company = CompanySerializer(required=False)
+    manager = UserSerializer(required=False)
 
     class Meta:
         model = Domain
@@ -35,13 +35,31 @@ class DomainSerializer(serializers.ModelSerializer):
 
         extra_fields = ['pk', 'telephone', 'email']
 
+    def get_instance_from_pk(self, model, field):
+        field_data = self.initial_data.get(field)
+        if not field_data or not field_data.get('pk'):
+            return None
+        instance = model.objects.filter(pk=field_data.get('pk')).first()
+        return instance or None
+
+    def validate_company(self, obj):
+        instance = self.get_instance_from_pk(Company, 'company')
+        return instance or None
+
+    def validate_manager(self, obj):
+        instance = self.get_instance_from_pk(User, 'manager')
+        return instance or None
+
     def create(self, validated_data):
-        telephone_data = validated_data.pop('telephone')
-        email_data = validated_data.pop('email')
+        telephone_data = validated_data.pop('telephone', {})
+        email_data = validated_data.pop('email', {})
 
         domain = Domain(**validated_data)
-        Telephone.objects.create(user=domain, **telephone_data)
-        Email.objects.create(user=domain, **email_data)
+        domain.save()
+        if telephone_data:
+            Telephone.objects.create(domain=domain, **telephone_data)
+        if email_data:
+            Email.objects.create(domain=domain, **email_data)
         return domain
 
     def update(self, instance, validated_data):
