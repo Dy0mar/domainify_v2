@@ -32,6 +32,14 @@ export const getCurrentUserS = (state) => {
     }
 };
 
-export const getManagersListS = (state) => (
-    state.user.managers.map(u => ({text: u, value: u,}))
-);
+export const getManagerListS = (state) => {
+    let managers = state.user.managers.map(u => ({pk: u[0], username: u[1]}));
+    const currentUser = state.user;
+    if (managers.filter(u => u.pk === currentUser.pk ).length === 0){
+        managers.push({
+            pk: currentUser.pk,
+            username: currentUser.username
+        });
+    }
+    return managers
+};
