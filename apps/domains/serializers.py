@@ -30,7 +30,7 @@ class DomainSerializer(serializers.ModelSerializer):
         fields = (
             "url", "name", "company", "alexa_status", "emails", "telephones",
             "alexa_comment", "redirect", "register_date", "expire_date",
-            "status", "manager"
+            "status", "manager", "use_custom_address", "custom_company_address",
         )
 
         extra_fields = ['pk', 'telephone', 'email']
@@ -65,24 +65,19 @@ class DomainSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
 
         email = validated_data.get('email', '')
+
+        for key in validated_data.keys():
+            if key == 'name':
+                continue
+            value = validated_data.get(key)
+            if getattr(instance, key) != value:
+                setattr(instance, key, validated_data.get(key))
+
+        instance.save()
+
         if email and email != instance.email:
             instance.email = validated_data.get('email', instance.email)
             instance.save()
-
-        profile_data = validated_data.pop('profile', {})
-        if profile_data:
-            profile = instance.profile
-            profile.jabber_nick = profile_data.get(
-                'jabber_nick', profile.jabber_nick
-            )
-            profile.save()
-
-        settings_data = validated_data.pop('settings', {})
-        if settings_data:
-            settings = instance.settings
-            settings.jabber = settings_data.get('jabber', settings.jabber)
-            settings.email = settings_data.get('email', settings.email)
-            settings.save()
 
         return instance
 

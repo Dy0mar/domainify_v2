@@ -51,7 +51,7 @@ export const domainsAPI = {
     create(data){
         return instance.post('domains/', {...data})
     },
-    get_domain_info(pk){
+    domain_detail(pk){
         return instance.get(`domains/${pk}/`)
     },
     patch_field(pk, data){

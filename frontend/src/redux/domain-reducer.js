@@ -6,6 +6,7 @@ const GET_DOMAIN_STATUS_LIST = 'domain/GET_DOMAIN_STATUS_LIST';
 const GET_ALEXA_STATUS_LIST = 'domain/GET_ALEXA_STATUS_LIST';
 const GET_COMPANY_LIST = 'domain/GET_COMPANY_LIST';
 const CREATE_FORM_ERROR_MESSAGES = 'domain/CREATE_FORM_ERROR_MESSAGES';
+const LOAD_CURRENT_DOMAIN = 'domain/LOAD_CURRENT_DOMAIN';
 
 
 const initialSate = {
@@ -37,8 +38,9 @@ const initialSate = {
     statuses: [],
     alexa_statuses: [],
     companies: [],
-    createFormErrors: {},
-    redirectTo: ''
+    formErrors: {},
+    redirectTo: '',
+    currentDomain: {},
 };
 
 
@@ -50,6 +52,7 @@ const domainsReducer = (state=initialSate, action) => {
         case GET_ALEXA_STATUS_LIST:
         case GET_COMPANY_LIST:
         case CREATE_FORM_ERROR_MESSAGES:
+        case LOAD_CURRENT_DOMAIN:
             return {
                 ...state,
                 ...action.payload,
@@ -62,6 +65,11 @@ const domainsReducer = (state=initialSate, action) => {
 export const isLoadingAction = (isLoading) => ({
     type: GET_DOMAIN_LIST,
     payload: {isLoading}
+});
+
+export const setCurrentDomainAction = (currentDomain) => ({
+    type: GET_DOMAIN_LIST,
+    payload: {currentDomain}
 });
 
 export const redirectToAction = (redirectTo) => ({
@@ -88,9 +96,10 @@ export const domainListAction = ({count, next, previous, results}) => ({
     type: GET_DOMAIN_LIST,
     payload: {count, next, previous, results}
 });
-export const createFormErrorsAction = (createFormErrors) => ({
+
+export const setFormErrorsAction = (formErrors) => ({
     type: CREATE_FORM_ERROR_MESSAGES,
-    payload: {createFormErrors}
+    payload: {formErrors}
 });
 
 // Thunks
@@ -101,15 +110,31 @@ export const domainCreate = (data) => async (dispatch) => {
         if (response.status === 201){
             dispatch(addSuccessMessage('Domain has been created'));
             dispatch(redirectToAction('/domains'));
-            dispatch(createFormErrorsAction(''));
+            dispatch(setFormErrorsAction({}));
         }
     } catch (e) {
         const response = e.response;
         const errors = response.data;
-        dispatch(createFormErrorsAction(errors))
+        dispatch(setFormErrorsAction(errors))
     } finally {
         dispatch(isLoadingAction(false));
     }
+};
+
+export const updateDomain = (data) => async (dispatch) => {
+    try{
+        await domainsAPI.patch_field(data.pk, {...data});
+        const msg = data.name + ' data was updated successfully';
+        dispatch(addSuccessMessage(msg));
+        dispatch(setFormErrorsAction({}))
+    } catch (e) {
+        const response = e.response;
+        const errors = response.data;
+        dispatch(setFormErrorsAction(errors))
+    } finally {
+        dispatch(isLoadingAction(false));
+    }
+
 };
 
 export const setRedirectTo = (redirectTo) => async (dispatch) => {
@@ -121,7 +146,19 @@ export const getDomainStatusList = () => async (dispatch) => {
         const response = await domainsAPI.status_list();
         dispatch(domainStatusListAction(response.data));
     } catch (e) {
-        console.log(e)
+        exception(e)
+    }
+};
+
+export const loadCurrentDomain = (pk) => async (dispatch) => {
+    dispatch(isLoadingAction(true));
+    try{
+        const response = await domainsAPI.domain_detail(pk);
+        dispatch(setCurrentDomainAction(response.data));
+    } catch (e) {
+        exception(e)
+    } finally {
+        dispatch(isLoadingAction(false));
     }
 };
 
@@ -130,7 +167,7 @@ export const getAlexaStatusList = () => async (dispatch) => {
         const response = await domainsAPI.alexa_status_list();
         dispatch(alexaStatusListAction(response.data));
     } catch (e) {
-        console.log(e)
+        exception(e)
     }
 };
 
@@ -139,7 +176,7 @@ export const getCompanyList = () => async (dispatch) => {
         const response = await domainsAPI.company_list();
         dispatch(companyListAction(response.data));
     } catch (e) {
-        console.log(e)
+        exception(e)
     }
 };
 
@@ -149,10 +186,14 @@ export const getDomainList = (page=1, filters = {}) => async (dispatch) => {
         const response = await domainsAPI.get_domain_list(page, [filters]);
         dispatch(domainListAction(response.data));
     } catch (e) {
-        console.log(e)
+        exception(e)
     } finally {
         dispatch(isLoadingAction(false));
     }
 };
+
+function exception(e) {
+    console.log(e)
+}
 
 export default domainsReducer;
