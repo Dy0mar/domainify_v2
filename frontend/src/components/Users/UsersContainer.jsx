@@ -24,7 +24,7 @@ const UsersContainer = (props) => {
     };
 
     const [loading, setLoading] = useState(!users.length);
-    useEffect(()=>{
+    useEffect(() => {
         setLoading(!users.length)
     }, [users.length]);
 
