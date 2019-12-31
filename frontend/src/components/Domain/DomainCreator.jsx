@@ -21,7 +21,9 @@ import {domainCreate, setRedirectTo} from "../../redux/domain-reducer";
 
 const DomainCreateContainer = (props) => {
     const {getFieldDecorator, validateFields} = props.form;
-    const {users, currentUser, managers, statuses, alexa_statuses, companies} = props;
+    const {
+        users, currentUser, managers, statuses, alexa_statuses, companies, createFormErrors
+    } = props;
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -44,7 +46,10 @@ const DomainCreateContainer = (props) => {
         return <Redirect to={props.redirectTo} />
     };
 
-    const _props = { users, currentUser, managers, statuses, alexa_statuses, companies};
+    const _props = {
+        users, currentUser, managers, statuses, alexa_statuses, companies,
+        createFormErrors,
+    };
     return (
         <> {props.redirectTo && redirectTo()}
         <div>

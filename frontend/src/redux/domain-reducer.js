@@ -5,6 +5,7 @@ const GET_DOMAIN_LIST = 'domain/GET_DOMAIN_LIST';
 const GET_DOMAIN_STATUS_LIST = 'domain/GET_DOMAIN_STATUS_LIST';
 const GET_ALEXA_STATUS_LIST = 'domain/GET_ALEXA_STATUS_LIST';
 const GET_COMPANY_LIST = 'domain/GET_COMPANY_LIST';
+const CREATE_FORM_ERROR_MESSAGES = 'domain/CREATE_FORM_ERROR_MESSAGES';
 
 
 const initialSate = {
@@ -36,7 +37,7 @@ const initialSate = {
     statuses: [],
     alexa_statuses: [],
     companies: [],
-    createFormErrors: [],
+    createFormErrors: {},
     redirectTo: ''
 };
 
@@ -48,6 +49,7 @@ const domainsReducer = (state=initialSate, action) => {
         case GET_DOMAIN_STATUS_LIST:
         case GET_ALEXA_STATUS_LIST:
         case GET_COMPANY_LIST:
+        case CREATE_FORM_ERROR_MESSAGES:
             return {
                 ...state,
                 ...action.payload,
@@ -86,6 +88,10 @@ export const domainListAction = ({count, next, previous, results}) => ({
     type: GET_DOMAIN_LIST,
     payload: {count, next, previous, results}
 });
+export const createFormErrorsAction = (createFormErrors) => ({
+    type: CREATE_FORM_ERROR_MESSAGES,
+    payload: {createFormErrors}
+});
 
 // Thunks
 export const domainCreate = (data) => async (dispatch) => {
@@ -95,9 +101,12 @@ export const domainCreate = (data) => async (dispatch) => {
         if (response.status === 201){
             dispatch(addSuccessMessage('Domain has been created'));
             dispatch(redirectToAction('/domains'));
+            dispatch(createFormErrorsAction(''));
         }
     } catch (e) {
-        console.log(e)
+        const response = e.response;
+        const errors = response.data;
+        dispatch(createFormErrorsAction(errors))
     } finally {
         dispatch(isLoadingAction(false));
     }

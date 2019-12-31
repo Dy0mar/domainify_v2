@@ -38,7 +38,11 @@ const DomainForm = (props) => {
         <Form onSubmit={onSubmit}>
             <Row>
                 <Col span={7}>
-                    <Form.Item label="Domain name" {...formItemLayout}>
+                    <Form.Item {...createFormErrors.name && {
+                        help: createFormErrors.name,
+                        validateStatus: 'error',
+                    }}
+                               label="Domain name" {...formItemLayout}>
                         {getFieldDecorator('name', {
                             rules: [{ required: true, message: 'Please input domain name!' }],
                         })( <Input  placeholder="example.com" /> )}
@@ -98,14 +102,6 @@ const DomainForm = (props) => {
                     </Form.Item>
                 </Col>
             </Row>
-            <Row>
-                <Col>
-                    <Form.Item>
-                        {createFormErrors ? createFormErrors.map(msg => <Alert message={msg} type="error" />) : '' }
-                    </Form.Item>
-                </Col>
-            </Row>
-
             <Row>
                 <Form.Item>
                     <Col offset={11} span={2}>
