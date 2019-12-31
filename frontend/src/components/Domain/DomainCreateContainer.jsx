@@ -4,7 +4,7 @@ import "antd/dist/antd.css";
 import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {connect} from "react-redux";
-import {Redirect, withRouter} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import DomainForm from "./DomainForm";
 import {
     getCurrentUserS,
@@ -78,6 +78,5 @@ const mapStateToProps = (state) => ({
 
 export default compose(
     withAuthRedirect,
-    withRouter,
     connect(mapStateToProps, {domainCreate, setRedirectTo})
 )(DomainCreateComponent);
