@@ -6,23 +6,15 @@ import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
 import DomainForm from "./DomainForm";
-import {
-    getCurrentUserS,
-    getManagerListS,
-    getUserListS
-} from "../../redux/users-selectors";
-import {
-    getAlexaStatusListS,
-    getCompanyListS,
-    getDomainStatusListS
-} from "../../redux/domains-selectors";
 import {domainCreate, setRedirectTo} from "../../redux/domain-reducer";
+import {additionalDomainProps} from "../../hoc/additionalDomainProps";
+import {getCurrentUserS} from "../../redux/users-selectors";
 
 
 const DomainCreateContainer = (props) => {
     const {getFieldDecorator, validateFields} = props.form;
     const {
-        users, currentUser, managers, statuses, alexa_statuses, companies, createFormErrors
+        currentUser, formErrors, managers, statuses, alexa_statuses, companies,
     } = props;
 
     const onSubmit = (e) => {
@@ -42,41 +34,36 @@ const DomainCreateContainer = (props) => {
     };
 
     const redirectTo = () => {
+        // run after create domain
         props.setRedirectTo('');
         return <Redirect to={props.redirectTo} />
     };
 
     const _props = {
-        users, currentUser, managers, statuses, alexa_statuses, companies,
-        createFormErrors,
+        currentUser, formErrors, managers, statuses, alexa_statuses, companies,
+        onSubmit, getFieldDecorator
     };
     return (
         <> {props.redirectTo && redirectTo()}
         <div>
             <Divider>Domain create</Divider>
             <DomainForm {..._props}
-                        onSubmit={onSubmit}
-                        getFieldDecorator={getFieldDecorator}
+                        initManagerValuePk={currentUser.pk}
             />
         </div>
         </>
     )
 };
 
-const DomainCreateComponent = Form.create({ name: 'domain_create_form',  })(DomainCreateContainer);
+const DomainCreateComponent = Form.create({ name: 'domain_create_form', })(DomainCreateContainer);
 
 const mapStateToProps = (state) => ({
-    createFormErrors: state.domains.createFormErrors,
-    users: getUserListS(state),
-    managers: getManagerListS(state),
-    statuses: getDomainStatusListS(state),
-    companies: getCompanyListS(state),
-    alexa_statuses: getAlexaStatusListS(state),
     currentUser: getCurrentUserS(state),
     redirectTo: state.domains.redirectTo,
 });
 
 export default compose(
     withAuthRedirect,
+    additionalDomainProps,
     connect(mapStateToProps, {domainCreate, setRedirectTo})
 )(DomainCreateComponent);
