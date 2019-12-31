@@ -20,7 +20,8 @@ import Users from "./components/Users/UsersContainer";
 import Register from "./components/Register/Register";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import DomainsContainer from "./components/Domains/DomainsContainer";
-import DomainCreateComponent from "./components/Domain/DomainCreator";
+import DomainCreateContainer from "./components/Domain/DomainCreateContainer";
+import DomainDetailContainer from "./components/Domain/DomainDetailContainer";
 
 import Preloader from "./components/Common/Preloader/Preloader";
 
@@ -52,7 +53,8 @@ class App extends Component {
                             <Route path='/register' render={() => <Register />}/>
                             <Route path='/profile/:userId?' render={() => <ProfileContainer />}/>
                             <Route path='/users' render={() => <Users />}/>
-                            <Route path='/domains/create' render={() => <DomainCreateComponent />}/>
+                            <Route path='/domains/create' render={() => <DomainCreateContainer />}/>
+                            <Route path='/domains/:domainId' render={() => <DomainDetailContainer />}/>
                             <Route path='/domains' render={() => <DomainsContainer />}/>
                             <Redirect from="/" to="/profile" />
                             <Route path='*' render={() => <div>404 Not Found</div>}/>
