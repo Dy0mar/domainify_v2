@@ -12,7 +12,7 @@ import {redirectHoc} from "../../hoc/redirectTo";
 
 
 const DomainCreateContainer = (props) => {
-    const {getFieldDecorator, validateFields} = props.form;
+    const {getFieldDecorator, validateFields, getFieldValue, setFieldsValue } = props.form;
     const {
         currentUser, formErrors, managers, statuses, alexa_statuses, companies,
     } = props;
@@ -26,7 +26,8 @@ const DomainCreateContainer = (props) => {
                 const data = {
                     ...values,
                     manager: {pk: values.manager},
-                    company: {pk: values.company}
+                    company: {pk: values.company},
+                    email: values.email.filter(e => e)
                 };
                 props.domainCreate(data);
             }
@@ -35,7 +36,7 @@ const DomainCreateContainer = (props) => {
 
     const _props = {
         currentUser, formErrors, managers, statuses, alexa_statuses, companies,
-        onSubmit, getFieldDecorator
+        onSubmit, getFieldDecorator, getFieldValue, setFieldsValue
     };
     return (
         <div>

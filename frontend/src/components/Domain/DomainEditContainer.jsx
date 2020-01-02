@@ -12,7 +12,7 @@ import {redirectHoc} from "../../hoc/redirectTo";
 
 
 const DomainDetailContainer = (props) => {
-    const {getFieldDecorator, validateFields} = props.form;
+    const {getFieldDecorator, validateFields, getFieldValue, setFieldsValue } = props.form;
     const {currentDomain, loadCurrentDomain} = props;
     const {domainId} = props.match.params;
 
@@ -50,6 +50,8 @@ const DomainDetailContainer = (props) => {
             <DomainForm {...props} {...currentDomain}
                         onSubmit={onSubmit}
                         getFieldDecorator={getFieldDecorator}
+                        getFieldValue={getFieldValue}
+                        setFieldsValue={setFieldsValue}
                         initManagerValuePk={initManagerValuePk}
 
             />

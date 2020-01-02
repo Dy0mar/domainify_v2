@@ -10,13 +10,28 @@ import {
 import "antd/dist/antd.css";
 import css from "../Login/Login.module.css";
 import Checkbox from "antd/es/checkbox";
+import {createDynamic} from "../Common/DynamicForm/DynamicFieldSet";
 
 const { Option } = Select;
+
+const EmailDynamic = (props) => {
+    const _props = {
+        ...props,
+        field_name: 'email',
+        placeholder: 'email@gmail.com',
+        limitCount: 3,
+        required: false,
+    };
+
+    return createDynamic(_props)
+};
+
 
 const DomainForm = (props) => {
     const {
         onSubmit, getFieldDecorator, formErrors, managers, statuses,
-        alexa_statuses, initManagerValuePk, companies,
+        alexa_statuses, initManagerValuePk, companies, getFieldValue,
+        setFieldsValue,
     } = props;
 
     const getInitialValue = (propName, defaultValue='') => {
@@ -77,6 +92,13 @@ const DomainForm = (props) => {
                             </Select>
                         )}
                     </Form.Item>
+
+                    <EmailDynamic getFieldDecorator={getFieldDecorator}
+                                  getFieldValue={getFieldValue}
+                                  setFieldsValue={setFieldsValue}
+                                  formItemLayout={formItemLayout}
+                    />
+
                 </Col>
                 <Col span={7}>
                     <Form.Item
