@@ -37,8 +37,10 @@ const DomainInfoContainer = (props) => {
             <Row>
                 <Col span={12}>
                     <Box boxTitleText={'Contacts'} icon={'phone'} onClickMethod={null}>
-                        <Row><Text strong>Emails:</Text> {domain.emails}</Row>
-                        <Row><Text strong>Telephones:</Text> {domain.telephones}</Row>
+                        <Row><Text strong>Emails:</Text> {domain.emails ? domain.emails.join(', ') : '-'}</Row>
+                        <Row><Text strong>Redirect email:</Text> {domain.redirect}</Row>
+                        <Row>&nbsp;</Row>
+                        <Row><Text strong>Telephones:</Text> {domain.telephones ? domain.telephones.join(', ') : '-'}</Row>
                     </Box>
                 </Col>
                 <Col span={12}>
