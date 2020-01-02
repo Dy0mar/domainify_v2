@@ -126,6 +126,7 @@ export const updateDomain = (data) => async (dispatch) => {
         await domainsAPI.patch_field(data.pk, {...data});
         const msg = data.name + ' data was updated successfully';
         dispatch(addSuccessMessage(msg));
+        dispatch(redirectToAction('/domains/'+data.pk));
         dispatch(setFormErrorsAction({}))
     } catch (e) {
         const response = e.response;

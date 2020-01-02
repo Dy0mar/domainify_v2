@@ -4,7 +4,6 @@ import "antd/dist/antd.css";
 import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {connect} from "react-redux";
-import {Redirect} from "react-router-dom";
 import DomainForm from "./DomainForm";
 import {domainCreate, setRedirectTo} from "../../redux/domain-reducer";
 import {additionalDomainProps} from "../../hoc/additionalDomainProps";

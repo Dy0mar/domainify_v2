@@ -19,10 +19,10 @@ const DomainForm = (props) => {
         alexa_statuses, initManagerValuePk, companies,
     } = props;
 
-    const getInitialValue = (propName, orValue='') => {
+    const getInitialValue = (propName, defaultValue='') => {
         let value;
-        propName.split('.').forEach(e => value = value ? value[e]: props[e]);
-        return value || orValue
+        propName.split('.').forEach(e => value = value ? value[e] : props[e]);
+        return value || defaultValue
     };
 
     const [companyAddress, setCompanyAddress] = useState(getInitialValue('company.address'));

@@ -1,62 +1,48 @@
-import React, {useEffect, useState} from 'react'
-import {Divider, Form} from 'antd';
+import React, {useEffect} from 'react'
+import {Divider, Modal} from 'antd';
 import "antd/dist/antd.css";
 import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {loadCurrentDomain, updateDomain} from "../../redux/domain-reducer";
-import DomainForm from "./DomainForm";
-import {additionalDomainProps} from "../../hoc/additionalDomainProps";
+import DomainInfoContainer from "./DomainComponents/DomainInfoContainer";
 
+
+const { confirm } = Modal;
 
 const DomainDetailContainer = (props) => {
-    const {getFieldDecorator, validateFields} = props.form;
+
     const {currentDomain, loadCurrentDomain} = props;
     const {domainId} = props.match.params;
-
-    const [initManagerValuePk, setInitManagerValuePk] = useState(null);
-
-    useEffect(() => {
-        if (props.currentDomain.manager)
-            setInitManagerValuePk(props.currentDomain.manager.pk)
-    }, [props.currentDomain]);
+    const editLink = '/domains/'+domainId+'/edit/';
 
     useEffect(() => {
         loadCurrentDomain(domainId)
     }, [loadCurrentDomain, domainId]);
 
-    const onSubmit = (e) => {
-        e.preventDefault();
 
-        validateFields((err, values) => {
-            if (!err) {
-
-                const data = {
-                    ...values,
-                    pk: domainId,
-                    manager: {pk: values.manager},
-                    company: {pk: values.company}
-                };
-                props.updateDomain(data);
-            }
+    function deleteConfirm() {
+        confirm({
+            title: `Are you sure delete ${currentDomain.name}?`,
+            content: 'Нельзя так просто взять и удалить, надо подтвердить.',
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+                console.log('OK');
+            },
+            onCancel() {},
         });
-    };
+    }
 
     return (
         <div>
             <Divider>Domain detail</Divider>
-            <DomainForm {...props} {...currentDomain}
-                        onSubmit={onSubmit}
-                        getFieldDecorator={getFieldDecorator}
-                        initManagerValuePk={initManagerValuePk}
-
-            />
+            <DomainInfoContainer domain={currentDomain} deleteConfirm={deleteConfirm} editLink={editLink}/>
         </div>
     )
 };
-
-const DomainDetailComponent = Form.create({ name: 'domain_edit_form',  })(DomainDetailContainer);
 
 const mapStateToProps = (state) => ({
     currentDomain: state.domains.currentDomain
@@ -65,6 +51,5 @@ const mapStateToProps = (state) => ({
 export default compose(
     withAuthRedirect,
     withRouter,
-    additionalDomainProps,
     connect(mapStateToProps, {loadCurrentDomain, updateDomain})
-)(DomainDetailComponent);
+)(DomainDetailContainer);

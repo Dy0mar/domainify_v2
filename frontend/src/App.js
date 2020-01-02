@@ -13,6 +13,7 @@ import {
 } from "react-router-dom";
 import {initializeApp} from "./redux/app-reducer";
 import {showMessage} from "./hoc/showMessage";
+import Preloader from "./components/Common/Preloader/Preloader";
 import Header from "./components/Header/HeaderContainer";
 import Footer from "./components/Footer/Footer";
 import Login from "./components/Login/Login";
@@ -22,8 +23,7 @@ import ProfileContainer from "./components/Profile/ProfileContainer";
 import DomainsContainer from "./components/Domains/DomainsContainer";
 import DomainCreateContainer from "./components/Domain/DomainCreateContainer";
 import DomainDetailContainer from "./components/Domain/DomainDetailContainer";
-
-import Preloader from "./components/Common/Preloader/Preloader";
+import DomainEditContainer from "./components/Domain/DomainEditContainer";
 
 
 const { Content } = Layout;
@@ -54,6 +54,7 @@ class App extends Component {
                             <Route path='/profile/:userId?' render={() => <ProfileContainer />}/>
                             <Route path='/users' render={() => <Users />}/>
                             <Route path='/domains/create' render={() => <DomainCreateContainer />}/>
+                            <Route path='/domains/:domainId/edit' render={() => <DomainEditContainer />}/>
                             <Route path='/domains/:domainId' render={() => <DomainDetailContainer />}/>
                             <Route path='/domains' render={() => <DomainsContainer />}/>
                             <Redirect from="/" to="/profile" />
