@@ -28,10 +28,11 @@ const EmailDynamic = (props) => {
 
 
 const DomainForm = (props) => {
+    const { onSubmit, getFieldDecorator, getFieldValue, setFieldsValue } = props;
+
     const {
-        onSubmit, getFieldDecorator, formErrors, managers, statuses,
-        alexa_statuses, initManagerValuePk, companies, getFieldValue,
-        setFieldsValue,
+        formErrors, managers, statuses, alexa_statuses, initManagerValuePk,
+        companies
     } = props;
 
     const getInitialValue = (propName, defaultValue='') => {
@@ -97,6 +98,7 @@ const DomainForm = (props) => {
                                   getFieldValue={getFieldValue}
                                   setFieldsValue={setFieldsValue}
                                   formItemLayout={formItemLayout}
+                                  existsField={props.emails}
                     />
 
                 </Col>

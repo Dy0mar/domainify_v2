@@ -8,7 +8,7 @@ export const createDynamic = (props) => {
 
     const {
         formItemLayout, getFieldDecorator, getFieldValue, setFieldsValue,
-        limitCount
+        limitCount, existsField
     } = props;
 
     const remove = k => {
@@ -23,7 +23,7 @@ export const createDynamic = (props) => {
 
     const add = () => {
         const keys = getFieldValue('keys');
-        // can modify noMoreThan
+
         if (limitCount && keys.length === limitCount) {
             message.error('only available  ' + limitCount + ' fields');
             return;
@@ -43,31 +43,33 @@ export const createDynamic = (props) => {
         },
     };
 
-    getFieldDecorator('keys', { initialValue: [] });
+    getFieldDecorator('keys', { initialValue: existsField ? existsField.map(item => (item)) : [] });
+
+    if (existsField) {
+        existsField.forEach((item, index) => {
+            const name = `${props.field_name}_${index}`;
+            getFieldDecorator(name, {initialValue: item })
+        })
+    }
 
     const keys = getFieldValue('keys');
-    const formItems = keys.map((k, index) => (
+    const formItems = keys.map((item, index) => (
 
         <Form.Item
             {...(formItemLayout)}
             label={`${props.field_name} ${index+1}`}
             required={props.required}
-            key={k}
+            key={item}
         >
-
-            {getFieldDecorator(`${props.field_name}[${k}]`, {
+            {getFieldDecorator(`${props.field_name}_${index}`, {
                 validateTrigger: ['onChange', 'onBlur'],
-                rules: [
-                    {
-                        message: "Please input passenger's name or delete this field.",
-                    },
-                ],
+                rules: props.rules || [],
             })(<Input placeholder={props.placeholder} style={{ width: '90%', marginRight: 8 }} />)}
             {keys.length > 0 ? (
                 <Icon
                     className="dynamic-delete-button"
                     type="minus-circle-o"
-                    onClick={() => remove(k)}
+                    onClick={() => remove(item)}
                 />
             ) : null}
         </Form.Item>
