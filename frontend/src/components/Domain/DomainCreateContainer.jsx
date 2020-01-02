@@ -9,6 +9,7 @@ import DomainForm from "./DomainForm";
 import {domainCreate, setRedirectTo} from "../../redux/domain-reducer";
 import {additionalDomainProps} from "../../hoc/additionalDomainProps";
 import {getCurrentUserS} from "../../redux/users-selectors";
+import {redirectHoc} from "../../hoc/redirectTo";
 
 
 const DomainCreateContainer = (props) => {
@@ -33,25 +34,17 @@ const DomainCreateContainer = (props) => {
         });
     };
 
-    const redirectTo = () => {
-        // run after create domain
-        props.setRedirectTo('');
-        return <Redirect to={props.redirectTo} />
-    };
-
     const _props = {
         currentUser, formErrors, managers, statuses, alexa_statuses, companies,
         onSubmit, getFieldDecorator
     };
     return (
-        <> {props.redirectTo && redirectTo()}
         <div>
             <Divider>Domain create</Divider>
             <DomainForm {..._props}
                         initManagerValuePk={currentUser.pk}
             />
         </div>
-        </>
     )
 };
 
@@ -64,6 +57,7 @@ const mapStateToProps = (state) => ({
 
 export default compose(
     withAuthRedirect,
+    redirectHoc,
     additionalDomainProps,
     connect(mapStateToProps, {domainCreate, setRedirectTo})
 )(DomainCreateComponent);
