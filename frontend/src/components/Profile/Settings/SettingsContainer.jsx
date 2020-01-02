@@ -1,10 +1,10 @@
 import React from 'react'
 import "antd/dist/antd.css";
-import {Box} from "../Box/Box";
 import {connect} from "react-redux";
 import {updateUserProfile} from "../../../redux/user-reducer";
 import {Row, Col, Switch} from 'antd';
 import {RowItem} from "../RowItem/RowItem";
+import {Box} from "../../Common/Box/Box";
 
 
 const switchItem = (name, checked, handleChange) => (
@@ -24,7 +24,7 @@ const SettingsContainer = (props) => {
     ];
 
     return (
-        <Box boxTitleText={'Notification method'} icon={'edit'} onClickMethod={null}>
+        <Box boxTitleText={'Notification method'} icon={'notification'} onClickMethod={null}>
             <Row>
                 <Col span={24}>
                     {data.map((row, index) => {

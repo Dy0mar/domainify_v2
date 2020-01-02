@@ -4,7 +4,7 @@ import "antd/dist/antd.css";
 import UserInfo from "./UserInfo";
 import {updateUserProfile} from "../../../redux/user-reducer";
 import UserInfoForm from "./UserInfoForm/UserInfoForm";
-import {Box} from "../Box/Box";
+import {Box} from "../../Common/Box/Box";
 
 const UserInfoContainer = (props) => {
 
