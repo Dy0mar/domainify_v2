@@ -3,7 +3,7 @@ import css from "./Preloader.module.css";
 import Spin from "antd/es/spin";
 
 
-let Preloader = (props) => {
+const Preloader = (props) => {
     return (
         <div className={css.outer}>
             <Spin size="large" />
