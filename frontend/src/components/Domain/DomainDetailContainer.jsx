@@ -5,8 +5,13 @@ import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import {loadCurrentDomain, updateDomain} from "../../redux/domain-reducer";
+import {
+    deleteDomain,
+    loadCurrentDomain,
+    updateDomain
+} from "../../redux/domain-reducer";
 import DomainInfoContainer from "./DomainComponents/DomainInfoContainer";
+import {redirectHoc} from "../../hoc/redirectTo";
 
 
 const { confirm } = Modal;
@@ -30,7 +35,7 @@ const DomainDetailContainer = (props) => {
             okType: 'danger',
             cancelText: 'No',
             onOk() {
-                console.log('OK');
+                props.deleteDomain(domainId)
             },
             onCancel() {},
         });
@@ -51,5 +56,6 @@ const mapStateToProps = (state) => ({
 export default compose(
     withAuthRedirect,
     withRouter,
-    connect(mapStateToProps, {loadCurrentDomain, updateDomain})
+    redirectHoc,
+    connect(mapStateToProps, {loadCurrentDomain, updateDomain, deleteDomain})
 )(DomainDetailContainer);

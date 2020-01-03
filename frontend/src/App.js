@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import "antd/dist/antd.css";
 import css from './App.module.css'
-import { Layout, Breadcrumb } from 'antd'
+import {Layout, Breadcrumb, Typography} from 'antd'
 import {compose} from "redux";
 import {connect, Provider} from "react-redux";
 import store from "./redux/redux-store";
@@ -27,6 +27,7 @@ import DomainEditContainer from "./components/Domain/DomainEditContainer";
 
 
 const { Content } = Layout;
+const { Text } = Typography;
 
 class App extends Component {
 
@@ -57,8 +58,8 @@ class App extends Component {
                             <Route path='/domains/:domainId/edit' render={() => <DomainEditContainer />}/>
                             <Route path='/domains/:domainId' render={() => <DomainDetailContainer />}/>
                             <Route path='/domains' render={() => <DomainsContainer />}/>
-                            <Redirect from="/" to="/profile" />
-                            <Route path='*' render={() => <div>404 Not Found</div>}/>
+                            <Redirect exact from="/" to="/profile" />
+                            <Route path='**' render={() => <div style={{textAlign: 'center'}}><Text strong type="danger" >Page Not Found</Text></div>}/>
                         </Switch>
                     </div>
                 </Content>

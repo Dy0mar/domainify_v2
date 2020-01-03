@@ -103,6 +103,10 @@ export const setFormErrorsAction = (formErrors) => ({
 });
 
 // Thunks
+export const setRedirectTo = (redirectTo) => async (dispatch) => {
+    dispatch(redirectToAction(redirectTo));
+};
+
 export const domainCreate = (data) => async (dispatch) => {
     try{
         dispatch(isLoadingAction(true));
@@ -135,19 +139,18 @@ export const updateDomain = (data) => async (dispatch) => {
     } finally {
         dispatch(isLoadingAction(false));
     }
-
 };
 
-export const setRedirectTo = (redirectTo) => async (dispatch) => {
-    dispatch(redirectToAction(redirectTo));
-};
-
-export const getDomainStatusList = () => async (dispatch) => {
+export const deleteDomain = (pk) => async (dispatch) => {
+    dispatch(isLoadingAction(true));
     try{
-        const response = await domainsAPI.status_list();
-        dispatch(domainStatusListAction(response.data));
+        await domainsAPI.delete(pk);
+        dispatch(setCurrentDomainAction({}));
+        dispatch(redirectToAction('/domains'));
     } catch (e) {
-        exception(e)
+        exception(e, dispatch)
+    } finally {
+        dispatch(isLoadingAction(false));
     }
 };
 
@@ -157,9 +160,18 @@ export const loadCurrentDomain = (pk) => async (dispatch) => {
         const response = await domainsAPI.domain_detail(pk);
         dispatch(setCurrentDomainAction(response.data));
     } catch (e) {
-        exception(e)
+        exception(e, dispatch)
     } finally {
         dispatch(isLoadingAction(false));
+    }
+};
+
+export const getDomainStatusList = () => async (dispatch) => {
+    try{
+        const response = await domainsAPI.status_list();
+        dispatch(domainStatusListAction(response.data));
+    } catch (e) {
+        exception(e)
     }
 };
 
@@ -193,8 +205,14 @@ export const getDomainList = (page=1, filters = {}) => async (dispatch) => {
     }
 };
 
-function exception(e) {
-    console.log(e)
-}
+const exception = (e, dispatch) => {
+    const page404 = '/404';
+    if (e && e.response && e.response.status) {
+        switch (e.response.status) {
+            case 404: dispatch(redirectToAction(page404)); break;
+            default: dispatch(redirectToAction(page404)); break;
+        }
+    }
+};
 
 export default domainsReducer;
