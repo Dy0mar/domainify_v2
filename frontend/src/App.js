@@ -74,13 +74,13 @@ const mapStateToProps = (state) => ({
     isAuth: state.auth.isAuth,
 });
 
-let AppContainer = compose(
+const AppContainer = compose(
     connect(mapStateToProps, {initializeApp}),
     showMessage,
 )(App);
 
 
-let MainApp = (props) => {
+const MainApp = (props) => {
     return (
         <BrowserRouter>
             <Provider store={store} >

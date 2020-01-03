@@ -10,7 +10,7 @@ import {compose} from "redux";
 
 const RegisterContainer = (props) => {
 
-    let [confirmDirty, setConfirmDirty] = useState(false);
+    const [confirmDirty, setConfirmDirty] = useState(false);
 
     const {
         getFieldDecorator, validateFieldsAndScroll, getFieldValue,
@@ -63,7 +63,7 @@ const RegisterContainer = (props) => {
 
 const Register = Form.create({ name: 'register_form',  })(RegisterContainer);
 
-let mapStateToProps = (state) => ({
+const mapStateToProps = (state) => ({
     isAuth: state.auth.isAuth,
     registerErrors: state.user.registerErrors
 });

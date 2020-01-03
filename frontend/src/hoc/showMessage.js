@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import {showedMessage} from "../redux/app-reducer";
 import {getLastMessage} from "../redux/users-selectors";
 
-let mapStateToProps = (state) => ({
+const mapStateToProps = (state) => ({
     lastMessage: getLastMessage(state)
 });
 
@@ -30,7 +30,7 @@ export const showMessage = (Component) => {
         }
     }
 
-    let ConnectedShowMessageComponent = connect(mapStateToProps,{showedMessage})(showMessageComponent);
+    const ConnectedShowMessageComponent = connect(mapStateToProps,{showedMessage})(showMessageComponent);
 
     return ConnectedShowMessageComponent
 };

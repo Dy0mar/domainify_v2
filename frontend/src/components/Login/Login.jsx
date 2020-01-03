@@ -36,7 +36,7 @@ const LoginContainer = (props) => {
 
 const Login = Form.create({ name: 'login_form',  })(LoginContainer);
 
-let mapStateToProps = (state) => ({
+const mapStateToProps = (state) => ({
     isAuth: state.auth.isAuth,
     loginErrors: state.auth.loginErrors
 });

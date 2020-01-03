@@ -15,14 +15,14 @@ const composeEnhancers =
     }) : compose;
 
 
-let reducers = combineReducers({
+const reducers = combineReducers({
     auth: authReducer,
     app: appReducer,
     user: userReducer,
     domains: domainsReducer,
 });
 
-let store = createStore(reducers, composeEnhancers(applyMiddleware(thunkMiddleware)));
+const store = createStore(reducers, composeEnhancers(applyMiddleware(thunkMiddleware)));
 
 
 export default store;

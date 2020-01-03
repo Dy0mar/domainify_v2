@@ -11,7 +11,7 @@ const HeaderContainer = (props) => {
     )
 };
 
-let mapStateToProps = (state) => ({
+const mapStateToProps = (state) => ({
     isAuth: state.auth.isAuth,
     username: state.user.username,
 });

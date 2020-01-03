@@ -7,7 +7,7 @@ import {
     getDomainStatusListS
 } from "../redux/domains-selectors";
 
-let mapStateToProps = (state) => ({
+const mapStateToProps = (state) => ({
     formErrors: state.domains.formErrors,
     managers: getManagerListS(state),
     statuses: getDomainStatusListS(state),
@@ -21,7 +21,7 @@ export const additionalDomainProps = (Component) => {
         return <Component {...props}/>
     };
 
-    let wrapperComponent = connect(mapStateToProps)(wrapper);
+    const wrapperComponent = connect(mapStateToProps)(wrapper);
 
     return wrapperComponent
 };

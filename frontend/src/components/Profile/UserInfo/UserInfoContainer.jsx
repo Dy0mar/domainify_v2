@@ -8,7 +8,7 @@ import {Box} from "../../Common/Box/Box";
 
 const UserInfoContainer = (props) => {
 
-    let [editMode, setEditMode] = useState(false);
+    const [editMode, setEditMode] = useState(false);
 
     const activateEditMode = () => {
         setEditMode(true)
@@ -42,7 +42,7 @@ const UserInfoContainer = (props) => {
     )
 };
 
-let mapStateToProps = (state) => ({
+const mapStateToProps = (state) => ({
     username: state.user.username,
     email: state.user.email,
     profile: state.user.profile,

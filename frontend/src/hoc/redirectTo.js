@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
 import {setRedirectTo} from "../redux/domain-reducer";
 
-let mapStateToProps = (state) => ({
+const mapStateToProps = (state) => ({
     domainRedirectTo: state.domains.redirectTo,
 });
 
@@ -22,6 +22,6 @@ export const redirectHoc = (Component) => {
         )
     };
 
-    let wrapperComponent = connect(mapStateToProps, {setRedirectTo})(wrapper);
+    const wrapperComponent = connect(mapStateToProps, {setRedirectTo})(wrapper);
     return wrapperComponent
 };

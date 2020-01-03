@@ -7,7 +7,7 @@ const {Item} = Menu;
 
 const Header = (props) => {
     const disabled = !props.isAuth;
-    let [currentItem, setCurrentItem] = useState('');
+    const [currentItem, setCurrentItem] = useState('');
     const setMenu = (path) => {
         switch (path) {
             case '/domains': return 'domain_list';
