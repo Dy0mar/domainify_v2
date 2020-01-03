@@ -5,24 +5,27 @@ import {Button, Form, Icon, Input, message} from 'antd';
 let id = 0;
 
 export const createDynamic = (props) => {
+    // existsField like object
+    // {pk: 'value', fieldName: 'value' }
 
     const {
         formItemLayout, getFieldDecorator, getFieldValue, setFieldsValue,
         limitCount, existsField
     } = props;
+    const fieldName = props.name ? props.name : 'keys';
 
     const remove = k => {
         // can use data-binding to get
-        const keys = getFieldValue('keys');
+        const keys = getFieldValue(fieldName);
 
         // can use data-binding to set
         setFieldsValue({
-            keys: keys.filter(key => key !== k),
+            [fieldName]: keys.filter(key => key !== k),
         });
     };
 
-    const add = () => {
-        const keys = getFieldValue('keys');
+    const add = (e) => {
+        const keys = getFieldValue(fieldName);
 
         if (limitCount && keys.length === limitCount) {
             message.error('only available  ' + limitCount + ' fields');
@@ -32,7 +35,7 @@ export const createDynamic = (props) => {
         // can use data-binding to set
         // important! notify form to detect changes
         setFieldsValue({
-            keys: nextKeys,
+            [fieldName]: nextKeys,
         });
     };
 
@@ -43,16 +46,16 @@ export const createDynamic = (props) => {
         },
     };
 
-    getFieldDecorator('keys', { initialValue: existsField ? existsField.map(item => (item)) : [] });
+    getFieldDecorator(fieldName, { initialValue: existsField ? existsField.map(item => (item)) : [] });
 
     if (existsField) {
-        existsField.forEach((item, index) => {
-            const name = `${props.field_name}_${index}`;
-            getFieldDecorator(name, {initialValue: item })
+        existsField.forEach(item => {
+            const name = `${props.field_name}_${item.pk}`;
+            getFieldDecorator(name, {initialValue: item[props.field_name] })
         })
     }
 
-    const keys = getFieldValue('keys');
+    const keys = getFieldValue(fieldName);
     const formItems = keys.map((item, index) => (
 
         <Form.Item
@@ -61,7 +64,7 @@ export const createDynamic = (props) => {
             required={props.required}
             key={item}
         >
-            {getFieldDecorator(`${props.field_name}_${index}`, {
+            {getFieldDecorator(`${props.field_name}_${item.pk?item.pk:index}`, {
                 validateTrigger: ['onChange', 'onBlur'],
                 rules: props.rules || [],
             })(<Input placeholder={props.placeholder} style={{ width: '90%', marginRight: 8 }} />)}

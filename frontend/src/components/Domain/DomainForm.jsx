@@ -17,6 +17,7 @@ const { Option } = Select;
 const EmailDynamic = (props) => {
     const _props = {
         ...props,
+        name: 'emails',
         field_name: 'email',
         placeholder: 'email@gmail.com',
         limitCount: 3,

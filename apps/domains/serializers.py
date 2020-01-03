@@ -19,9 +19,15 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('pk', 'username', 'url')
 
 
+class EmailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Email
+        fields = ('pk', 'email', )
+
+
 class DomainSerializer(serializers.ModelSerializer):
     telephones = serializers.StringRelatedField(many=True, required=False)
-    emails = serializers.StringRelatedField(many=True, required=False)
+    emails = EmailsSerializer(many=True, required=False)
     company = CompanySerializer(required=False)
     manager = UserSerializer(required=False)
 
@@ -50,6 +56,26 @@ class DomainSerializer(serializers.ModelSerializer):
         instance = self.get_instance_from_pk(User, 'manager')
         return instance or None
 
+    def get_instance_from_list(self, model, field_plural, field):
+        instances = []
+        qs = model.objects.filter(domain=self.instance)
+        for data in self.initial_data.get(field_plural, []):
+            pk = data.get('pk')
+            data_field = data.get(field)
+            if not all([pk, data_field]):
+                continue
+            try:
+                obj = qs.filter(pk=pk).first()
+                obj.email = data_field
+            except AttributeError:
+                obj = Email(domain=self.instance, email=data_field)
+            instances.append(obj)
+        return instances or None
+
+    def validate_emails(self, obj):
+        instances = self.get_instance_from_list(Email, 'emails', 'email')
+        return instances or []
+
     def create(self, validated_data):
         telephone_data = validated_data.pop('telephone', {})
         email_data = validated_data.pop('email', {})
@@ -63,21 +89,23 @@ class DomainSerializer(serializers.ModelSerializer):
         return domain
 
     def update(self, instance, validated_data):
+        qs = Email.objects.filter(domain=instance)
 
-        email = validated_data.get('email', '')
+        emails = validated_data.get('emails', [])
+        clear_objects = []
+        for obj in emails:
+            obj.save()
+            clear_objects.append(obj.pk)
+        qs.exclude(pk__in=clear_objects).delete()
 
         for key in validated_data.keys():
-            if key == 'name':
+            if key in ('name', 'emails', 'telephones'):
                 continue
             value = validated_data.get(key)
             if getattr(instance, key) != value:
                 setattr(instance, key, validated_data.get(key))
 
         instance.save()
-
-        if email and email != instance.email:
-            instance.email = validated_data.get('email', instance.email)
-            instance.save()
 
         return instance
 

@@ -9,6 +9,7 @@ import {loadCurrentDomain, updateDomain} from "../../redux/domain-reducer";
 import DomainForm from "./DomainForm";
 import {additionalDomainProps} from "../../hoc/additionalDomainProps";
 import {redirectHoc} from "../../hoc/redirectTo";
+import {submitCreateUpdateForm} from "../../utils/utils";
 
 
 const DomainDetailContainer = (props) => {
@@ -29,19 +30,7 @@ const DomainDetailContainer = (props) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-
-        validateFields((err, values) => {
-            if (!err) {
-
-                const data = {
-                    ...values,
-                    pk: domainId,
-                    manager: {pk: values.manager},
-                    company: {pk: values.company}
-                };
-                props.updateDomain(data);
-            }
-        });
+        submitCreateUpdateForm(validateFields, domainId, props.updateDomain);
     };
 
     return (
