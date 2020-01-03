@@ -1,6 +1,6 @@
 import {usersAPI} from "../api/api";
 import {login} from "./auth-reducer";
-import {addSuccessMessage} from "./app-reducer";
+import {addSuccessMessage, errorHandler} from "./app-reducer";
 
 const SET_CURRENT_USER = 'user/SET_CURRENT_USER';
 const SET_USER_INFO = 'user/SET_CURRENT_USER';
@@ -83,7 +83,7 @@ export const getManagerList = (update=false) => async (dispatch, getState) => {
         const response = await usersAPI.manager_list();
         dispatch(managersListAction(response.data))
     } catch (e) {
-        console.log(e)
+        errorHandler(e, dispatch)
     }
 };
 
@@ -107,9 +107,12 @@ export const register = (username, email, password, jabber_nick) => async (dispa
             dispatch(login(username, password));
         }
     } catch (e) {
-        const response = e.response;
-        const errors = response.data;
-        dispatch(registerErrorsAction(errors))
+        if (e && e.response && e.response.data){
+            const response = e.response;
+            const errors = response.data;
+            dispatch(registerErrorsAction(errors))
+        }
+        errorHandler(e, dispatch)
     }
 };
 

@@ -10,11 +10,15 @@ import {
 const INITIALIZED_SUCCESS = 'app/INITIALIZED_SUCCESS';
 const SHOW_MESSAGE = 'app/SHOW_MESSAGE';
 const ADD_MESSAGE = 'app/ADD_MESSAGE';
+const SET_REDIRECT_TO = 'app/SET_REDIRECT_TO';
+const SET_ERROR_INFO = 'app/SET_ERROR_INFO';
 
 
 const initialSate = {
     initialized: false,
-    messages: []
+    redirectTo: '',
+    messages: [],
+    errorInfo: ''
 };
 
 
@@ -22,9 +26,11 @@ const appReducer = (state=initialSate, action) => {
 
     switch (action.type) {
         case INITIALIZED_SUCCESS:
+        case SET_REDIRECT_TO:
+        case SET_ERROR_INFO:
             return {
                 ...state,
-                initialized: true,
+                ...action.payload,
             };
         case SHOW_MESSAGE:
             return {
@@ -42,8 +48,20 @@ const appReducer = (state=initialSate, action) => {
 };
 
 
-export const initializedSuccess = () => ({
+// Actions
+export const initializedSuccess = (initialized=true) => ({
     type: INITIALIZED_SUCCESS,
+    payload: {initialized}
+});
+
+export const redirectToAction = (redirectTo) => ({
+    type: SET_REDIRECT_TO,
+    payload: {redirectTo}
+});
+
+export const setErrorInfoAction = (errorInfo) => ({
+    type: SET_ERROR_INFO,
+    payload: {errorInfo}
 });
 
 export const showMessageAction = (message) => ({
@@ -55,6 +73,11 @@ export const addMessageAction = (message) => ({
     type: ADD_MESSAGE,
     message
 });
+
+// Thunks
+export const setRedirectTo = (redirectTo) => async (dispatch) => {
+    dispatch(redirectToAction(redirectTo));
+};
 
 export const showedMessage = (message) => (dispatch) => {
     dispatch(showMessageAction(message))
@@ -92,6 +115,23 @@ export const initializeApp = () => (dispatch) => {
         () => {
             dispatch(initializedSuccess());
         });
+};
+
+export const errorHandler = (e, dispatch) => {
+    const pageError = '/503';
+    let status = null;
+    if (e && e.response && e.response.status) {
+        status = e.response.status
+    }
+    switch (status) {
+        case 404:
+        case 500:
+            dispatch(redirectToAction('/'+status));
+
+            break;
+        default: dispatch(redirectToAction(pageError)); break;
+    }
+    dispatch(setErrorInfoAction(e));
 };
 
 

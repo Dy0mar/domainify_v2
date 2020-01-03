@@ -1,5 +1,6 @@
 import {authAPI} from "../api/api";
 import {setCurrentUserAction, setUserInfo} from "./user-reducer";
+import {errorHandler} from "./app-reducer";
 
 
 const SET_AUTH_COMPLETE = 'auth/SET_AUTH_COMPLETE';
@@ -16,10 +17,6 @@ const authReducer = (state=initialSate, action) => {
 
     switch (action.type) {
         case SET_AUTH_COMPLETE:
-            return {
-                ...state,
-                ...action.payload,
-            };
         case LOGIN_ERROR_MESSAGES:
             return {
                 ...state,
@@ -42,12 +39,16 @@ export const loginErrorsAction = (loginErrors) => ({
 
 
 export const verifyToken = () => async (dispatch) => {
-    const response = await authAPI.verify();
-    if (response.status === 200){
-        dispatch(setAuthComplete(true))
-    } else {
-        dispatch(setAuthComplete(false));
-        return Promise.reject(response.data.message)
+    try{
+        const response = await authAPI.verify();
+        if (response.status === 200){
+            dispatch(setAuthComplete(true))
+        } else {
+            dispatch(setAuthComplete(false));
+            return Promise.reject(response.data.message)
+        }
+    } catch (e) {
+        errorHandler(e, dispatch);
     }
 };
 
@@ -63,9 +64,12 @@ export const login = (username, password) => async (dispatch) => {
             dispatch(setUserInfo(pk));
         }
     } catch (e) {
-        const response = e.response;
-        const errors = response.data.non_field_errors;
-        dispatch(loginErrorsAction(errors))
+        if (e && e.response && e.response.data){
+            const response = e.response;
+            const errors = response.data.non_field_errors;
+            dispatch(loginErrorsAction(errors))
+        }
+        errorHandler(e, dispatch)
     }
 };
 

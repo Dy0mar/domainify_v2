@@ -24,7 +24,12 @@ import DomainsContainer from "./components/Domains/DomainsContainer";
 import DomainCreateContainer from "./components/Domain/DomainCreateContainer";
 import DomainDetailContainer from "./components/Domain/DomainDetailContainer";
 import DomainEditContainer from "./components/Domain/DomainEditContainer";
-import {Page404} from "./components/Common/Pages/Page404";
+import {
+    Page404,
+    Page500,
+    Page503Component
+} from "./components/Common/Pages/Pages";
+import {redirectHoc} from "./hoc/redirectTo";
 
 
 const { Content } = Layout;
@@ -51,6 +56,9 @@ class App extends Component {
                     </Breadcrumb>
                     <div className={css.appWrapperContent}>
                         <Switch>
+                            <Route path='/404' render={() => <Page404 />} />
+                            <Route path='/500' render={() => <Page500 />} />
+                            <Route path='/503' render={() => <Page503Component />} />
                             <Route path='/login' render={() => <Login />}/>
                             <Route path='/register' render={() => <Register />}/>
                             <Route path='/profile/:userId?' render={() => <ProfileContainer />}/>
@@ -60,7 +68,6 @@ class App extends Component {
                             <Route path='/domains/:domainId' render={() => <DomainDetailContainer />}/>
                             <Route path='/domains' render={() => <DomainsContainer />}/>
                             <Redirect exact from="/" to="/profile" />
-                            <Route path='/404' render={() => <Page404 />} />
                             <Route path='**' render={() => <Page404 />} />
                         </Switch>
                     </div>
@@ -78,6 +85,7 @@ const mapStateToProps = (state) => ({
 
 const AppContainer = compose(
     connect(mapStateToProps, {initializeApp}),
+    redirectHoc,
     showMessage,
 )(App);
 
