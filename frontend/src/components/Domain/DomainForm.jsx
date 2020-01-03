@@ -178,7 +178,7 @@ const DomainForm = (props) => {
                         </Col>
                     </Form.Item>
                 </Col>
-                <Col span={7}>
+                <Col span={9}>
                     <Form.Item
                         {...formErrors.alexa_status && {
                             help: formErrors.alexa_status,
@@ -202,6 +202,16 @@ const DomainForm = (props) => {
                         {getFieldDecorator('alexa_comment', {
                             initialValue: getInitialValue('alexa_comment')
                         })( <Input placeholder="Comment ..." /> )}
+                    </Form.Item>
+                    <Form.Item
+                        {...formErrors.redirect && {
+                            help: formErrors.redirect,
+                            validateStatus: 'error',
+                        }}
+                        label="Redirect email" {...formItemLayout}>
+                        {getFieldDecorator('redirect', {
+                            initialValue: getInitialValue('redirect'),
+                        })( <Input placeholder="email@example.com" /> )}
                     </Form.Item>
                 </Col>
             </Row>
