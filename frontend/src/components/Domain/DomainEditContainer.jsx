@@ -30,9 +30,10 @@ const DomainDetailContainer = (props) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        submitCreateUpdateForm(validateFields, domainId, props.updateDomain);
+        submitCreateUpdateForm(validateFields, props.updateDomain, domainId);
     };
 
+    const cancelLink = '/domains/'+domainId;
     return (
         <div>
             <Divider>Domain detail</Divider>
@@ -42,7 +43,7 @@ const DomainDetailContainer = (props) => {
                         getFieldValue={getFieldValue}
                         setFieldsValue={setFieldsValue}
                         initManagerValuePk={initManagerValuePk}
-
+                        cancelLink={cancelLink}
             />
         </div>
     )

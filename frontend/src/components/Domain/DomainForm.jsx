@@ -11,6 +11,7 @@ import "antd/dist/antd.css";
 import css from "../Login/Login.module.css";
 import Checkbox from "antd/es/checkbox";
 import {createDynamic} from "../Common/DynamicForm/DynamicFieldSet";
+import {NavLink} from "react-router-dom";
 
 const { Option } = Select;
 
@@ -27,9 +28,24 @@ const EmailDynamic = (props) => {
     return createDynamic(_props)
 };
 
+const TelephoneDynamic = (props) => {
+    const _props = {
+        ...props,
+        name: 'telephones',
+        field_name: 'telephone',
+        placeholder: '+44 (203) 76-91-964',
+        limitCount: 3,
+        required: false,
+    };
+
+    return createDynamic(_props)
+};
+
 
 const DomainForm = (props) => {
     const { onSubmit, getFieldDecorator, getFieldValue, setFieldsValue } = props;
+
+    const cancelLink = props.cancelLink ? props.cancelLink : '/';
 
     const {
         formErrors, managers, statuses, alexa_statuses, initManagerValuePk,
@@ -102,6 +118,12 @@ const DomainForm = (props) => {
                                   existsField={props.emails}
                     />
 
+                    <TelephoneDynamic getFieldDecorator={getFieldDecorator}
+                                      getFieldValue={getFieldValue}
+                                      setFieldsValue={setFieldsValue}
+                                      formItemLayout={formItemLayout}
+                                      existsField={props.telephones}
+                    />
                 </Col>
                 <Col span={7}>
                     <Form.Item
@@ -141,7 +163,20 @@ const DomainForm = (props) => {
                             initialValue: getInitialValue('custom_company_address'),
                         })( <Input disabled={customAddress} placeholder="custom address" /> )}
                     </Form.Item>
-
+                    <Form.Item>
+                        <Col offset={6} span={6}>
+                            <Button type="primary" htmlType="submit" className={css.submitButton}>
+                                Save
+                            </Button>
+                        </Col>
+                        <Col span={6}>
+                            <NavLink to={cancelLink}>
+                                <Button type="danger" className={css.submitButton} style={{marginLeft: 10}}>
+                                    Cancel
+                                </Button>
+                            </NavLink>
+                        </Col>
+                    </Form.Item>
                 </Col>
                 <Col span={7}>
                     <Form.Item
@@ -169,15 +204,6 @@ const DomainForm = (props) => {
                         })( <Input placeholder="Comment ..." /> )}
                     </Form.Item>
                 </Col>
-            </Row>
-            <Row>
-                <Form.Item>
-                    <Col offset={11} span={2}>
-                        <Button type="primary" htmlType="submit" className={css.submitButton}>
-                            Save
-                        </Button>
-                    </Col>
-                </Form.Item>
             </Row>
         </Form>
     )

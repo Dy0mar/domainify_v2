@@ -9,6 +9,7 @@ import {domainCreate, setRedirectTo} from "../../redux/domain-reducer";
 import {additionalDomainProps} from "../../hoc/additionalDomainProps";
 import {getCurrentUserS} from "../../redux/users-selectors";
 import {redirectHoc} from "../../hoc/redirectTo";
+import {submitCreateUpdateForm} from "../../utils/utils";
 
 
 const DomainCreateContainer = (props) => {
@@ -19,19 +20,7 @@ const DomainCreateContainer = (props) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-
-        validateFields((err, values) => {
-            if (!err) {
-
-                const data = {
-                    ...values,
-                    manager: {pk: values.manager},
-                    company: {pk: values.company},
-                    email: values.email.filter(e => e)
-                };
-                props.domainCreate(data);
-            }
-        });
+        submitCreateUpdateForm(validateFields, props.domainCreate);
     };
 
     const _props = {
@@ -43,6 +32,7 @@ const DomainCreateContainer = (props) => {
             <Divider>Domain create</Divider>
             <DomainForm {..._props}
                         initManagerValuePk={currentUser.pk}
+                        cancelLink={'/domains'}
             />
         </div>
     )

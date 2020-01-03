@@ -25,8 +25,14 @@ class EmailsSerializer(serializers.ModelSerializer):
         fields = ('pk', 'email', )
 
 
+class TelephonesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Telephone
+        fields = ('pk', 'telephone', )
+
+
 class DomainSerializer(serializers.ModelSerializer):
-    telephones = serializers.StringRelatedField(many=True, required=False)
+    telephones = TelephonesSerializer(many=True, required=False)
     emails = EmailsSerializer(many=True, required=False)
     company = CompanySerializer(required=False)
     manager = UserSerializer(required=False)
@@ -61,14 +67,16 @@ class DomainSerializer(serializers.ModelSerializer):
         qs = model.objects.filter(domain=self.instance)
         for data in self.initial_data.get(field_plural, []):
             pk = data.get('pk')
-            data_field = data.get(field)
-            if not all([pk, data_field]):
+            value = data.get(field)
+            if pk is None or value is None:
                 continue
             try:
                 obj = qs.filter(pk=pk).first()
-                obj.email = data_field
+                getattr(obj, field)
+                setattr(obj, field, value)
             except AttributeError:
-                obj = Email(domain=self.instance, email=data_field)
+                data = {field: value}
+                obj = model(domain=self.instance, **data)
             instances.append(obj)
         return instances or None
 
@@ -76,27 +84,41 @@ class DomainSerializer(serializers.ModelSerializer):
         instances = self.get_instance_from_list(Email, 'emails', 'email')
         return instances or []
 
+    def validate_telephones(self, obj):
+        instances = self.get_instance_from_list(
+            Telephone, 'telephones', 'telephone')
+        return instances or []
+
     def create(self, validated_data):
-        telephone_data = validated_data.pop('telephone', {})
-        email_data = validated_data.pop('email', {})
+        telephone_data = validated_data.pop('telephones', {})
+        email_data = validated_data.pop('emails', {})
 
         domain = Domain(**validated_data)
         domain.save()
         if telephone_data:
-            Telephone.objects.create(domain=domain, **telephone_data)
+            for telephone in telephone_data:
+                telephone.domain = domain
+                telephone.save()
+
         if email_data:
-            Email.objects.create(domain=domain, **email_data)
+            for email in email_data:
+                email.domain = domain
+                email.save()
         return domain
 
-    def update(self, instance, validated_data):
-        qs = Email.objects.filter(domain=instance)
-
-        emails = validated_data.get('emails', [])
-        clear_objects = []
-        for obj in emails:
+    def save_dynamic_objects(self, model, field_plural):
+        qs = model.objects.filter(domain=self.instance)
+        objects = self.validated_data.get(field_plural, [])
+        saved_objects = []
+        for obj in objects:
             obj.save()
-            clear_objects.append(obj.pk)
-        qs.exclude(pk__in=clear_objects).delete()
+            saved_objects.append(obj.pk)
+        qs.exclude(pk__in=saved_objects).delete()
+
+    def update(self, instance, validated_data):
+
+        self.save_dynamic_objects(Email, 'emails')
+        self.save_dynamic_objects(Telephone, 'telephones')
 
         for key in validated_data.keys():
             if key in ('name', 'emails', 'telephones'):
