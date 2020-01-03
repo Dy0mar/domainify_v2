@@ -62,9 +62,9 @@ export const createDynamic = (props) => {
             {...(formItemLayout)}
             label={`${props.field_name} ${index+1}`}
             required={props.required}
-            key={item}
+            key={item.pk+'_'+index}
         >
-            {getFieldDecorator(`${props.field_name}_${item.pk?item.pk:index}`, {
+            {getFieldDecorator(`${props.field_name}_${item.pk ? item.pk : index}`, {
                 validateTrigger: ['onChange', 'onBlur'],
                 rules: props.rules || [],
             })(<Input placeholder={props.placeholder} style={{ width: '90%', marginRight: 8 }} />)}
