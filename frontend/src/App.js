@@ -62,13 +62,13 @@ class App extends Component {
                             <Route path='/503' render={() => <Page503Component />} />
                             <Route path='/login' render={() => <Login />}/>
                             <Route path='/register' render={() => <Register />}/>
-                            <Route path='/domains' render={() => <DomainsContainer />}/>
-                            <Route path='/domains/:domainId' render={() => <DomainDetailContainer />}/>
+                            <Route path='/profile/:userId?' render={() => <ProfileContainer />}/>
+                            <Route path='/users' render={() => <UsersContainer />}/>
                             <Route path='/domains/create' render={() => <DomainCreateContainer />}/>
                             <Route path='/domains/:domainId/edit' render={() => <DomainEditContainer />}/>
+                            <Route path='/domains/:domainId' render={() => <DomainDetailContainer />}/>
+                            <Route path='/domains' render={() => <DomainsContainer />}/>
                             <Route path='/companies' render={() => <CompaniesContainer />}/>
-                            <Route path='/users' render={() => <UsersContainer />}/>
-                            <Route path='/profile/:userId?' render={() => <ProfileContainer />}/>
                             <Redirect exact from="/" to="/profile" />
                             <Route path='**' render={() => <Page404 />} />
                         </Switch>
