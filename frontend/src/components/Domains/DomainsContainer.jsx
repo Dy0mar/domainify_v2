@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Divider, Row, Col, Table} from 'antd';
+import {Divider, Row, Col, Table, Popover, Button} from 'antd';
 import "antd/dist/antd.css";
 import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
@@ -54,12 +54,12 @@ const DomainsContainer = (props) => {
                     key: 'manager',
                     filters: managers,
                     render: manager => (manager
-                            ? <NavLink to={getUrlOr404S(manager.url)} >{manager.username}</NavLink>
+                            ? manager.username
                             : '--'
                     )
                 },
                 {
-                    title: 'Company name',
+                    title: 'Company',
                     dataIndex: 'company.name',
                     key: 'company.name',
                     render: (name, row) => (row.company
@@ -68,9 +68,15 @@ const DomainsContainer = (props) => {
                     )
                 },
                 {
-                    title: 'Company address',
-                    dataIndex: 'company.address',
-                    key: 'company.address',
+                    title: 'Address',
+                    dataIndex: 'company.custom_company_address',
+                    key: 'company.custom_company_address',
+                    render: (address, row) => (row.use_custom_address
+                            ? <Popover content={row.company.address} title="Custom address"><Button type={'link'}>{row.custom_company_address.substr(0,10)}...</Button></Popover>
+                            : row.company
+                                ? <Popover content={row.company.address} title="Company address"><Button type={'link'}>{row.company.address.substr(0,10)}...</Button></Popover>
+                                : '--'
+                    )
                 },
                 {
                     title: 'Alexa status',
