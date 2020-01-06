@@ -3,9 +3,9 @@ import {connect} from "react-redux";
 import {getManagerListS} from "../redux/users-selectors";
 import {
     getAlexaStatusListS,
-    getCompanyListS,
     getDomainStatusListS
 } from "../redux/domains-selectors";
+import {getCompanyListS} from "../redux/company-selector";
 
 const mapStateToProps = (state) => ({
     formErrors: state.domains.formErrors,

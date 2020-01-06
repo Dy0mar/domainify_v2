@@ -3,9 +3,9 @@ import {getManagerList, setCurrentUser} from "./user-reducer";
 import {newMessage} from "./users-selectors";
 import {
     getAlexaStatusList,
-    getCompanyList,
     getDomainStatusList
 } from "./domain-reducer";
+import {getCompanyList} from "./company-reducer";
 
 const INITIALIZED_SUCCESS = 'app/INITIALIZED_SUCCESS';
 const SHOW_MESSAGE = 'app/SHOW_MESSAGE';

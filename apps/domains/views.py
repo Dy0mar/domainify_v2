@@ -7,8 +7,6 @@ from api.mixins import BaseViewSetMixin, BasePagination
 from .models import Domain, Company
 from .serializers import DomainSerializer, CompanySerializer
 
-from api.permissions import IsLoggedInUserOrAdmin
-
 
 class DomainViewSet(BaseViewSetMixin, ModelViewSet):
     queryset = Domain.objects.all()
@@ -39,7 +37,6 @@ class DomainViewSet(BaseViewSetMixin, ModelViewSet):
 class CompanyViewSet(BaseViewSetMixin, ModelViewSet):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
-    pagination_class = BasePagination
 
 
 class ManagerViewSet(BaseViewSetMixin, ModelViewSet):
@@ -64,17 +61,6 @@ class AlexaStatusList(BaseViewSetMixin, ViewSet):
         return Response(list(Domain.ALEXA_STATUS))
 
 
-class CompanyList(BaseViewSetMixin, ModelViewSet):
-    queryset = Company.objects.all()
-
-    serializer_class = CompanySerializer
-    permission_classes = [IsLoggedInUserOrAdmin]
-
-    # def list(self, request, *args, **kwargs):
-    #     return Response(list(self.get_queryset()))
-
-
 status_list = StatusList.as_view({'get': 'list'})
 alexa_status_list = AlexaStatusList.as_view({'get': 'list'})
-company_list = CompanyList.as_view({'get': 'list'})
 manager_list = ManagerViewSet.as_view({'get': 'list'})

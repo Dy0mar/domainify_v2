@@ -102,6 +102,12 @@ export const authAPI = {
     },
 };
 
+export const companyAPI = {
+    company_list(){
+        return instance.get('companies/')
+    },
+};
+
 function convertObjectToUrl(objList) {
     // objList = [{param: ['value1', 'value2', ...]}, {...}]
     if (objList.length === 0 && Object.entries(objList[0]).length === 0)

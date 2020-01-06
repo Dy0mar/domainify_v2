@@ -22,8 +22,6 @@ urlpatterns = [
          domains_views.status_list, name='status-list'),
     path(r'domains/alexa_status_list/',
          domains_views.alexa_status_list, name='alexa-status-list'),
-    path(r'domains/company_list/',
-         domains_views.company_list, name='company-list'),
 
     path(r'', include(router.urls)),
     path(r'auth/', include('rest_auth.urls')),
