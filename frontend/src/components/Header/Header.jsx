@@ -15,6 +15,7 @@ const Header = (props) => {
             case '/domains/create': return 'domain_create';
             case '/tasks': return 'tasks';
             case '/users': return 'user_list';
+            case '/companies': return 'company_list';
 
             default: return ''
         }
@@ -30,10 +31,11 @@ const Header = (props) => {
                 <div className={css.text}>Domainify</div>
             </div>
             <Menu theme="dark" mode="horizontal" style={{ lineHeight: '64px' }} selectedKeys={currentItem} selectable={false} >
-                <Item disabled={disabled} key="domain_list"><NavLink to='/domains'>Domain list</NavLink></Item>
+                <Item disabled={disabled} key="domain_list"><NavLink to='/domains'>Domains</NavLink></Item>
                 <Item disabled={disabled} key="domain_create"><NavLink to='/domains/create'>Domain create</NavLink></Item>
-                <Item disabled={disabled} key="tasks">Tasks</Item>
+                <Item disabled={disabled} key="company_list"><NavLink to='/companies'>Companies</NavLink></Item>
                 <Item disabled={disabled} key="user_list"><NavLink to='/users'>Users</NavLink></Item>
+                <Item disabled={disabled} key="tasks">Tasks</Item>
 
                 <Item key="login_logout" style={{float: 'right'}} >
                     {props.isAuth

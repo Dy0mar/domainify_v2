@@ -17,13 +17,14 @@ import Preloader from "./components/Common/Preloader/Preloader";
 import Header from "./components/Header/HeaderContainer";
 import Footer from "./components/Footer/Footer";
 import Login from "./components/Login/Login";
-import Users from "./components/Users/UsersContainer";
+import UsersContainer from "./components/Users/UsersContainer";
 import Register from "./components/Register/Register";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import DomainsContainer from "./components/Domains/DomainsContainer";
 import DomainCreateContainer from "./components/Domain/DomainCreateContainer";
 import DomainDetailContainer from "./components/Domain/DomainDetailContainer";
 import DomainEditContainer from "./components/Domain/DomainEditContainer";
+import CompaniesContainer from "./components/Companies/CompaniesContainer";
 import {
     Page404,
     Page500,
@@ -61,12 +62,13 @@ class App extends Component {
                             <Route path='/503' render={() => <Page503Component />} />
                             <Route path='/login' render={() => <Login />}/>
                             <Route path='/register' render={() => <Register />}/>
-                            <Route path='/profile/:userId?' render={() => <ProfileContainer />}/>
-                            <Route path='/users' render={() => <Users />}/>
+                            <Route path='/domains' render={() => <DomainsContainer />}/>
+                            <Route path='/domains/:domainId' render={() => <DomainDetailContainer />}/>
                             <Route path='/domains/create' render={() => <DomainCreateContainer />}/>
                             <Route path='/domains/:domainId/edit' render={() => <DomainEditContainer />}/>
-                            <Route path='/domains/:domainId' render={() => <DomainDetailContainer />}/>
-                            <Route path='/domains' render={() => <DomainsContainer />}/>
+                            <Route path='/companies' render={() => <CompaniesContainer />}/>
+                            <Route path='/users' render={() => <UsersContainer />}/>
+                            <Route path='/profile/:userId?' render={() => <ProfileContainer />}/>
                             <Redirect exact from="/" to="/profile" />
                             <Route path='**' render={() => <Page404 />} />
                         </Switch>
