@@ -7,7 +7,7 @@ const initialSate = {
     count: 0,
     next: null,
     previous: null,
-    companies: [{
+    results: [{
             pk: 0,
             name: "",
             address: "",

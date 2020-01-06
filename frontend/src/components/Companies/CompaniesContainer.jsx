@@ -5,8 +5,10 @@ import {compose} from "redux";
 import {connect} from "react-redux";
 import {NavLink, withRouter} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
-import {getCompanyListS} from "../../redux/company-selector";
-import {getUrlOr404S} from "../../redux/domains-selectors";
+import {
+    getAbsoluteUrlOr404S,
+    getCompanyListS
+} from "../../redux/company-selector";
 
 
 const CompaniesContainer = (props) => {
@@ -20,7 +22,7 @@ const CompaniesContainer = (props) => {
                 title: 'Company name',
                 dataIndex: 'name',
                 key: 'name',
-                render: (name, row) => <NavLink to={getUrlOr404S(row.url)} >{name}</NavLink>
+                render: (name, row) => <NavLink to={getAbsoluteUrlOr404S(row.url)} >{name}</NavLink>
             },
             {
                 title: 'Address',
