@@ -6,7 +6,6 @@ const SET_CURRENT_DOMAIN = 'domain/SET_CURRENT_DOMAIN';
 const SET_REDIRECT_TO = 'domain/SET_REDIRECT_TO';
 const SET_DOMAIN_STATUS_LIST = 'domain/SET_DOMAIN_STATUS_LIST';
 const SET_ALEXA_STATUS_LIST = 'domain/SET_ALEXA_STATUS_LIST';
-const SET_COMPANY_LIST = 'domain/SET_COMPANY_LIST';
 
 const SET_DOMAIN_LIST = 'domain/SET_DOMAIN_LIST';
 const GET_COMPANY_LIST = 'domain/GET_COMPANY_LIST';
@@ -41,7 +40,6 @@ const initialSate = {
     isLoading: true,
     statuses: [],
     alexa_statuses: [],
-    companies: [],
     formErrors: {},
     redirectTo: '',
     currentDomain: {},
@@ -56,7 +54,6 @@ const domainsReducer = (state=initialSate, action) => {
         case SET_REDIRECT_TO:
         case SET_DOMAIN_STATUS_LIST:
         case SET_ALEXA_STATUS_LIST:
-        case SET_COMPANY_LIST:
         case SET_DOMAIN_LIST:
         case GET_COMPANY_LIST:
         case SET_FORM_ERROR_MESSAGES:
@@ -92,11 +89,6 @@ export const domainStatusListAction = (statuses) => ({
 export const alexaStatusListAction = (alexa_statuses) => ({
     type: SET_ALEXA_STATUS_LIST,
     payload: {alexa_statuses}
-});
-
-export const companyListAction = (companies) => ({
-    type: SET_COMPANY_LIST,
-    payload: {companies}
 });
 
 export const domainListAction = ({count, next, previous, results}) => ({
@@ -186,15 +178,6 @@ export const getAlexaStatusList = () => async (dispatch) => {
     try{
         const response = await domainsAPI.alexa_status_list();
         dispatch(alexaStatusListAction(response.data));
-    } catch (e) {
-        errorHandler(e, dispatch);
-    }
-};
-
-export const getCompanyList = () => async (dispatch) => {
-    try{
-        const response = await domainsAPI.company_list();
-        dispatch(companyListAction(response.data));
     } catch (e) {
         errorHandler(e, dispatch);
     }
