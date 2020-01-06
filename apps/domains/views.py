@@ -35,7 +35,7 @@ class DomainViewSet(BaseViewSetMixin, ModelViewSet):
 
 
 class CompanyViewSet(BaseViewSetMixin, ModelViewSet):
-    queryset = Company.objects.all()
+    queryset = Company.objects.all().order_by('name')
     serializer_class = CompanySerializer
 
 
