@@ -1,14 +1,22 @@
-export const submitCreateUpdateForm = (validateFields, thunkFunction, domainId=null) => {
+export const submitCreateUpdateForm = (validateFields, thunkFunction, fieldId=null) => {
     validateFields((err, values) => {
         if (!err) {
             const data = {
                 ...values,
-                pk: domainId,
-                manager: {pk: values.manager},
-                company: {pk: values.company},
-                emails: getDynamic('email', values),
-                telephones: getDynamic('telephone', values),
+                pk: fieldId,
             };
+
+            // create/update domain data
+            if (values.manager)
+                data['manager'] = {pk: values.manager};
+            if (values.company)
+                data['company'] = {pk: values.company};
+            if (values.emails)
+                data['emails'] = getDynamic('email', values);
+            if (values.telephones)
+                data['telephones'] = getDynamic('telephone', values);
+
+            console.log(data)
             thunkFunction(data);
         }
     });

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {Divider, Row, Col, Table} from 'antd';
 import "antd/dist/antd.css";
 import {compose} from "redux";
@@ -9,28 +9,41 @@ import {
     getAbsoluteUrlOr404S,
     getCompanyListS
 } from "../../redux/company-selector";
+import {getIsLoadingS} from "../../redux/app-selector";
 
 
 const CompaniesContainer = (props) => {
-    const { companies } = props;
+    const { companies, isLoading, total } = props;
 
-    const config = {
-        dataSource: companies,
-        rowKey: item => item.pk,
-        columns: [
-            {
-                title: 'Company name',
-                dataIndex: 'name',
-                key: 'name',
-                render: (name, row) => <NavLink to={getAbsoluteUrlOr404S(row.url)} >{name}</NavLink>
+    const [config, setConfig] = useState({});
+
+    useEffect(() => {
+        setConfig({
+            bordered: true,
+            pagination : {
+                total: total,
+                pageSize: 100,
+                position: total >= 10 ? 'bottom' : 'none'
             },
-            {
-                title: 'Address',
-                dataIndex: 'address',
-                key: 'address',
-            },
-        ],
-    };
+            dataSource: isLoading ? [] : companies,
+            rowKey: item => item.pk,
+            loading: isLoading,
+
+            columns: [
+                {
+                    title: 'Company name',
+                    dataIndex: 'name',
+                    key: 'name',
+                    render: (name, row) => <NavLink to={getAbsoluteUrlOr404S(row.url)} >{name}</NavLink>
+                },
+                {
+                    title: 'Address',
+                    dataIndex: 'address',
+                    key: 'address',
+                },
+            ],
+        })
+    }, [companies, isLoading, total]);
 
     return (
         <div>
@@ -46,6 +59,8 @@ const CompaniesContainer = (props) => {
 
 const mapStateToProps = (state) => ({
     companies: getCompanyListS(state),
+    isLoading: getIsLoadingS(state),
+    total: state.companies.count,
 });
 
 export default compose(

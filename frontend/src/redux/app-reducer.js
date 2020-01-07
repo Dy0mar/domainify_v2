@@ -12,13 +12,15 @@ const SHOW_MESSAGE = 'app/SHOW_MESSAGE';
 const ADD_MESSAGE = 'app/ADD_MESSAGE';
 const SET_REDIRECT_TO = 'app/SET_REDIRECT_TO';
 const SET_ERROR_INFO = 'app/SET_ERROR_INFO';
+const SET_LOADING = 'app/SET_LOADING';
 
 
 const initialSate = {
     initialized: false,
     redirectTo: '',
     messages: [],
-    errorInfo: ''
+    errorInfo: '',
+    isLoading: false
 };
 
 
@@ -28,6 +30,7 @@ const appReducer = (state=initialSate, action) => {
         case INITIALIZED_SUCCESS:
         case SET_REDIRECT_TO:
         case SET_ERROR_INFO:
+        case SET_LOADING:
             return {
                 ...state,
                 ...action.payload,
@@ -72,6 +75,11 @@ export const showMessageAction = (message) => ({
 export const addMessageAction = (message) => ({
     type: ADD_MESSAGE,
     message
+});
+
+export const setLoadingAction = (isLoading) => ({
+    type: SET_LOADING,
+    payload: {isLoading}
 });
 
 // Thunks

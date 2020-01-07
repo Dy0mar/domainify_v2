@@ -20,7 +20,7 @@ const Header = (props) => {
             default: return ''
         }
     };
-    useEffect(()=>{
+    useEffect(() => {
         setCurrentItem(setMenu(props.location.pathname));
     }, [props.location.pathname]);
 

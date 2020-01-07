@@ -8,6 +8,7 @@ import {withRouter} from "react-router-dom";
 import CompanyForm from "./CompanyForm";
 import {getCompanyByIdS} from "../../redux/company-selector";
 import {submitCreateUpdateForm} from "../../utils/utils";
+import {updateCompany} from "../../redux/company-reducer";
 
 
 const CompanyEditContainer = (props) => {
@@ -17,7 +18,7 @@ const CompanyEditContainer = (props) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        submitCreateUpdateForm(validateFields, props.updateDomain, companyId);
+        submitCreateUpdateForm(validateFields, props.updateCompany, companyId);
     };
     const cancelLink = '/companies';
 
@@ -49,5 +50,5 @@ const mapStateToProps = (state, ownProps) => {
 export default compose(
     withAuthRedirect,
     withRouter,
-    connect(mapStateToProps, {})
+    connect(mapStateToProps, {updateCompany})
 )(CompanyEditComponent);

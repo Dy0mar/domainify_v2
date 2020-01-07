@@ -106,6 +106,9 @@ export const companyAPI = {
     company_list(){
         return instance.get('companies/')
     },
+    patch_field(pk, data){
+        return instance.patch(`companies/${pk}/`, {...data})
+    },
 };
 
 function convertObjectToUrl(objList) {
