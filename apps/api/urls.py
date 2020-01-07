@@ -16,6 +16,8 @@ router.register(r'users', UserViewSet)
 router.register(r'domains', DomainViewSet)
 router.register(r'companies', CompanyViewSet)
 router.register(r'tasks', tasks_views.TaskViewSet)
+router.register(r'statuses', tasks_views.StatusViewSet)
+router.register(r'codes', tasks_views.CodeViewSet)
 
 urlpatterns = [
     path(r'users/manager_list/',
@@ -24,10 +26,6 @@ urlpatterns = [
          domains_views.status_list, name='status-list'),
     path(r'domains/alexa_status_list/',
          domains_views.alexa_status_list, name='alexa-status-list'),
-    path(r'tasks/codes_list/',
-         tasks_views.codes_list, name='tasks-codes-list'),
-    path(r'tasks/status_list/',
-         tasks_views.status_list, name='tasks-status-list'),
 
     path(r'', include(router.urls)),
     path(r'auth/', include('rest_auth.urls')),

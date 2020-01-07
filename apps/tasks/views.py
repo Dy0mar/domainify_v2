@@ -25,7 +25,7 @@ class TaskViewSet(BaseViewSetMixin, ModelViewSet):
         return Response(serializer.data)
 
 
-class CodeList(BaseViewSetMixin, ModelViewSet):
+class CodeViewSet(BaseViewSetMixin, ModelViewSet):
     queryset = Code.objects.all()
     serializer_class = CodeSerializer
 
@@ -35,7 +35,7 @@ class CodeList(BaseViewSetMixin, ModelViewSet):
         return Response(serializer.data)
 
 
-class StatusList(BaseViewSetMixin, ModelViewSet):
+class StatusViewSet(BaseViewSetMixin, ModelViewSet):
     queryset = Status.objects.all()
     serializer_class = StatusSerializer
 
@@ -44,6 +44,3 @@ class StatusList(BaseViewSetMixin, ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
-
-codes_list = CodeList.as_view({'get': 'list'})
-status_list = StatusList.as_view({'get': 'list'})
