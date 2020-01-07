@@ -12,7 +12,6 @@ const Header = (props) => {
         switch (path) {
             case '/domains': return 'domain_list';
             case '/profile': return 'profile';
-            case '/domains/create': return 'domain_create';
             case '/tasks': return 'tasks';
             case '/users': return 'user_list';
             case '/companies': return 'company_list';
@@ -32,7 +31,6 @@ const Header = (props) => {
             </div>
             <Menu theme="dark" mode="horizontal" style={{ lineHeight: '64px' }} selectedKeys={currentItem} selectable={false} >
                 <Item disabled={disabled} key="domain_list"><NavLink to='/domains'>Domains</NavLink></Item>
-                <Item disabled={disabled} key="domain_create"><NavLink to='/domains/create'>Domain create</NavLink></Item>
                 <Item disabled={disabled} key="company_list"><NavLink to='/companies'>Companies</NavLink></Item>
                 <Item disabled={disabled} key="user_list"><NavLink to='/users'>Users</NavLink></Item>
                 <Item disabled={disabled} key="tasks">Tasks</Item>

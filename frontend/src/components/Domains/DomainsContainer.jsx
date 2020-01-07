@@ -116,7 +116,7 @@ const DomainsContainer = (props) => {
 
     return (
         <div>
-            <Divider>Domains here</Divider>
+            <Divider>Domains here / <NavLink to={'domains/create/'} >Add domain</NavLink> </Divider>
             <Row>
                 <Col span={24}>
                     <Table {...config} onChange={onApplyFilter}/>
