@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Divider, Row, Col, Table} from 'antd';
+import {Divider, Row, Col, Table, Button, Modal} from 'antd';
 import "antd/dist/antd.css";
 import {compose} from "redux";
 import {connect} from "react-redux";
@@ -10,14 +10,34 @@ import {
     getCompanyListS
 } from "../../redux/company-selector";
 import {getIsLoadingS} from "../../redux/app-selector";
+import {deleteCompany, getCompanyList} from "../../redux/company-reducer";
 
+const { confirm } = Modal;
 
 const CompaniesContainer = (props) => {
-    const { companies, isLoading, total } = props;
+    const { companies, isLoading, total, getCompanyList, deleteCompany} = props;
 
     const [config, setConfig] = useState({});
+    useEffect(() => {
+        getCompanyList()
+    }, [getCompanyList]);
+
 
     useEffect(() => {
+        const deleteConfirm = (company) => {
+            confirm({
+                title: `Are you sure delete ${company.name}?`,
+                content: 'One does not simply, need confirm',
+                okText: 'Yes',
+                okType: 'danger',
+                cancelText: 'No',
+                onOk() {
+                    deleteCompany(company.pk)
+                },
+                onCancel() {},
+            });
+        };
+
         setConfig({
             bordered: true,
             pagination : {
@@ -41,13 +61,24 @@ const CompaniesContainer = (props) => {
                     dataIndex: 'address',
                     key: 'address',
                 },
+                {
+                    title: 'Action',
+                    render: (row) => <span style={{textAlign: 'center'}}>
+                        <NavLink to={getAbsoluteUrlOr404S(row.url) + 'edit/'} >
+                            <Button type="primary" icon={'edit'}> Edit </Button>
+                        </NavLink>
+                        <Button type="danger" icon={'delete'} style={{marginLeft: 10}} onClick={() => deleteConfirm(row)}>
+                            Delete
+                        </Button>
+                    </span>
+                },
             ],
         })
-    }, [companies, isLoading, total]);
+    }, [companies, isLoading, total, deleteCompany]);
 
     return (
         <div>
-            <Divider>Companies here</Divider>
+            <Divider>Companies here / <NavLink to={'companies/create/'} >Add company</NavLink></Divider>
             <Row>
                 <Col span={24}>
                     <Table {...config} />
@@ -66,5 +97,5 @@ const mapStateToProps = (state) => ({
 export default compose(
     withAuthRedirect,
     withRouter,
-    connect(mapStateToProps, {})
+    connect(mapStateToProps, {getCompanyList, deleteCompany})
 )(CompaniesContainer);

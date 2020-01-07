@@ -12,9 +12,15 @@ import {NavLink} from "react-router-dom";
 
 const CompanyForm = (props) => {
     const { onSubmit, getFieldDecorator } = props;
-    const { company, formErrors } = props;
+    const { formErrors } = props;
 
     const cancelLink = props.cancelLink ? props.cancelLink : '/';
+
+    const getInitialValue = (propName, defaultValue='') => {
+        let value;
+        propName.split('.').forEach(e => value = value ? value[e] : props[e]);
+        return value || defaultValue
+    };
 
     return (
         <Form onSubmit={onSubmit}>
@@ -28,7 +34,7 @@ const CompanyForm = (props) => {
                         }}>
                         {getFieldDecorator('name', {
                             rules: [{ required: true, message: 'Please input company name!' }],
-                            initialValue: company.name
+                            initialValue: getInitialValue('company.name'),
                         })(
                             <Input placeholder="company name"/>,
                         )}
@@ -42,7 +48,7 @@ const CompanyForm = (props) => {
                             validateStatus: 'error',
                         }}>
                         {getFieldDecorator('address', {
-                            initialValue: company.address
+                            initialValue: getInitialValue('company.address'),
                         })(
                             <Input placeholder="company address"/>,
                         )}

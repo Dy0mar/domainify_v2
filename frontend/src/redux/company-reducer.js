@@ -64,13 +64,29 @@ export const getCompanyList = () => async (dispatch) => {
     }
 };
 
+export const createCompany = (data) => async (dispatch) => {
+    try{
+        const response = await companyAPI.create(data);
+        if (response.status === 201){
+            dispatch(addSuccessMessage('Company has been created'));
+            dispatch(redirectToAction('/companies'));
+            dispatch(setFormErrorsAction({}));
+        }
+    } catch (e) {
+        const response = e.response;
+        const errors = response.data;
+        dispatch(setFormErrorsAction(errors))
+    } finally {
+        dispatch(setLoadingAction(false));
+    }
+};
+
 export const updateCompany = (data) => async (dispatch) => {
     try{
         await companyAPI.patch_field(data.pk, {...data});
-        dispatch(getCompanyList());
         const msg = data.name + ' data was updated successfully';
         dispatch(addSuccessMessage(msg));
-        dispatch(redirectToAction('/companies/'));
+        dispatch(redirectToAction('/companies'));
         dispatch(setFormErrorsAction({}))
     } catch (e) {
         const response = e.response;
@@ -79,5 +95,16 @@ export const updateCompany = (data) => async (dispatch) => {
     }
 };
 
+export const deleteCompany = (pk) => async (dispatch) => {
+    try{
+        await companyAPI.delete(pk);
+        const msg = 'Company has been deleted';
+        dispatch(addSuccessMessage(msg));
+        dispatch(getCompanyList());
+        dispatch(setFormErrorsAction({}))
+    } catch (e) {
+        errorHandler(e, dispatch);
+    }
+};
 
 export default companyReducer;

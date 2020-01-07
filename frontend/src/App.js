@@ -13,6 +13,12 @@ import {
 } from "react-router-dom";
 import {initializeApp} from "./redux/app-reducer";
 import {showMessage} from "./hoc/showMessage";
+import {
+    Page404,
+    Page500,
+    Page503Component
+} from "./components/Common/Pages/Pages";
+import {redirectHoc} from "./hoc/redirectTo";
 import Preloader from "./components/Common/Preloader/Preloader";
 import Header from "./components/Header/HeaderContainer";
 import Footer from "./components/Footer/Footer";
@@ -25,13 +31,8 @@ import DomainCreateContainer from "./components/Domain/DomainCreateContainer";
 import DomainDetailContainer from "./components/Domain/DomainDetailContainer";
 import DomainEditContainer from "./components/Domain/DomainEditContainer";
 import CompaniesContainer from "./components/Companies/CompaniesContainer";
-import {
-    Page404,
-    Page500,
-    Page503Component
-} from "./components/Common/Pages/Pages";
-import {redirectHoc} from "./hoc/redirectTo";
-import CompanyEdit from "./components/Company/CompanyEdit";
+import CompanyEditContainer from "./components/Company/CompanyEditContainer";
+import CompanyCreateContainer from "./components/Company/CompanyCreateContainer";
 
 
 const { Content } = Layout;
@@ -69,7 +70,8 @@ class App extends Component {
                             <Route path='/domains/:domainId/edit' render={() => <DomainEditContainer />}/>
                             <Route path='/domains/:domainId' render={() => <DomainDetailContainer />}/>
                             <Route path='/domains' render={() => <DomainsContainer />}/>
-                            <Route path='/companies/:companyId' render={() => <CompanyEdit />}/>
+                            <Route path='/companies/create' render={() => <CompanyCreateContainer />}/>
+                            <Route path='/companies/:companyId' render={() => <CompanyEditContainer />}/>
                             <Route path='/companies' render={() => <CompaniesContainer />}/>
                             <Redirect exact from="/" to="/profile" />
                             <Route path='**' render={() => <Page404 />} />

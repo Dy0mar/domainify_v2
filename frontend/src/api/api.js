@@ -106,8 +106,14 @@ export const companyAPI = {
     company_list(){
         return instance.get('companies/')
     },
+    create(data){
+        return instance.post('companies/', {...data})
+    },
     patch_field(pk, data){
         return instance.patch(`companies/${pk}/`, {...data})
+    },
+    delete(pk){
+        return instance.delete(`companies/${pk}/`)
     },
 };
 

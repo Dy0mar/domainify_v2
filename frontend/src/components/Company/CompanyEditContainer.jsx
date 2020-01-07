@@ -27,7 +27,7 @@ const CompanyEditContainer = (props) => {
     };
     return (
         <div>
-            <Divider>Companies here</Divider>
+            <Divider>Company edit</Divider>
             <Row>
                 <Col span={24}>
                     <CompanyForm {..._props}/>
