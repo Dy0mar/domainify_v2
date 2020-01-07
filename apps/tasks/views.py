@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ViewSet
 
 from api.mixins import BaseViewSetMixin, BasePagination
-from .models import Task
-from .serializers import TaskSerializer
+from .models import Task, Code, Status
+from .serializers import TaskSerializer, CodeSerializer, StatusSerializer
 
 
 class TaskViewSet(BaseViewSetMixin, ModelViewSet):
@@ -23,3 +23,27 @@ class TaskViewSet(BaseViewSetMixin, ModelViewSet):
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+
+class CodeList(BaseViewSetMixin, ModelViewSet):
+    queryset = Code.objects.all()
+    serializer_class = CodeSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class StatusList(BaseViewSetMixin, ModelViewSet):
+    queryset = Status.objects.all()
+    serializer_class = StatusSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+codes_list = CodeList.as_view({'get': 'list'})
+status_list = StatusList.as_view({'get': 'list'})
