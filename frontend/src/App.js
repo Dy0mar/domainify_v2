@@ -31,7 +31,7 @@ import {
     Page503Component
 } from "./components/Common/Pages/Pages";
 import {redirectHoc} from "./hoc/redirectTo";
-import CompanyEdit from "./components/Company/CompaniesEdit";
+import CompanyEdit from "./components/Company/CompanyEdit";
 
 
 const { Content } = Layout;
