@@ -11,7 +11,7 @@ class Status(models.Model):
     DONE = 'DONE'
     CANCELED = 'CANCELED'
 
-    status = models.CharField(max_length=70, blank=True, null=True, default=NEW)
+    status = models.CharField(max_length=70, unique=True, default=NEW)
     comment = models.CharField(
         max_length=255, blank=True, null=True, default='')
 
@@ -26,7 +26,7 @@ class Code(models.Model):
     REMEMBER_ME = 'REMEMBER_ME'
 
     name = models.CharField(max_length=255, blank=True, null=True, default='')
-    code = models.CharField(max_length=70, blank=True, null=True, default='')
+    code = models.CharField(max_length=70, unique=True, default='')
     comment = models.CharField(
         max_length=255, blank=True, null=True, default='')
 
