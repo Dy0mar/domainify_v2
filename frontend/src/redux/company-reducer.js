@@ -7,7 +7,6 @@ import {
 } from "./app-reducer";
 
 const SET_COMPANY_LIST = 'company/SET_COMPANY_LIST';
-const SET_LOADING = 'company/SET_LOADING';
 const SET_FORM_ERROR_MESSAGES = 'company/SET_FORM_ERROR_MESSAGES';
 
 const initialSate = {
@@ -28,7 +27,6 @@ const companyReducer = (state=initialSate, action) => {
 
     switch (action.type) {
         case SET_COMPANY_LIST:
-        case SET_LOADING:
         case SET_FORM_ERROR_MESSAGES:
             return {
                 ...state,
