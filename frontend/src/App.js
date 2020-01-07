@@ -33,6 +33,7 @@ import DomainEditContainer from "./components/Domain/DomainEditContainer";
 import CompaniesContainer from "./components/Companies/CompaniesContainer";
 import CompanyEditContainer from "./components/Company/CompanyEditContainer";
 import CompanyCreateContainer from "./components/Company/CompanyCreateContainer";
+import BreadcrumbComponent from "./components/Breadcrumb/Breadcrumb";
 
 
 const { Content } = Layout;
@@ -52,11 +53,7 @@ class App extends Component {
             <Layout className="layout">
                 <Header />
                 <Content style={{ padding: '0 50px' }}>
-                    <Breadcrumb style={{ margin: '16px 0' }}>
-                        <Breadcrumb.Item>Home</Breadcrumb.Item>
-                        <Breadcrumb.Item>List</Breadcrumb.Item>
-                        <Breadcrumb.Item>App</Breadcrumb.Item>
-                    </Breadcrumb>
+                    <BreadcrumbComponent />
                     <div className={css.appWrapperContent}>
                         <Switch>
                             <Route path='/404' render={() => <Page404 />} />
