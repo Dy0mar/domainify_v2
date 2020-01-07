@@ -16,7 +16,6 @@ export const submitCreateUpdateForm = (validateFields, thunkFunction, fieldId=nu
             if (values.telephones)
                 data['telephones'] = getDynamic('telephone', values);
 
-            console.log(data)
             thunkFunction(data);
         }
     });
