@@ -6,6 +6,7 @@ import userReducer from "./user-reducer";
 import domainsReducer from "./domain-reducer";
 import companyReducer from "./company-reducer";
 import thunkMiddleware from "redux-thunk";
+import taskReducer from "./task-reducer";
 
 
 const composeEnhancers =
@@ -22,6 +23,7 @@ const reducers = combineReducers({
     user: userReducer,
     domains: domainsReducer,
     companies: companyReducer,
+    tasks: taskReducer,
 });
 
 const store = createStore(reducers, composeEnhancers(applyMiddleware(thunkMiddleware)));
