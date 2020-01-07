@@ -30,7 +30,7 @@ const DomainDetailContainer = (props) => {
     function deleteConfirm() {
         confirm({
             title: `Are you sure delete ${currentDomain.name}?`,
-            content: 'Нельзя так просто взять и удалить, надо подтвердить.',
+            content: 'One does not simply, need confirm.',
             okText: 'Yes',
             okType: 'danger',
             cancelText: 'No',
