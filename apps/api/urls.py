@@ -4,6 +4,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 from domains.views import DomainViewSet, CompanyViewSet
+from tasks.views import TaskViewSet
 from users.views import UserViewSet
 from domains import views as domains_views
 from rest_framework_jwt.views import (
@@ -14,6 +15,7 @@ router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'domains', DomainViewSet)
 router.register(r'companies', CompanyViewSet)
+router.register(r'tasks', TaskViewSet)
 
 urlpatterns = [
     path(r'users/manager_list/',
