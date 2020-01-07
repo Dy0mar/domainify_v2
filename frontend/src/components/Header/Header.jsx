@@ -33,7 +33,7 @@ const Header = (props) => {
                 <Item disabled={disabled} key="domain_list"><NavLink to='/domains'>Domains</NavLink></Item>
                 <Item disabled={disabled} key="company_list"><NavLink to='/companies'>Companies</NavLink></Item>
                 <Item disabled={disabled} key="user_list"><NavLink to='/users'>Users</NavLink></Item>
-                <Item disabled={disabled} key="tasks">Tasks</Item>
+                <Item disabled={disabled} key="tasks"><NavLink to='/tasks'>Tasks</NavLink></Item>
 
                 <Item key="login_logout" style={{float: 'right'}} >
                     {props.isAuth
