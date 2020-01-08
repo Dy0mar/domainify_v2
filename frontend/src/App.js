@@ -67,25 +67,37 @@ class App extends Component {
                             <Route path='/404' render={() => <Page404 />} />
                             <Route path='/500' render={() => <Page500 />} />
                             <Route path='/503' render={() => <Page503Component />} />
+
                             <Route path='/login' render={() => <Login />}/>
                             <Route path='/register' render={() => <Register />}/>
                             <Route path='/profile' render={() => <ProfileContainer />}/>
+
                             <Route path='/users' render={() => <UsersContainer />}/>
+
                             <Route exact path='/domains/create' render={() => <DomainCreateContainer />}/>
                             <Route exact path='/domains/:domainId/edit' render={() => <DomainEditContainer />}/>
                             <Route exact path='/domains/:domainId(\d+)' render={() => <DomainDetailContainer />}/>
                             <Route path='/domains' render={() => <DomainsContainer />}/>
+
                             <Route path='/companies/create' render={() => <CompanyCreateContainer />}/>
                             <Route path='/companies/:companyId' render={() => <CompanyEditContainer />}/>
                             <Route path='/companies' render={() => <CompaniesContainer />}/>
+
+                            <Route path='/tasks/create' render={() => <TasksContainer />}/>
                             <Route path='/tasks' render={() => <TasksContainer />}/>
+
                             <Route exact path='/settings/statuses/:statusId(\d+)' render={() => <StatusEditContainer />}/>
                             <Route exact path='/settings/statuses/create' render={() => <StatusCreateContainer />}/>
+
                             <Route exact path='/settings/codes/:codeId(\d+)' render={() => <CodeEditContainer />}/>
                             <Route exact path='/settings/codes/create' render={() => <CodeCreateContainer />}/>
+
                             <Route path='/settings' render={() => <SettingsContainer />}/>
+
                             <Redirect exact from="/" to="/profile" />
+
                             <Route path='**' render={() => <Page404 />} />
+
                         </Switch>
                     </div>
                 </Content>
