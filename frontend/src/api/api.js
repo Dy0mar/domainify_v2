@@ -129,6 +129,9 @@ export const statusAPI = {
     patch_field(pk, data){
         return instance.patch(`statuses/${pk}/`, {...data})
     },
+    status_detail(pk){
+        return instance.get(`statuses/${pk}/`)
+    },
     delete(pk){
         return instance.delete(`statuses/${pk}/`)
     },
