@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet, ViewSet
+from rest_framework.viewsets import ModelViewSet
 
 from api.mixins import BaseViewSetMixin, BasePagination
 from .models import Task, Code, Status
@@ -43,4 +43,3 @@ class StatusViewSet(BaseViewSetMixin, ModelViewSet):
         queryset = self.filter_queryset(self.get_queryset())
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
-

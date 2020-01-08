@@ -30,7 +30,7 @@ class TaskSerializer(serializers.ModelSerializer):
             "url", "title", "description", "creator", "domain", "status", "code"
         )
 
-        extra_fields = ['pk',]
+        extra_fields = ['pk']
 
     def create(self, validated_data):
         telephone_data = validated_data.pop('telephones', {})
