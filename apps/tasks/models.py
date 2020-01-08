@@ -23,7 +23,7 @@ class Code(models.Model):
     # standard statuses
     EDIT_SITE_INFO = 'EDIT_SITE_INFO'
     CHANGE_WHOIS = 'CHANGE_WHOIS'
-    REMEMBER_ME = 'REMEMBER_ME'
+    REMIND_ME = 'REMIND_ME'
 
     name = models.CharField(max_length=255, blank=True, null=True, default='')
     code = models.CharField(max_length=70, unique=True, default='')
