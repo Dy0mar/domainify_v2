@@ -28,14 +28,18 @@ const StatusBoxComponent = (props) => {
 
     return (
         <Box boxTitleText={'Statuses'} icon={'info-circle'} onClickMethod={null}>
-            {!!statuses.length && statuses.map((item, index) => getNewItem(item, index)
-            )}
+            {!!statuses.length && statuses.map((item, index) => getNewItem(item, index))}
 
             {!statuses.length && <span>
                             <Row>Statuses is empty. Please click install Statuses for install standard (NEW, IN_PROGRESS, DONE, CANCELED)</Row>
                             <Row><Button type="primary" onClick={setDefaultStatuses}> install Statuses</Button></Row>
                             </span>
             }
+            <Row>
+                <NavLink to={'/settings/statuses/create'}>
+                    <Button type="primary"> add new Status</Button>
+                </NavLink>
+            </Row>
         </Box>
     )
 };
