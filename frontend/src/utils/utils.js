@@ -32,3 +32,17 @@ const getDynamic = (field, values) => {
         })
         .filter(i => i !== undefined );
 };
+
+export const deleteConfirm = (handleFunction, objTarget, objName) => {
+    confirm({
+        title: `Are you sure delete ${objName}?`,
+        content: 'One does not simply, need confirm',
+        okText: 'Yes',
+        okType: 'danger',
+        cancelText: 'No',
+        onOk() {
+            handleFunction(objTarget)
+        },
+        onCancel() {},
+    });
+};
