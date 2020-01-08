@@ -119,7 +119,7 @@ const AppContainer = compose(
 )(App);
 
 
-const MainApp = (props) => {
+const MainApp = () => {
     return (
         <BrowserRouter>
             <Provider store={store} >
