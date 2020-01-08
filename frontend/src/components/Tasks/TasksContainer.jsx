@@ -1,5 +1,5 @@
 import React from 'react'
-import {Divider, Row, Col, Form} from 'antd';
+import {Divider, Row, Col} from 'antd';
 import "antd/dist/antd.css";
 import {compose} from "redux";
 import {connect} from "react-redux";
