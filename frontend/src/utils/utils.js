@@ -10,17 +10,22 @@ export const submitCreateUpdateForm = (validateFields, thunkFunction, fieldId=nu
 
             if (fieldId)
                 data['pk'] = fieldId;
+
             // create/update domain data
-            if (values.manager)
-                data['manager'] = {pk: values.manager};
-            if (values.company)
-                data['company'] = {pk: values.company};
+            !!values.manager
+                ? data['manager'] = {pk: values.manager}
+                : data['manager'] = {};
+
+
+            !!values.company
+                ? data['company'] = {pk: values.company}
+                : data['company'] = {};
+
             if (values.emails)
                 data['emails'] = getDynamic('email', values);
             if (values.telephones)
                 data['telephones'] = getDynamic('telephone', values);
 
-            // console.log(data)
             thunkFunction(data);
         }
     });
