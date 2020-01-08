@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {withRouter} from "react-router-dom";
 import {
+    deleteStatus,
     getCodeList,
     getStatusList,
     setDefaultStatuses
@@ -16,14 +17,14 @@ import {
     getTaskListS
 } from "../../redux/task-selector";
 import {Box} from "../Common/Box/Box";
-import StatusBox from "../Statuses/StatusBox";
+import StatusBoxComponent from "./Statuses/StatusBoxComponent";
 
 const { Text } = Typography;
 
 
 const SettingsContainer = (props) => {
     const {codes, statuses} = props;
-    const {getStatusList, getCodeList, setDefaultStatuses} = props;
+    const {getStatusList, getCodeList, setDefaultStatuses, deleteStatus} = props;
 
     useEffect(() => {
         getStatusList();
@@ -43,8 +44,9 @@ const SettingsContainer = (props) => {
                     </Box>
                 </Col>
                 <Col span={12}>
-                    <StatusBox statuses={statuses}
-                               setDefaultStatuses={setDefaultStatuses}
+                    <StatusBoxComponent statuses={statuses}
+                                        setDefaultStatuses={setDefaultStatuses}
+                                        deleteStatus={deleteStatus}
                     />
                 </Col>
             </Row>
@@ -62,5 +64,5 @@ const mapStateToProps = (state) => ({
 export default compose(
     withAuthRedirect,
     withRouter,
-    connect(mapStateToProps, {getStatusList, getCodeList, setDefaultStatuses})
+    connect(mapStateToProps, {getStatusList, getCodeList, setDefaultStatuses, deleteStatus})
 )(SettingsContainer);

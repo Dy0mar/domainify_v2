@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import "antd/dist/antd.css";
 import css from './App.module.css'
-import {Layout, Breadcrumb} from 'antd'
+import {Layout} from 'antd'
 import {compose} from "redux";
 import {connect, Provider} from "react-redux";
 import store from "./redux/redux-store";
@@ -34,6 +34,11 @@ import CompaniesContainer from "./components/Companies/CompaniesContainer";
 import CompanyEditContainer from "./components/Company/CompanyEditContainer";
 import CompanyCreateContainer from "./components/Company/CompanyCreateContainer";
 import BreadcrumbComponent from "./components/Breadcrumb/Breadcrumb";
+import TasksContainer from "./components/Tasks/TasksContainer";
+import SettingsContainer from "./components/Settings/SettingsContainer";
+import StatusEditContainer from "./components/Settings/Statuses/StatusEditContainer";
+import StatusCreateContainer
+    from "./components/Settings/Statuses/StatusCreateContainer";
 
 
 const { Content } = Layout;
@@ -63,13 +68,17 @@ class App extends Component {
                             <Route path='/register' render={() => <Register />}/>
                             <Route path='/profile' render={() => <ProfileContainer />}/>
                             <Route path='/users' render={() => <UsersContainer />}/>
-                            <Route path='/domains/create' render={() => <DomainCreateContainer />}/>
-                            <Route path='/domains/:domainId/edit' render={() => <DomainEditContainer />}/>
-                            <Route path='/domains/:domainId' render={() => <DomainDetailContainer />}/>
+                            <Route exact path='/domains/create' render={() => <DomainCreateContainer />}/>
+                            <Route exact path='/domains/:domainId/edit' render={() => <DomainEditContainer />}/>
+                            <Route exact path='/domains/:domainId(\d+)' render={() => <DomainDetailContainer />}/>
                             <Route path='/domains' render={() => <DomainsContainer />}/>
                             <Route path='/companies/create' render={() => <CompanyCreateContainer />}/>
                             <Route path='/companies/:companyId' render={() => <CompanyEditContainer />}/>
                             <Route path='/companies' render={() => <CompaniesContainer />}/>
+                            <Route path='/tasks' render={() => <TasksContainer />}/>
+                            <Route exact path='/settings/statuses/:statusId(\d+)' render={() => <StatusEditContainer />}/>
+                            <Route exact path='/settings/statuses/create' render={() => <StatusCreateContainer />}/>
+                            <Route path='/settings' render={() => <SettingsContainer />}/>
                             <Redirect exact from="/" to="/profile" />
                             <Route path='**' render={() => <Page404 />} />
                         </Switch>

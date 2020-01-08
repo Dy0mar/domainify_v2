@@ -15,6 +15,7 @@ const Header = (props) => {
             case '/tasks': return 'tasks';
             case '/users': return 'user_list';
             case '/companies': return 'company_list';
+            case '/settings': return 'settings';
 
             default: return ''
         }
@@ -34,6 +35,7 @@ const Header = (props) => {
                 <Item disabled={disabled} key="company_list"><NavLink to='/companies'>Companies</NavLink></Item>
                 <Item disabled={disabled} key="user_list"><NavLink to='/users'>Users</NavLink></Item>
                 <Item disabled={disabled} key="tasks"><NavLink to='/tasks'>Tasks</NavLink></Item>
+                <Item disabled={disabled} key="settings"><NavLink to='/settings'>Settings</NavLink></Item>
 
                 <Item key="login_logout" style={{float: 'right'}} >
                     {props.isAuth
