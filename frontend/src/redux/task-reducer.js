@@ -85,15 +85,14 @@ export const getCodeList = () => async (dispatch) => {
 
 
 // Thunks statusAPI
-export const deleteStatus = (pk) => async (dispatch) => {
-    try{
-        await statusAPI.delete(pk);
-        dispatch(getStatusList());
-        dispatch(addSuccessMessage('Status has been deleted'));
-        dispatch(setFormErrorsAction({}));
-    } catch (e) {
-        dispatch(setFormErrorsAction(e.response.data))
-    }
+export const getStatusList = () => async (dispatch) => {
+    wrappedLoading(statusAPI.status_list, statusListAction, dispatch).then()
+};
+
+export const createStatus = (data) => async (dispatch) => {
+    await statusAPI.create(data);
+    dispatch(addSuccessMessage('Status has been created'));
+    dispatch(redirectToAction('/settings'));
 };
 
 export const getStatusDetail = (pk) => async (dispatch) => {
@@ -106,10 +105,6 @@ export const getStatusDetail = (pk) => async (dispatch) => {
     }
 };
 
-export const getStatusList = () => async (dispatch) => {
-    wrappedLoading(statusAPI.status_list, statusListAction, dispatch).then()
-};
-
 export const updateStatus = (data) => async (dispatch) => {
     try{
         await statusAPI.patch_field(data.pk, {...data});
@@ -120,6 +115,12 @@ export const updateStatus = (data) => async (dispatch) => {
     } catch (e) {
         dispatch(setFormErrorsAction(e.response.data))
     }
+};
+
+export const deleteStatus = (pk) => async (dispatch) => {
+    deleteWrapper(statusAPI, pk, 'Status has been deleted', dispatch).then(
+        () => dispatch(getStatusList())
+    );
 };
 
 export const setDefaultStatuses = () => async (dispatch) => {
@@ -137,12 +138,6 @@ export const setDefaultStatuses = () => async (dispatch) => {
     );
 };
 
-export const createStatus = (data) => async (dispatch) => {
-    await statusAPI.create(data);
-    dispatch(addSuccessMessage('Status has been created'));
-    dispatch(redirectToAction('/settings'));
-};
-
 // wrapper
 const wrappedLoading = async (apiFunc, action, dispatch) => {
     dispatch(setLoadingAction(true));
@@ -158,6 +153,16 @@ const wrappedException = async (apiFunc, action, dispatch) => {
         dispatch(action(response.data));
     } catch (e) {
         errorHandler(e, dispatch);
+    }
+};
+
+export const deleteWrapper = async (api, pk, msg, dispatch) => {
+    try{
+        await api.delete(pk);
+        dispatch(addSuccessMessage(msg));
+        dispatch(setFormErrorsAction({}));
+    } catch (e) {
+        dispatch(setFormErrorsAction(e.response.data))
     }
 };
 
