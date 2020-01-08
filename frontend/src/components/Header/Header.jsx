@@ -4,6 +4,7 @@ import css from './Header.module.css'
 import {NavLink} from "react-router-dom";
 const {Item} = Menu;
 
+const { SubMenu } = Menu;
 
 const Header = (props) => {
     const disabled = !props.isAuth;
@@ -12,7 +13,8 @@ const Header = (props) => {
         switch (path) {
             case '/domains': return 'domain_list';
             case '/profile': return 'profile';
-            case '/tasks': return 'tasks';
+            case '/tasks/create': return 'task_create';
+            case '/tasks': return 'task_list';
             case '/users': return 'user_list';
             case '/companies': return 'company_list';
             case '/settings': return 'settings';
@@ -34,7 +36,10 @@ const Header = (props) => {
                 <Item disabled={disabled} key="domain_list"><NavLink to='/domains'>Domains</NavLink></Item>
                 <Item disabled={disabled} key="company_list"><NavLink to='/companies'>Companies</NavLink></Item>
                 <Item disabled={disabled} key="user_list"><NavLink to='/users'>Users</NavLink></Item>
-                <Item disabled={disabled} key="tasks"><NavLink to='/tasks'>Tasks</NavLink></Item>
+                <SubMenu title={<span className="submenu-title-wrapper">Tasks</span>}>
+                    <Item disabled={disabled} key="task_list"><NavLink to='/tasks'>My tasks</NavLink></Item>
+                    <Item disabled={disabled} key="task_create"><NavLink to='/tasks/create'>Create new tasks</NavLink></Item>
+                </SubMenu>
                 <Item disabled={disabled} key="settings"><NavLink to='/settings'>Settings</NavLink></Item>
 
                 <Item key="login_logout" style={{float: 'right'}} >
@@ -43,7 +48,7 @@ const Header = (props) => {
                         : <NavLink to="/login" activeClassName='active'>Login</NavLink>
                     }
                 </Item>
-                 <Item disabled={disabled} key="profile" style={{float: 'right'}}>
+                <Item disabled={disabled} key="profile" style={{float: 'right'}}>
                     <NavLink to='/profile'> {props.username}</NavLink>
                 </Item>
             </Menu>
