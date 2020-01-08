@@ -25,7 +25,7 @@ const StatusForm = (props) => {
                             validateStatus: 'error',
                         }}>
                         {getFieldDecorator('status', {
-                            rules: [{ required: true, message: 'Please input company name!' }],
+                            rules: [{ required: true, message: 'Please input status!' }],
                             initialValue: getInitialValue('status.status'),
                         })(
                             <Input placeholder="STATUS"/>,
