@@ -147,6 +147,9 @@ export const codesAPI = {
     patch_field(pk, data){
         return instance.patch(`codes/${pk}/`, {...data})
     },
+    code_detail(pk){
+        return instance.get(`codes/${pk}/`)
+    },
     delete(pk){
         return instance.delete(`codes/${pk}/`)
     },
