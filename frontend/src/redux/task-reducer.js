@@ -10,6 +10,7 @@ const SET_CODE_LIST = 'task/SET_CODES_LIST';
 const SET_STATUS_LIST = 'task/SET_STATUS_LIST';
 const SET_FORM_ERROR_MESSAGES = 'task/SET_FORM_ERROR_MESSAGES';
 const STATUS_DETAIL = 'task/STATUS_DETAIL';
+const CODE_DETAIL = 'task/CODE_DETAIL';
 
 const initialSate = {
     count: 0,
@@ -37,6 +38,7 @@ const taskReducer = (state=initialSate, action) => {
         case SET_STATUS_LIST:
         case SET_FORM_ERROR_MESSAGES:
         case STATUS_DETAIL:
+        case CODE_DETAIL:
             return {
                 ...state,
                 ...action.payload,
@@ -70,6 +72,10 @@ export const setStatusDetailAction = (status) => ({
     type: STATUS_DETAIL,
     payload: {status}
 });
+export const setCodeDetailAction = (code) => ({
+    type: CODE_DETAIL,
+    payload: {code}
+});
 
 
 // Thunks taskAPI
@@ -82,7 +88,34 @@ export const getTaskList = () => async (dispatch) => {
 export const getCodeList = () => async (dispatch) => {
     wrappedLoading(codesAPI.codes_list, codeListAction, dispatch).then()
 };
-// setDefaultStatuses, deleteStatus
+
+export const createCode = (data) => async (dispatch) => {
+    await codesAPI.create(data);
+    dispatch(addSuccessMessage('Code has been created'));
+    dispatch(redirectToAction('/settings'));
+};
+
+export const getCodeDetail = (pk) => async (dispatch) => {
+    try{
+        const response = await codesAPI.code_detail(pk);
+        dispatch(setCodeDetailAction(response.data));
+        dispatch(setFormErrorsAction({}))
+    } catch (e) {
+        dispatch(setFormErrorsAction(e.response.data))
+    }
+};
+
+export const updateCode = (data) => async (dispatch) => {
+    try{
+        await codesAPI.patch_field(data.pk, {...data});
+        const msg = data.code + ' was updated successfully';
+        dispatch(addSuccessMessage(msg));
+        dispatch(redirectToAction('/settings'));
+        dispatch(setFormErrorsAction({}))
+    } catch (e) {
+        dispatch(setFormErrorsAction(e.response.data))
+    }
+};
 
 export const setDefaultCodes = () => async (dispatch) => {
     const statusMapList = [

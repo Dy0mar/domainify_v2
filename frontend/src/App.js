@@ -39,6 +39,9 @@ import SettingsContainer from "./components/Settings/SettingsContainer";
 import StatusEditContainer from "./components/Settings/Statuses/StatusEditContainer";
 import StatusCreateContainer
     from "./components/Settings/Statuses/StatusCreateContainer";
+import CodeEditContainer from "./components/Settings/Codes/CodeEditContainer";
+import CodeCreateContainer
+    from "./components/Settings/Codes/CodeCreateContainer";
 
 
 const { Content } = Layout;
@@ -78,6 +81,8 @@ class App extends Component {
                             <Route path='/tasks' render={() => <TasksContainer />}/>
                             <Route exact path='/settings/statuses/:statusId(\d+)' render={() => <StatusEditContainer />}/>
                             <Route exact path='/settings/statuses/create' render={() => <StatusCreateContainer />}/>
+                            <Route exact path='/settings/codes/:codeId(\d+)' render={() => <CodeEditContainer />}/>
+                            <Route exact path='/settings/codes/create' render={() => <CodeCreateContainer />}/>
                             <Route path='/settings' render={() => <SettingsContainer />}/>
                             <Redirect exact from="/" to="/profile" />
                             <Route path='**' render={() => <Page404 />} />
