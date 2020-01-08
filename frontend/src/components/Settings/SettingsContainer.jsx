@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {withRouter} from "react-router-dom";
 import {
-    deleteCodes,
+    deleteCode,
     deleteStatus,
     getCodeList,
     getStatusList, setDefaultCodes,
@@ -29,7 +29,7 @@ const SettingsContainer = (props) => {
     const {
         codes, statuses,
         getStatusList, setDefaultStatuses, deleteStatus,
-        getCodeList, setDefaultCodes, deleteCodes,
+        getCodeList, setDefaultCodes, deleteCode,
     } = props;
 
     useEffect(() => {
@@ -50,7 +50,7 @@ const SettingsContainer = (props) => {
     };
 
     const getNewCodeItem = (item, index) => {
-        return <CodeBoxItem key={index} item={item} deleteThunk={deleteCodes}/>
+        return <CodeBoxItem key={index} item={item} deleteThunk={deleteCode}/>
     };
 
     const getCreateLink = (link) => `/settings/${link}/create`;
@@ -94,6 +94,6 @@ export default compose(
     withRouter,
     connect(mapStateToProps, {
         getStatusList, getCodeList, setDefaultStatuses, deleteStatus, setDefaultCodes,
-        deleteCodes
+        deleteCode
     })
 )(SettingsContainer);
