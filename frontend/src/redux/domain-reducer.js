@@ -186,7 +186,7 @@ export const getAlexaStatusList = () => async (dispatch) => {
 export const getDomainList = (page=1, filters = {}) => async (dispatch) => {
     dispatch(setLoadingAction(true));
     try{
-        const response = await domainsAPI.get_domain_list(page, [filters]);
+        const response = await domainsAPI.domain_list(page, [filters]);
         dispatch(domainListAction(response.data));
     } catch (e) {
         errorHandler(e, dispatch);
