@@ -9,7 +9,7 @@ from .models import Task, Status, Code
 class CodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Code
-        fields = ('pk', 'code', 'comment')
+        fields = ('pk', 'code', 'name', 'comment')
 
 
 class StatusSerializer(serializers.ModelSerializer):
