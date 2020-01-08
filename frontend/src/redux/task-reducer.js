@@ -11,6 +11,7 @@ const SET_STATUS_LIST = 'task/SET_STATUS_LIST';
 const SET_FORM_ERROR_MESSAGES = 'task/SET_FORM_ERROR_MESSAGES';
 const STATUS_DETAIL = 'task/STATUS_DETAIL';
 const CODE_DETAIL = 'task/CODE_DETAIL';
+const TASK_DETAIL = 'task/TASK_DETAIL';
 
 const initialSate = {
     count: 0,
@@ -22,6 +23,7 @@ const initialSate = {
         address: "",
         url: ""
     }],
+    task: {},
     formErrors: {},
     codes: [],
     code: {},
@@ -39,6 +41,7 @@ const taskReducer = (state=initialSate, action) => {
         case SET_FORM_ERROR_MESSAGES:
         case STATUS_DETAIL:
         case CODE_DETAIL:
+        case TASK_DETAIL:
             return {
                 ...state,
                 ...action.payload,
@@ -76,6 +79,10 @@ export const setCodeDetailAction = (code) => ({
     type: CODE_DETAIL,
     payload: {code}
 });
+export const setTaskDetailAction = (task) => ({
+    type: TASK_DETAIL,
+    payload: {task}
+});
 
 
 // Thunks taskAPI
@@ -83,6 +90,26 @@ export const getTaskList = () => async (dispatch) => {
     wrappedLoading(taskAPI.task_list, taskListAction, dispatch).then()
 };
 
+export const createTask = (data) => async (dispatch) => {
+    await taskAPI.create(data);
+    dispatch(addSuccessMessage('Task has been created'));
+    dispatch(redirectToAction('/tasks'));
+};
+
+export const getTaskDetail = (pk) => async (dispatch) => {
+    wrappedDetail(taskAPI, pk, setTaskDetailAction, dispatch).then();
+};
+
+export const updateTask = (data) => async (dispatch) => {
+    const msg = data.title + ' was updated successfully';
+    wrappedUpdate(taskAPI, data, msg, dispatch).then();
+};
+
+export const deleteTask = (pk) => async (dispatch) => {
+    wrappedDelete(taskAPI, pk, 'Task has been deleted', dispatch).then(
+        () => dispatch(getCodeList())
+    );
+};
 
 // Thunks codeAPI
 export const getCodeList = () => async (dispatch) => {
@@ -96,25 +123,12 @@ export const createCode = (data) => async (dispatch) => {
 };
 
 export const getCodeDetail = (pk) => async (dispatch) => {
-    try{
-        const response = await codesAPI.code_detail(pk);
-        dispatch(setCodeDetailAction(response.data));
-        dispatch(setFormErrorsAction({}))
-    } catch (e) {
-        dispatch(setFormErrorsAction(e.response.data))
-    }
+    wrappedDetail(codesAPI, pk, setCodeDetailAction, dispatch).then();
 };
 
 export const updateCode = (data) => async (dispatch) => {
-    try{
-        await codesAPI.patch_field(data.pk, {...data});
-        const msg = data.code + ' was updated successfully';
-        dispatch(addSuccessMessage(msg));
-        dispatch(redirectToAction('/settings'));
-        dispatch(setFormErrorsAction({}))
-    } catch (e) {
-        dispatch(setFormErrorsAction(e.response.data))
-    }
+    const msg = data.code + ' was updated successfully';
+    wrappedUpdate(codesAPI, data, msg, dispatch).then();
 };
 
 export const setDefaultCodes = () => async (dispatch) => {
@@ -131,8 +145,8 @@ export const setDefaultCodes = () => async (dispatch) => {
     );
 };
 
-export const deleteCodes = (pk) => async (dispatch) => {
-    deleteWrapper(codesAPI, pk, 'Code has been deleted', dispatch).then(
+export const deleteCode = (pk) => async (dispatch) => {
+    wrappedDelete(codesAPI, pk, 'Code has been deleted', dispatch).then(
         () => dispatch(getCodeList())
     );
 };
@@ -150,29 +164,16 @@ export const createStatus = (data) => async (dispatch) => {
 };
 
 export const getStatusDetail = (pk) => async (dispatch) => {
-    try{
-        const response = await statusAPI.status_detail(pk);
-        dispatch(setStatusDetailAction(response.data));
-        dispatch(setFormErrorsAction({}))
-    } catch (e) {
-        dispatch(setFormErrorsAction(e.response.data))
-    }
+    wrappedDetail(statusAPI, pk, setStatusDetailAction, dispatch).then();
 };
 
 export const updateStatus = (data) => async (dispatch) => {
-    try{
-        await statusAPI.patch_field(data.pk, {...data});
-        const msg = data.status + ' was updated successfully';
-        dispatch(addSuccessMessage(msg));
-        dispatch(redirectToAction('/settings'));
-        dispatch(setFormErrorsAction({}))
-    } catch (e) {
-        dispatch(setFormErrorsAction(e.response.data))
-    }
+    const msg = data.status + ' was updated successfully';
+    wrappedUpdate(statusAPI, data, msg, dispatch).then();
 };
 
 export const deleteStatus = (pk) => async (dispatch) => {
-    deleteWrapper(statusAPI, pk, 'Status has been deleted', dispatch).then(
+    wrappedDelete(statusAPI, pk, 'Status has been deleted', dispatch).then(
         () => dispatch(getStatusList())
     );
 };
@@ -193,6 +194,17 @@ export const setDefaultStatuses = () => async (dispatch) => {
 };
 
 // wrapper
+export const wrappedDetail = async (api, pk, action, dispatch) => {
+    try{
+        const response = await api.detail(pk);
+        dispatch(action(response.data));
+        dispatch(setFormErrorsAction({}))
+    } catch (e) {
+        dispatch(setFormErrorsAction(e.response.data));
+        errorHandler(e, dispatch)
+    }
+};
+
 const wrappedLoading = async (apiFunc, action, dispatch) => {
     dispatch(setLoadingAction(true));
     wrappedException(apiFunc, action, dispatch).then(
@@ -210,22 +222,27 @@ const wrappedException = async (apiFunc, action, dispatch) => {
     }
 };
 
-export const deleteWrapper = async (api, pk, msg, dispatch) => {
+export const wrappedUpdate = async (api, data, msg, dispatch) => {
+    try{
+        await api.patch_field(data.pk, {...data});
+        dispatch(addSuccessMessage(msg));
+        dispatch(redirectToAction('/settings'));
+        dispatch(setFormErrorsAction({}))
+    } catch (e) {
+        dispatch(setFormErrorsAction(e.response.data));
+        errorHandler(e, dispatch)
+    }
+};
+
+export const wrappedDelete = async (api, pk, msg, dispatch) => {
     try{
         await api.delete(pk);
         dispatch(addSuccessMessage(msg));
         dispatch(setFormErrorsAction({}));
     } catch (e) {
-        dispatch(setFormErrorsAction(e.response.data))
+        dispatch(setFormErrorsAction(e.response.data));
+        errorHandler(e, dispatch);
     }
-};
-
-export const setDefault = async (api, mapList, dispatch) => {
-    Promise.all(
-        mapList.map(item => api.create(item))
-    ).then(
-        () => dispatch(getStatusList())
-    );
 };
 
 
