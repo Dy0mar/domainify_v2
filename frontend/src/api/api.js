@@ -60,7 +60,7 @@ export const domainsAPI = {
     patch_field(pk, data){
         return instance.patch(`domains/${pk}/`, {...data})
     },
-    get_domain_list(page, filters=[]){
+    domain_list(page, filters=[]){
         let url = `domains/?page=${page}`;
         let part_url = convertObjectToUrl(filters);
 
@@ -74,25 +74,12 @@ export const domainsAPI = {
     alexa_status_list(){
         return instance.get('domains/alexa_status_list/')
     },
-    company_list(){
-        return instance.get('domains/company_list/')
-    },
 };
 
 
 export const authAPI = {
-    auth() {
-        return instance.get('api-token-auth')
-            .then(response => response.data)
-    },
-
     verify() {
         return instance.post('api-token-verify/', {'token': localStorage.getItem("token")})
-    },
-
-    refresh() {
-        return instance.get('api-token-refresh/')
-            .then(response => response.data)
     },
     login(username, password) {
         return instance.post('auth/login/', {username, password})
@@ -116,6 +103,53 @@ export const companyAPI = {
         return instance.delete(`companies/${pk}/`)
     },
 };
+
+export const taskAPI = {
+    task_list(){
+        return instance.get('tasks/')
+    },
+    create(data){
+        return instance.post('tasks/', {...data})
+    },
+    patch_field(pk, data){
+        return instance.patch(`tasks/${pk}/`, {...data})
+    },
+    delete(pk){
+        return instance.delete(`tasks/${pk}/`)
+    },
+};
+
+export const statusAPI = {
+    status_list(){
+        return instance.get('statuses/')
+    },
+    create(data){
+        return instance.post('statuses/', {...data})
+    },
+    patch_field(pk, data){
+        return instance.patch(`statuses/${pk}/`, {...data})
+    },
+    delete(pk){
+        return instance.delete(`statuses/${pk}/`)
+    },
+};
+
+export const codesAPI = {
+    codes_list(){
+        return instance.get('codes/')
+    },
+    create(data){
+        return instance.post('codes/', {...data})
+    },
+    patch_field(pk, data){
+        return instance.patch(`codes/${pk}/`, {...data})
+    },
+    delete(pk){
+        return instance.delete(`codes/${pk}/`)
+    },
+};
+
+
 
 function convertObjectToUrl(objList) {
     // objList = [{param: ['value1', 'value2', ...]}, {...}]
