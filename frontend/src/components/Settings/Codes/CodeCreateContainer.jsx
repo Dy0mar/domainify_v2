@@ -38,7 +38,7 @@ const mapStateToProps = (state) => ({
     formErrors: state.tasks.formErrors,
 });
 
-const StatusCreateComponent = Form.create({ name: 'status_create_form',  })(CodeCreateContainer);
+const StatusCreateComponent = Form.create({ name: 'code_create_form',  })(CodeCreateContainer);
 
 export default compose(
     withAuthRedirect,
