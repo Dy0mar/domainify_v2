@@ -6,9 +6,10 @@ export const submitCreateUpdateForm = (validateFields, thunkFunction, fieldId=nu
         if (!err) {
             const data = {
                 ...values,
-                pk: fieldId,
             };
 
+            if (fieldId)
+                data['pk'] = fieldId;
             // create/update domain data
             if (values.manager)
                 data['manager'] = {pk: values.manager};
@@ -19,6 +20,7 @@ export const submitCreateUpdateForm = (validateFields, thunkFunction, fieldId=nu
             if (values.telephones)
                 data['telephones'] = getDynamic('telephone', values);
 
+            // console.log(data)
             thunkFunction(data);
         }
     });
