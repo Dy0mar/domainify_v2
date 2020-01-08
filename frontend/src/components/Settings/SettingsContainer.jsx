@@ -1,14 +1,15 @@
 import React, {useEffect} from 'react'
-import {Divider, Row, Col, Typography} from 'antd';
+import {Divider, Row, Col} from 'antd';
 import "antd/dist/antd.css";
 import {compose} from "redux";
 import {connect} from "react-redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {withRouter} from "react-router-dom";
 import {
+    deleteCodes,
     deleteStatus,
     getCodeList,
-    getStatusList,
+    getStatusList, setDefaultCodes,
     setDefaultStatuses
 } from "../../redux/task-reducer";
 import {
@@ -16,37 +17,64 @@ import {
     getStatusListS,
     getTaskListS
 } from "../../redux/task-selector";
-import {Box} from "../Common/Box/Box";
-import StatusBoxComponent from "./Statuses/StatusBoxComponent";
-
-const { Text } = Typography;
+import {
+    CodeBoxItem, CodeDefaultBox,
+    StatusBoxItem,
+    StatusDefaultBox
+} from "./SettingsBoxComponents";
+import SettingsBox from "./SettingsBox";
 
 
 const SettingsContainer = (props) => {
-    const {codes, statuses} = props;
-    const {getStatusList, getCodeList, setDefaultStatuses, deleteStatus} = props;
+    const {
+        codes, statuses,
+        getStatusList, setDefaultStatuses, deleteStatus,
+        getCodeList, setDefaultCodes, deleteCodes,
+    } = props;
 
     useEffect(() => {
         getStatusList();
         getCodeList()
     }, [getStatusList, getCodeList]);
 
+    const getStatusBoxIfEmpty = () => {
+        return <StatusDefaultBox setDefault={setDefaultStatuses}/>
+    };
+
+    const getNewStatusItem = (item, index) => {
+        return <StatusBoxItem key={index} item={item} deleteThunk={deleteStatus}/>
+    };
+
+    const getCodeBoxIfEmpty = () => {
+        return <CodeDefaultBox setDefault={setDefaultCodes}/>
+    };
+
+    const getNewCodeItem = (item, index) => {
+        return <CodeBoxItem key={index} item={item} deleteThunk={deleteCodes}/>
+    };
+
+    const getCreateLink = (link) => `/settings/${link}/create`;
+
     return (
         <div>
             <Divider>Settings here</Divider>
             <Row>
                 <Col span={12}>
-                    <Box boxTitleText={'Codes'} icon={'info-circle'} onClickMethod={null}>
-                        {codes.length
-                            ? codes.map( (item, index) => <Row key={index}><Text strong>{item.code}: </Text> {item.comment}</Row>)
-                            : 'setCodes'
-                        }
-                    </Box>
+                    <SettingsBox objectList={codes}
+                                 setDefault={setDefaultCodes}
+                                 createLink={getCreateLink('codes')}
+                                 boxTitleText={'Codes'}
+                                 getNewItem={getNewCodeItem}
+                                 getBoxIfEmpty={getCodeBoxIfEmpty}
+                    />
                 </Col>
                 <Col span={12}>
-                    <StatusBoxComponent statuses={statuses}
-                                        setDefaultStatuses={setDefaultStatuses}
-                                        deleteStatus={deleteStatus}
+                    <SettingsBox objectList={statuses}
+                                 setDefault={setDefaultStatuses}
+                                 createLink={getCreateLink('statuses')}
+                                 boxTitleText={'Statuses'}
+                                 getNewItem={getNewStatusItem}
+                                 getBoxIfEmpty={getStatusBoxIfEmpty}
                     />
                 </Col>
             </Row>
@@ -64,5 +92,8 @@ const mapStateToProps = (state) => ({
 export default compose(
     withAuthRedirect,
     withRouter,
-    connect(mapStateToProps, {getStatusList, getCodeList, setDefaultStatuses, deleteStatus})
+    connect(mapStateToProps, {
+        getStatusList, getCodeList, setDefaultStatuses, deleteStatus, setDefaultCodes,
+        deleteCodes
+    })
 )(SettingsContainer);

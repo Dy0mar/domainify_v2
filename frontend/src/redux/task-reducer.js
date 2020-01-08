@@ -82,6 +82,27 @@ export const getTaskList = () => async (dispatch) => {
 export const getCodeList = () => async (dispatch) => {
     wrappedLoading(codesAPI.codes_list, codeListAction, dispatch).then()
 };
+// setDefaultStatuses, deleteStatus
+
+export const setDefaultCodes = () => async (dispatch) => {
+    const statusMapList = [
+        {name: 'Edit information on the site', code: 'EDIT_SITE_INFO', comment: 'if you need to change company info or products etc'},
+        {name: 'Change whois', code: 'CHANGE_WHOIS', comment: 'you can inform admin to change whois'},
+        {name: 'remind me', code: 'REMIND_ME', comment: 'use it if you want to remind yourself'},
+    ];
+
+    Promise.all(
+        statusMapList.map(item => codesAPI.create(item))
+    ).then(
+        () => dispatch(getCodeList())
+    );
+};
+
+export const deleteCodes = (pk) => async (dispatch) => {
+    deleteWrapper(codesAPI, pk, 'Code has been deleted', dispatch).then(
+        () => dispatch(getCodeList())
+    );
+};
 
 
 // Thunks statusAPI
@@ -164,6 +185,14 @@ export const deleteWrapper = async (api, pk, msg, dispatch) => {
     } catch (e) {
         dispatch(setFormErrorsAction(e.response.data))
     }
+};
+
+export const setDefault = async (api, mapList, dispatch) => {
+    Promise.all(
+        mapList.map(item => api.create(item))
+    ).then(
+        () => dispatch(getStatusList())
+    );
 };
 
 
