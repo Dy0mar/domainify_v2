@@ -114,6 +114,9 @@ export const taskAPI = {
     patch_field(pk, data){
         return instance.patch(`tasks/${pk}/`, {...data})
     },
+    detail(pk){
+        return instance.get(`tasks/${pk}/`)
+    },
     delete(pk){
         return instance.delete(`tasks/${pk}/`)
     },
@@ -129,7 +132,7 @@ export const statusAPI = {
     patch_field(pk, data){
         return instance.patch(`statuses/${pk}/`, {...data})
     },
-    status_detail(pk){
+    detail(pk){
         return instance.get(`statuses/${pk}/`)
     },
     delete(pk){
@@ -147,7 +150,7 @@ export const codesAPI = {
     patch_field(pk, data){
         return instance.patch(`codes/${pk}/`, {...data})
     },
-    code_detail(pk){
+    detail(pk){
         return instance.get(`codes/${pk}/`)
     },
     delete(pk){

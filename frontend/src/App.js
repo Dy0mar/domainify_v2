@@ -42,6 +42,7 @@ import StatusCreateContainer
 import CodeEditContainer from "./components/Settings/Codes/CodeEditContainer";
 import CodeCreateContainer
     from "./components/Settings/Codes/CodeCreateContainer";
+import TaskContainer from "./components/Task/TaskContainer";
 
 
 const { Content } = Layout;
@@ -83,7 +84,8 @@ class App extends Component {
                             <Route path='/companies/:companyId' render={() => <CompanyEditContainer />}/>
                             <Route path='/companies' render={() => <CompaniesContainer />}/>
 
-                            <Route path='/tasks/create' render={() => <TasksContainer />}/>
+                            <Route exact path='/tasks/:taskId(\d+)' render={() => <TaskContainer />}/>
+                            <Route exact path='/tasks/create' render={() => <TaskContainer />}/>
                             <Route path='/tasks' render={() => <TasksContainer />}/>
 
                             <Route exact path='/settings/statuses/:statusId(\d+)' render={() => <StatusEditContainer />}/>
