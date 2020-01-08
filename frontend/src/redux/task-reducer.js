@@ -9,6 +9,7 @@ const SET_TASK_LIST = 'task/SET_TASK_LIST';
 const SET_CODE_LIST = 'task/SET_CODES_LIST';
 const SET_STATUS_LIST = 'task/SET_STATUS_LIST';
 const SET_FORM_ERROR_MESSAGES = 'task/SET_FORM_ERROR_MESSAGES';
+const STATUS_DETAIL = 'task/STATUS_DETAIL';
 
 const initialSate = {
     count: 0,
@@ -22,7 +23,9 @@ const initialSate = {
     }],
     formErrors: {},
     codes: [],
+    code: {},
     statuses: [],
+    status: {},
 };
 
 
@@ -33,6 +36,7 @@ const taskReducer = (state=initialSate, action) => {
         case SET_CODE_LIST:
         case SET_STATUS_LIST:
         case SET_FORM_ERROR_MESSAGES:
+        case STATUS_DETAIL:
             return {
                 ...state,
                 ...action.payload,
@@ -62,25 +66,48 @@ export const setFormErrorsAction = (formErrors) => ({
     payload: {formErrors}
 });
 
+export const setStatusDetailAction = (status) => ({
+    type: STATUS_DETAIL,
+    payload: {status}
+});
 
 
 // Thunks taskAPI
 export const getTaskList = () => async (dispatch) => {
-    WrappedException(taskAPI.task_list, taskListAction, dispatch).then()
+    wrappedLoading(taskAPI.task_list, taskListAction, dispatch).then()
 };
 
 
 // Thunks codeAPI
 export const getCodeList = () => async (dispatch) => {
-    WrappedException(codesAPI.codes_list, codeListAction, dispatch).then()
+    wrappedLoading(codesAPI.codes_list, codeListAction, dispatch).then()
 };
 
 
 // Thunks statusAPI
+export const deleteStatus = (pk) => async (dispatch) => {
+    try{
+        await statusAPI.delete(pk);
+        dispatch(getStatusList());
+        dispatch(addSuccessMessage('Status has been deleted'));
+        dispatch(setFormErrorsAction({}));
+    } catch (e) {
+        dispatch(setFormErrorsAction(e.response.data))
+    }
+};
 
+export const getStatusDetail = (pk) => async (dispatch) => {
+    try{
+        const response = await statusAPI.status_detail(pk);
+        dispatch(setStatusDetailAction(response.data));
+        dispatch(setFormErrorsAction({}))
+    } catch (e) {
+        dispatch(setFormErrorsAction(e.response.data))
+    }
+};
 
 export const getStatusList = () => async (dispatch) => {
-    WrappedException(statusAPI.status_list, statusListAction, dispatch).then()
+    wrappedLoading(statusAPI.status_list, statusListAction, dispatch).then()
 };
 
 export const updateStatus = (data) => async (dispatch) => {
@@ -88,14 +115,11 @@ export const updateStatus = (data) => async (dispatch) => {
         await statusAPI.patch_field(data.pk, {...data});
         const msg = data.status + ' was updated successfully';
         dispatch(addSuccessMessage(msg));
-        dispatch(redirectToAction('/statuses'));
+        dispatch(redirectToAction('/settings'));
         dispatch(setFormErrorsAction({}))
     } catch (e) {
-        const response = e.response;
-        const errors = response.data;
-        dispatch(setFormErrorsAction(errors))
+        dispatch(setFormErrorsAction(e.response.data))
     }
-
 };
 
 export const setDefaultStatuses = () => async (dispatch) => {
@@ -106,20 +130,34 @@ export const setDefaultStatuses = () => async (dispatch) => {
         {status: 'CANCELED', comment: 'task canceled'},
     ];
 
-    statusMapList.map(item => statusAPI.create(item));
-    dispatch(getStatusList())
+    Promise.all(
+        statusMapList.map(item => statusAPI.create(item))
+    ).then(
+        () => dispatch(getStatusList())
+    );
+};
+
+export const createStatus = (data) => async (dispatch) => {
+    await statusAPI.create(data);
+    dispatch(addSuccessMessage('Status has been created'));
+    dispatch(redirectToAction('/settings'));
 };
 
 // wrapper
-const WrappedException = async (apiFunc, action, dispatch) => {
+const wrappedLoading = async (apiFunc, action, dispatch) => {
     dispatch(setLoadingAction(true));
+    wrappedException(apiFunc, action, dispatch).then(
+        () => dispatch(setLoadingAction(true)),
+        () => dispatch(setLoadingAction(true))
+    )
+};
+
+const wrappedException = async (apiFunc, action, dispatch) => {
     try{
         const response = await apiFunc();
         dispatch(action(response.data));
     } catch (e) {
         errorHandler(e, dispatch);
-    } finally {
-        dispatch(setLoadingAction(false));
     }
 };
 
