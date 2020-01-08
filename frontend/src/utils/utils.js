@@ -1,3 +1,6 @@
+import {Modal} from "antd";
+const { confirm } = Modal;
+
 export const submitCreateUpdateForm = (validateFields, thunkFunction, fieldId=null) => {
     validateFields((err, values) => {
         if (!err) {
