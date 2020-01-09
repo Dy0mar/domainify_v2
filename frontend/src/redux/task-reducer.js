@@ -135,7 +135,8 @@ export const setDefaultCodes = () => async (dispatch) => {
     const statusMapList = [
         {name: 'Edit information on the site', code: 'EDIT_SITE_INFO', comment: 'if you need to change company info or products etc'},
         {name: 'Change whois', code: 'CHANGE_WHOIS', comment: 'you can inform admin to change whois'},
-        {name: 'remind me', code: 'REMIND_ME', comment: 'use it if you want to remind yourself'},
+        {name: 'Remind me', code: 'REMIND_ME', comment: 'use it if you want to remind yourself'},
+        {name: 'Custom', code: 'CUSTOM', comment: 'use it if you want to create any task'},
     ];
 
     Promise.all(

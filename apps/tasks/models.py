@@ -20,7 +20,7 @@ class Status(models.Model):
 
 
 class Code(models.Model):
-    # standard statuses
+    # standard codes
     EDIT_SITE_INFO = 'EDIT_SITE_INFO'
     CHANGE_WHOIS = 'CHANGE_WHOIS'
     REMIND_ME = 'REMIND_ME'
