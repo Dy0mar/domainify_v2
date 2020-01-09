@@ -7,6 +7,7 @@ const SET_USER_INFO = 'user/SET_CURRENT_USER';
 const REGISTER_ERROR_MESSAGES = 'user/REGISTER_ERROR_MESSAGES';
 const GET_USER_LIST = 'user/GET_USER_LIST';
 const GET_MANAGER_LIST = 'user/GET_MANAGER_LIST';
+const GET_FULL_USER_LIST = 'user/GET_FULL_USER_LIST';
 
 
 const initialSate = {
@@ -43,6 +44,14 @@ const userReducer = (state=initialSate, action) => {
                 ...state,
                 ...action.payload,
             };
+        case GET_FULL_USER_LIST:
+            return {
+                ...state,
+                users: {
+                    ...state.users,
+                    results: [...state.users.results, ...action.users]
+                }
+            };
         default: return state;
     }
 };
@@ -66,6 +75,11 @@ export const registerErrorsAction = (registerErrors) => ({
 export const userListAction = (users) => ({
     type: GET_USER_LIST,
     payload: {users}
+});
+
+export const userFullListAction = (users) => ({
+    type: GET_FULL_USER_LIST,
+    users: users
 });
 
 export const managersListAction = (managers) => ({
@@ -92,6 +106,17 @@ export const getUserList = (page=1) => async (dispatch) => {
     if (response.status === 200) {
         dispatch(userListAction(response.data));
     }
+};
+
+export const getUserFullList = () => async (dispatch) => {
+    let page = 1;
+    do {
+        let response = await usersAPI.get_user_list(page);
+        dispatch(userFullListAction(response.data.results));
+        response.data.next ? page++ : page=null
+
+    } while (page)
+
 };
 
 export const register = (username, email, password, jabber_nick) => async (dispatch) => {
