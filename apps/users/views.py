@@ -15,7 +15,7 @@ class UserPagination(PageNumberPagination):
 
 
 class UserViewSet(ModelViewSet):
-    queryset = User.objects.all().order_by('pk')
+    queryset = User.objects.all().order_by('username')
     serializer_class = UserSerializer
     pagination_class = UserPagination
 
