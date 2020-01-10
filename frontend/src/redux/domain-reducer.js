@@ -10,6 +10,7 @@ const SET_ALEXA_STATUS_LIST = 'domain/SET_ALEXA_STATUS_LIST';
 const SET_DOMAIN_LIST = 'domain/SET_DOMAIN_LIST';
 const GET_COMPANY_LIST = 'domain/GET_COMPANY_LIST';
 const SET_FORM_ERROR_MESSAGES = 'domain/SET_FORM_ERROR_MESSAGES';
+const AUTOCOMPLETE_DOMAIN_LIST = 'domain/AUTOCOMPLETE_DOMAIN_LIST';
 
 
 const initialSate = {
@@ -43,6 +44,7 @@ const initialSate = {
     formErrors: {},
     redirectTo: '',
     currentDomain: {},
+    dataSource: [],
 };
 
 
@@ -57,6 +59,7 @@ const domainsReducer = (state=initialSate, action) => {
         case SET_DOMAIN_LIST:
         case GET_COMPANY_LIST:
         case SET_FORM_ERROR_MESSAGES:
+        case AUTOCOMPLETE_DOMAIN_LIST:
             return {
                 ...state,
                 ...action.payload,
@@ -99,6 +102,11 @@ export const domainListAction = ({count, next, previous, results}) => ({
 export const setFormErrorsAction = (formErrors) => ({
     type: SET_FORM_ERROR_MESSAGES,
     payload: {formErrors}
+});
+
+export const autocompleteDomainListAction = (dataSource) => ({
+    type: AUTOCOMPLETE_DOMAIN_LIST,
+    payload: {dataSource}
 });
 
 // Thunks
@@ -188,6 +196,18 @@ export const getDomainList = (page=1, filters = {}) => async (dispatch) => {
     try{
         const response = await domainsAPI.domain_list(page, [filters]);
         dispatch(domainListAction(response.data));
+    } catch (e) {
+        errorHandler(e, dispatch);
+    } finally {
+        dispatch(setLoadingAction(false));
+    }
+};
+
+export const autocompleteDomainList = (term) => async (dispatch) => {
+    dispatch(setLoadingAction(true));
+    try{
+        const response = await domainsAPI.autocomplete_domain_list(term);
+        dispatch(autocompleteDomainListAction(response.data));
     } catch (e) {
         errorHandler(e, dispatch);
     } finally {
