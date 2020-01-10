@@ -4,3 +4,4 @@ export const getStatusListS = state => state.tasks.statuses;
 
 export const getStatusByIdS = (state, statusId) => getStatusListS(state).filter(item => item.pk === parseInt(statusId))[0];
 
+export const getTasksListPageTotalS = (state) => state.tasks.count;
