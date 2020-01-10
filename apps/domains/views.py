@@ -61,6 +61,18 @@ class AlexaStatusList(BaseViewSetMixin, ViewSet):
         return Response(list(Domain.ALEXA_STATUS))
 
 
+class AutocompleteDomainList(BaseViewSetMixin, ModelViewSet):
+    queryset = Domain.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        query = request.GET.get('term', '').strip()
+        qs = self.get_queryset().filter(
+            name__icontains=query).values_list('pk', 'name')
+        data = list(qs)
+        return Response(data)
+
+
 status_list = StatusList.as_view({'get': 'list'})
 alexa_status_list = AlexaStatusList.as_view({'get': 'list'})
 manager_list = ManagerViewSet.as_view({'get': 'list'})
+autocomplete_domain_list = AutocompleteDomainList.as_view({'get': 'list'})
