@@ -68,6 +68,9 @@ export const domainsAPI = {
             url += part_url;
         return instance.get(url)
     },
+    autocomplete_domain_list(term){
+        return instance.get(`domains/autocomplete-domain-list/?term=${term}`)
+    },
     status_list(){
         return instance.get('domains/status_list/')
     },
