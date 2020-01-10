@@ -12,14 +12,12 @@ export const submitCreateUpdateForm = (validateFields, thunkFunction, fieldId=nu
                 data['pk'] = fieldId;
 
             // create/update domain data
-            !!values.manager
-                ? data['manager'] = {pk: values.manager}
-                : data['manager'] = {};
+            ['code', 'company', 'manager', 'status', 'domain', 'executors'].forEach(item => {
+                values[item]
+                    ? data[item] = {pk: values[item]}
+                    : data[item] = {}
+            });
 
-
-            !!values.company
-                ? data['company'] = {pk: values.company}
-                : data['company'] = {};
 
             if (values.emails)
                 data['emails'] = getDynamic('email', values);

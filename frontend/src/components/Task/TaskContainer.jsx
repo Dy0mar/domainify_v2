@@ -1,19 +1,54 @@
-import React, {useEffect} from 'react'
-import {Divider, Row, Col, Form} from 'antd';
+import React, {useEffect, useState} from 'react'
+import {Divider, Row, Form} from 'antd';
 import "antd/dist/antd.css";
 import {compose} from "redux";
 import {connect} from "react-redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
-import {withRouter} from "react-router-dom";
-import TaskForm from "./TaskForm";
+import {Redirect, withRouter} from "react-router-dom";
 import {submitCreateUpdateForm} from "../../utils/utils";
-import {getTaskDetail} from "../../redux/task-reducer";
+import {
+    createTask,
+    getCodeList,
+    getStatusList,
+    getTaskDetail, updateTask
+} from "../../redux/task-reducer";
+import {TaskItemsType} from "./TaskComponents";
+import {getCodeListS, getStatusListS} from "../../redux/task-selector";
+import TaskForm from "./TaskForm";
+import {
+    getDomainDataSourceS,
+    getDomainListS
+} from "../../redux/domains-selectors";
+import {getUserFullList} from "../../redux/user-reducer";
+import {getUserListS} from "../../redux/users-selectors";
+import {autocompleteDomainList} from "../../redux/domain-reducer";
 
 
 const TaskContainer = (props) => {
-    const {taskId} = props.match.params;
+    const {taskId} = props.match.params || null;
     const {getFieldDecorator, validateFields} = props.form;
-    const {formErrors, task, getTaskDetail, updateTask} = props;
+
+    const {
+        codes, domains, statuses, users,
+        formErrors, task, dataSource,
+    } = props;
+    const {
+        getTaskDetail, updateTask, createTask,
+        getCodeList, getStatusList, getUserFullList, autocompleteDomainList
+    } = props;
+
+    const [domainId, setDomainID] = useState(null);
+    const [taskType, setTaskType] = useState(0);
+    // get Code list for set taskType
+    useEffect(() => {
+        getCodeList()
+    },[getCodeList]);
+
+    const onSetTaskType = (pk) => {
+        setTaskType(pk);
+        getStatusList();
+        getUserFullList();
+    };
 
     useEffect(() => {
         if (taskId)
@@ -22,20 +57,43 @@ const TaskContainer = (props) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        submitCreateUpdateForm(validateFields, updateTask, task.pk);
+        let thunk = createTask;
+        if (taskId)
+            thunk = updateTask;
+        submitCreateUpdateForm(validateFields, thunk, taskId);
     };
 
-    const _props = {formErrors, getFieldDecorator};
+
+    const cancelLink = () => {
+        if (taskId) return <Redirect to={'/tasks'} />;
+        else setTaskType(0)
+    };
+
+    const onSearch = (value) => {
+        if (value.length > 2) autocompleteDomainList(value);
+    };
+    const onSelect = (value) => {
+        let obj = dataSource.filter(item => item[1] === value)[0];
+        setDomainID(obj[0])
+    };
+
+    const _props = {
+        codes, domains, statuses, users, formErrors, taskType,
+        getFieldDecorator, cancelLink, onSearch, onSubmit,
+        onSelect,
+    };
 
     return (
         <div>
             <Divider>Task here</Divider>
-            <Row>
-                <Col span={24} style={{padding: '0 15px'}}>
-                    <TaskForm {..._props}/>
-                    {task.title}
-                </Col>
-            </Row>
+            {taskType===0 && codes && <TaskItemsType codes={codes} handleClick={onSetTaskType} />}
+
+            {taskType!==0 && <Row>
+                <TaskForm {..._props}
+                          dataSource={dataSource.map(item=>item[1])}
+                          domain={domainId}
+                />
+            </Row>}
         </div>
     )
 };
@@ -44,10 +102,19 @@ const TaskComponent = Form.create({ name: 'task_form',  })(TaskContainer);
 
 const mapStateToProps = (state) => ({
     task: state.tasks.task,
+    codes: getCodeListS(state),
+    statuses: getStatusListS(state),
+    domains: getDomainListS(state),
+    users: getUserListS(state),
+    dataSource: getDomainDataSourceS(state),
+    formErrors: state.tasks.formErrors,
 });
 
 export default compose(
     withAuthRedirect,
     withRouter,
-    connect(mapStateToProps, {getTaskDetail})
+    connect(mapStateToProps, {
+        createTask, updateTask,
+        getTaskDetail, getCodeList, getStatusList, getUserFullList, autocompleteDomainList
+    })
 )(TaskComponent);
