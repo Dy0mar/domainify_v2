@@ -109,14 +109,18 @@ export const getUserList = (page=1) => async (dispatch) => {
 };
 
 export const getUserFullList = () => async (dispatch) => {
+    dispatch(userListAction({
+        count: 0,
+        next: null,
+        previous: null,
+        results: []
+    }));
     let page = 1;
     do {
         let response = await usersAPI.get_user_list(page);
         dispatch(userFullListAction(response.data.results));
-        response.data.next ? page++ : page=null
-
+        response.data.next ? page++ : page=0
     } while (page)
-
 };
 
 export const register = (username, email, password, jabber_nick) => async (dispatch) => {
