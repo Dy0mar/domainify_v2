@@ -1,5 +1,7 @@
 export const getDomainListS = (state) => state.domains.results;
 
+export const getDomainDataSourceS = state => state.domains.dataSource;
+
 export const getDomainStatusListS = (state) => (
     state.domains.statuses.map(u => ({text: u[0], value: u[1]}))
 );
