@@ -39,7 +39,7 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = (
-            "url", "title", "description", "domain", "status",
+            "url", "pk", "title", "description", "domain", "status",
             "code", 'executors',
         )
         extra_fields = ['pk']
