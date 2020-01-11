@@ -49,7 +49,7 @@ const TasksContainer = (props) => {
                 {
                     ...getColumn('Executors', 'executors'),
                     render: executors=> executors
-                        ? executors.map(item => <span key={item.pk}>{item.username}&nbsp;</span>)
+                        ? executors.map((item, index) => <span key={index}>{item.username}&nbsp;</span>)
                         : null
                 },
             ],
