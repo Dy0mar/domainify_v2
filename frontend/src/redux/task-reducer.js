@@ -36,6 +36,10 @@ const taskReducer = (state=initialSate, action) => {
 
     switch (action.type) {
         case SET_TASK_LIST:
+            return {
+                ...state,
+                ...action.results,
+            }
         case SET_CODE_LIST:
         case SET_STATUS_LIST:
         case SET_FORM_ERROR_MESSAGES:
@@ -53,7 +57,7 @@ const taskReducer = (state=initialSate, action) => {
 // Actions
 export const taskListAction = (results) => ({
     type: SET_TASK_LIST,
-    payload: {results}
+    results: results
 });
 
 export const codeListAction = (codes) => ({
@@ -209,8 +213,8 @@ export const wrappedDetail = async (api, pk, action, dispatch) => {
 const wrappedLoading = async (apiFunc, action, dispatch) => {
     dispatch(setLoadingAction(true));
     wrappedException(apiFunc, action, dispatch).then(
-        () => dispatch(setLoadingAction(true)),
-        () => dispatch(setLoadingAction(true))
+        () => dispatch(setLoadingAction(false)),
+        () => dispatch(setLoadingAction(false))
     )
 };
 
