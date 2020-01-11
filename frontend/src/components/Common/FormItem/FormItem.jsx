@@ -7,11 +7,20 @@ const formItemLayout = {
     wrapperCol: { span: 16 },
 };
 
+const getInitialField = (obj, fields) => {
+    let value;
+    fields.forEach(field => value ? value = value[field] : value = obj[field]);
+    return value
+};
 
-export const createFormItem = (field, formErrors, getFieldDecorator, Component, initial='', rules=[]) => {
-    // if initial is object
-    if (typeof(initial) === 'object'){
-        initial = initial[field];
+export const createFormItem = (field, formErrors, getFieldDecorator, Component, obj=false, initial='', rules=[]) => {
+
+    //set field initial field
+    let fields = field.split('.');
+    field = fields[0];
+
+    if (typeof(obj) === 'object' && !initial){
+        initial = getInitialField(obj, fields);
     }
 
     return (
