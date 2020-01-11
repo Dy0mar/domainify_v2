@@ -39,7 +39,7 @@ const taskReducer = (state=initialSate, action) => {
             return {
                 ...state,
                 ...action.results,
-            }
+            };
         case SET_CODE_LIST:
         case SET_STATUS_LIST:
         case SET_FORM_ERROR_MESSAGES:
@@ -201,9 +201,11 @@ export const setDefaultStatuses = () => async (dispatch) => {
 // wrapper
 export const wrappedDetail = async (api, pk, action, dispatch) => {
     try{
+        dispatch(setLoadingAction(true));
         const response = await api.detail(pk);
         dispatch(action(response.data));
-        dispatch(setFormErrorsAction({}))
+        dispatch(setFormErrorsAction({}));
+        dispatch(setLoadingAction(false))
     } catch (e) {
         dispatch(setFormErrorsAction(e.response.data));
         errorHandler(e, dispatch)
