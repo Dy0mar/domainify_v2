@@ -27,12 +27,11 @@ class DomainTaskSerializer(serializers.ModelSerializer):
 class ExecutorTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Executor
-        depth = 1
         fields = ('pk', 'executor')
 
     def to_representation(self, value):
         ret = {
-            "pk": value.executor.pk,
+            "executor": value.executor.pk,
             "username": value.executor.username,
         }
         return ret
