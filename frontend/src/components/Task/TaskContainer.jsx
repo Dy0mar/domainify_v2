@@ -22,15 +22,16 @@ import {
 import {getUserFullList} from "../../redux/user-reducer";
 import {getUserListS} from "../../redux/users-selectors";
 import {autocompleteDomainList} from "../../redux/domain-reducer";
+import {getIsLoadingS} from "../../redux/app-selector";
 
 
 const TaskContainer = (props) => {
-    const {taskId} = props.match.params || null;
+    const taskId = props.match.params.taskId || 0;
     const {getFieldDecorator, validateFields} = props.form;
 
     const {
         codes, domains, statuses, users,
-        formErrors, task, dataSource,
+        formErrors, task, dataSource, isLoading
     } = props;
     const {
         getTaskDetail, updateTask, createTask,
@@ -38,21 +39,23 @@ const TaskContainer = (props) => {
     } = props;
 
     const [domainId, setDomainID] = useState(null);
-    const [taskType, setTaskType] = useState(0);
+    const [taskType, setTaskType] = useState(taskId);
+
+    useEffect(() => {
+        setTaskType(taskId)
+    },[taskId]);
+
     // get Code list for set taskType
     useEffect(() => {
-        getCodeList()
-    },[getCodeList]);
-
-    const onSetTaskType = (pk) => {
-        setTaskType(pk);
+        getCodeList();
         getStatusList();
         getUserFullList();
-    };
+    },[getCodeList, getStatusList, getUserFullList]);
 
     useEffect(() => {
-        if (taskId)
+        if (taskId){
             getTaskDetail(taskId)
+        }
     },[getTaskDetail, taskId]);
 
     const onSubmit = (e) => {
@@ -86,12 +89,13 @@ const TaskContainer = (props) => {
     return (
         <div>
             <Divider>Task here</Divider>
-            {taskType===0 && codes && <TaskItemsType codes={codes} handleClick={onSetTaskType} />}
+            {taskType===0 && codes && <TaskItemsType codes={codes} handleClick={setTaskType} />}
 
-            {taskType!==0 && <Row>
+            {taskType!==0 && isLoading===false && <Row>
                 <TaskForm {..._props}
                           dataSource={dataSource.map(item=>item[1])}
                           domain={domainId}
+                          task={taskId ? task : false}
                 />
             </Row>}
         </div>
@@ -108,6 +112,7 @@ const mapStateToProps = (state) => ({
     users: getUserListS(state),
     dataSource: getDomainDataSourceS(state),
     formErrors: state.tasks.formErrors,
+    isLoading: getIsLoadingS(state)
 });
 
 export default compose(

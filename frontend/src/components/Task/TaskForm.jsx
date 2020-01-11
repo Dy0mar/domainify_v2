@@ -4,6 +4,7 @@ import {
     Button, Col, Form, Input, Row, Select, Checkbox, AutoComplete
 } from "antd";
 import css from "../Login/Login.module.css";
+import {createFormItem} from "../Common/FormItem/FormItem";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -13,83 +14,50 @@ const TaskForm = (props) => {
     const { onSubmit, getFieldDecorator, cancelLink, onSearch, onSelect } = props;
 
     const {
-        codes, statuses, users, formErrors, taskType, dataSource,
+        codes, statuses, users, formErrors, dataSource, task,
     } = props;
 
-    const getInitialValue = (propName, defaultValue='') => {
-        let value;
-        propName.split('.').forEach(e => value = value ? value[e] : props[e]);
-        return value || defaultValue
-    };
-
-    const formItemLayout = {
-        labelCol: { span: 8 },
-        wrapperCol: { span: 16 },
-    };
-
-    const getStatusInitial = () => {
+    const statusInitial = () => {
         let status = statuses.filter(item => (item.status === 'NEW'));
         if (status.length)
             return status[0].pk
+    };
+    const executorsInitial = () => {
+        if (task.executors){
+            return task.executors.map(item=>(item.executor));
+        }
+
+    };
+
+    // wrapper
+    const formItem = (field, Component, initial='', rules=[]) => {
+        return createFormItem(field, formErrors, getFieldDecorator, Component, task, initial, rules)
     };
 
     return (
         <Form onSubmit={onSubmit}>
             <Row>
                 <Col span={7}>
-                    <Form.Item
-                        {...formErrors.title && {
-                            help: formErrors.title,
-                            validateStatus: 'error',
-                        }}
-                        label="Title" {...formItemLayout}>
-                        {getFieldDecorator('title', {
-                            initialValue: getInitialValue('name'),
-                            rules: [{ required: true, message: 'Please input title!' }],
-                        })( <Input disabled={!!getInitialValue('title', '')} placeholder="My task" /> )}
-                    </Form.Item>
-                    <Form.Item
-                        {...formErrors.description && {
-                            help: formErrors.description,
-                            validateStatus: 'error',
-                        }}
-                        label="Description" {...formItemLayout}>
-                        {getFieldDecorator('description', {initialValue: getInitialValue('description')})(
-                            <TextArea rows={4} />
-                        )}
-                    </Form.Item>
+                    {formItem('title',
+                        <Input placeholder="Some title ..." />,
+                        '',
+                        [{ required: true, message: 'Please input title!' }],
+                    )}
+                    {formItem('description', <TextArea rows={4} />)}
+
                 </Col>
                 <Col span={7}>
-                    <Form.Item
-                        {...formErrors.status && {
-                            help: formErrors.status,
-                            validateStatus: 'error',
-                        }}
-                        label="Status" {...formItemLayout}>
-                        {getFieldDecorator('status', {
-                            initialValue: getInitialValue(
-                                'statuses.pk',
-                                getStatusInitial()
-                            )
-                        }
-                            )( <Select>
-                                {statuses && statuses.map((item, index) => <Option key={index} value={item.pk}>{item.status}</Option>)}
-                            </Select>
-                        )}
-                    </Form.Item>
-
-                    <Form.Item
-                        {...formErrors.code && {
-                            help: formErrors.code,
-                            validateStatus: 'error',
-                        }}
-                        label="Code" {...formItemLayout}>
-                        {getFieldDecorator('code', {initialValue: getInitialValue('codes.pk', taskType)})(
-                            <Select>
-                                {codes && codes.map((item, index) => <Option key={index} value={item.pk}>{item.code}</Option>)}
-                            </Select>
-                        )}
-                    </Form.Item>
+                    {formItem('status.status',
+                        <Select>
+                            {statuses && statuses.map((item, index) => <Option key={index} value={item.pk}>{item.status}</Option>)}
+                        </Select>,
+                        task ? '' : statusInitial()
+                    )}
+                    {formItem('code.code',
+                        <Select>
+                            {codes && codes.map((item, index) => <Option key={index} value={item.pk}>{item.code}</Option>)}
+                        </Select>,
+                    )}
 
                     <Form.Item>
                         <Col offset={6} span={6}>
@@ -105,37 +73,20 @@ const TaskForm = (props) => {
                     </Form.Item>
                 </Col>
                 <Col span={9}>
-                    <Form.Item
-                        {...formErrors.domain && {
-                            help: formErrors.domain,
-                            validateStatus: 'error',
-                        }}
-                        label="Domain" {...formItemLayout}>
-                        {getFieldDecorator('domain_name', {
-                            initialValue: getInitialValue('domain.name')
-                        })( <AutoComplete dataSource={dataSource}
-                                          placeholder="example.com"
-                                          style={{ width: 200 }}
-                                          onSearch={onSearch}
-                                          onSelect={onSelect}
-                        /> )}
-                    </Form.Item>
-                    <Form.Item
-                        {...formErrors.executors && {
-                            help: formErrors.executors,
-                            validateStatus: 'error',
-                        }}
-                        label="Executors" {...formItemLayout}>
-                        {getFieldDecorator('executors', {})(
-                            <Checkbox.Group options={users.map(item => ({label: item.username, value: item.pk}))} /> )}
-                    </Form.Item>
+                    {formItem('domain.name',
+                        <AutoComplete dataSource={dataSource}
+                                      placeholder="example.com"
+                                      style={{ width: 200 }}
+                                      onSearch={onSearch}
+                                      onSelect={onSelect}
+                        />
+                    )}
 
-                    <Form.Item
-                        label="Domain" {...formItemLayout}>
-                        {getFieldDecorator('domain', {
-                            initialValue: getInitialValue('domain'),
-                        })( <Input /> )}
-                    </Form.Item>
+
+                    {formItem('executors',
+                            <Checkbox.Group options={users.map(item => ({label: item.username, value: item.pk}))}/>,
+                        task ? executorsInitial() : []
+                        )}
                 </Col>
             </Row>
         </Form>
