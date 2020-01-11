@@ -21,20 +21,28 @@ class StatusSerializer(serializers.ModelSerializer):
 class DomainTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Domain
-        fields = ('pk', )
+        fields = ('pk', 'name')
 
 
-class UserTaskSerializer(serializers.ModelSerializer):
+class ExecutorTaskSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ('pk', )
+        model = Executor
+        depth = 1
+        fields = ('pk', 'executor')
+
+    def to_representation(self, value):
+        ret = {
+            "pk": value.pk,
+            "username": value.executor.username,
+        }
+        return ret
 
 
 class TaskSerializer(serializers.ModelSerializer):
     domain = DomainTaskSerializer(required=False)
     status = StatusSerializer(required=False)
     code = CodeSerializer(required=False)
-    executors = UserTaskSerializer(required=False)
+    executors = ExecutorTaskSerializer(required=False, many=True)
 
     class Meta:
         model = Task
@@ -43,24 +51,6 @@ class TaskSerializer(serializers.ModelSerializer):
             "code", 'executors',
         )
         extra_fields = ['pk']
-
-    def get_instance_from_list(self, model, field_plural, field):
-        instances = []
-        qs = model.objects.filter(domain=self.instance)
-        for data in self.initial_data.get(field_plural, []):
-            pk = data.get('pk')
-            value = data.get(field)
-            if pk is None or value is None:
-                continue
-            try:
-                obj = qs.filter(pk=pk).first()
-                getattr(obj, field)
-                setattr(obj, field, value)
-            except AttributeError:
-                data = {field: value}
-                obj = model(domain=self.instance, **data)
-            instances.append(obj)
-        return instances or None
 
     def get_instance_from_pk(self, model, field):
         field_data = self.initial_data.get(field)
