@@ -32,7 +32,7 @@ class ExecutorTaskSerializer(serializers.ModelSerializer):
 
     def to_representation(self, value):
         ret = {
-            "pk": value.pk,
+            "pk": value.executor.pk,
             "username": value.executor.username,
         }
         return ret
