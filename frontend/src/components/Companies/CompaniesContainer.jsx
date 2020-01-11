@@ -37,6 +37,7 @@ const CompaniesContainer = (props) => {
                 onCancel() {},
             });
         };
+        const getColumn = (title, field) => ({title: title, dataIndex: field, key: field});
 
         setConfig({
             bordered: true,
@@ -50,17 +51,12 @@ const CompaniesContainer = (props) => {
             loading: isLoading,
 
             columns: [
+
                 {
-                    title: 'Company name',
-                    dataIndex: 'name',
-                    key: 'name',
+                    ...getColumn('Company name', 'name'),
                     render: (name, row) => <NavLink to={getAbsoluteUrlOr404S(row.url)} >{name}</NavLink>
                 },
-                {
-                    title: 'Address',
-                    dataIndex: 'address',
-                    key: 'address',
-                },
+                {...getColumn('Address', 'address'),},
                 {
                     title: 'Action',
                     render: (row) => <span style={{textAlign: 'center'}}>

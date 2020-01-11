@@ -31,6 +31,8 @@ const DomainsContainer = (props) => {
 
     const [config, setConfig] = useState({});
     useEffect(() => {
+        const getColumn = (title, field) => ({title: title, dataIndex: field, key: field});
+
         setConfig({
             bordered: true,
             pagination : {
@@ -42,35 +44,23 @@ const DomainsContainer = (props) => {
             rowClassName: record => style['highlight'+record.status],
             columns: [
                 {
-                    title: 'Name',
-                    dataIndex: 'name',
-                    key: 'name',
+                    ...getColumn('Name', 'name'),
                     render: (text, row) => <NavLink to={getUrlOr404S(row.url)} >{text}</NavLink>
-
                 },
                 {
-                    title: 'manager',
-                    dataIndex: 'manager',
-                    key: 'manager',
+                    ...getColumn('Manager', 'manager'),
                     filters: managers,
-                    render: manager => (manager
-                            ? manager.username
-                            : '--'
-                    )
+                    render: manager => (manager ? manager.username : '--')
                 },
                 {
-                    title: 'Company',
-                    dataIndex: 'company.name',
-                    key: 'company.name',
+                    ...getColumn('Company', 'company.name'),
                     render: (name, row) => (row.company
                             ? <NavLink to={getUrlOr404S(row.company.url)} >{name}</NavLink>
                             : '--'
                     )
                 },
                 {
-                    title: 'Address',
-                    dataIndex: 'company.custom_company_address',
-                    key: 'company.custom_company_address',
+                    ...getColumn('Address', 'company.custom_company_address'),
                     render: (address, row) => (row.use_custom_address
                             ? <Popover content={row.company.address} title="Custom address"><Button type={'link'}>{row.custom_company_address.substr(0,10)}...</Button></Popover>
                             : row.company
@@ -78,36 +68,12 @@ const DomainsContainer = (props) => {
                                 : '--'
                     )
                 },
-                {
-                    title: 'Alexa status',
-                    dataIndex: 'alexa_status',
-                    key: 'alexa_status',
-                },
-                {
-                    title: 'Alexa comment',
-                    dataIndex: 'alexa_comment',
-                    key: 'alexa_comment',
-                },
-                {
-                    title: 'Redirect',
-                    dataIndex: 'redirect',
-                    key: 'redirect',
-                },
-                {
-                    title: 'Register date',
-                    dataIndex: 'register_date',
-                    key: 'register_date',
-                },
-                {
-                    title: 'Expire date',
-                    dataIndex: 'expire_date',
-                    key: 'expire_date',
-                },
-                {
-                    title: 'Status',
-                    dataIndex: 'status',
-                    key: 'status',
-                },
+                {...getColumn('Alexa status', 'alexa_status'),},
+                {...getColumn('Alexa comment', 'alexa_comment'),},
+                {...getColumn('Redirect', 'redirect'),},
+                {...getColumn('Register date', 'register_date'),},
+                {...getColumn('Expire date', 'expire_date'),},
+                {...getColumn('Status', 'status'),},
             ],
             dataSource: isLoading ? [] : domains,
             rowKey: row => row.name

@@ -30,6 +30,8 @@ const UsersContainer = (props) => {
 
     const [config, setConfig] = useState({});
     useEffect(() => {
+        const getColumn = (title, field) => ({title: title, dataIndex: field, key: field});
+
         setConfig({
             pagination : {
                 total: total,
@@ -41,25 +43,13 @@ const UsersContainer = (props) => {
             loading: loading,
             columns: [
                 {
-                    title: 'Username',
-                    dataIndex: 'username',
-                    key: 'username',
+                    ...getColumn('Username', 'username'),
                     render: text => <Text strong >{text}</Text>
                 },
+                {...getColumn('Email', 'email'),},
+                {...getColumn('Jabber', 'profile.jabber_nick'),},
                 {
-                    title: 'Email',
-                    dataIndex: 'email',
-                    key: 'email',
-                },
-                {
-                    title: 'Jabber',
-                    dataIndex: 'profile.jabber_nick',
-                    key: 'jabber_nick',
-                },
-                {
-                    title: 'Notification On/Off',
-                    key: 'settings',
-                    dataIndex: 'settings',
+                    ...getColumn('Notification On/Off', 'settings'),
                     render: settings => (
                         <span>
                             {settings && <Tag color={settings.jabber ? 'green' : 'volcano'}>jabber</Tag>}
