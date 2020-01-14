@@ -18,6 +18,15 @@ class TaskViewSet(BaseViewSetMixin, ModelViewSet):
         query_set = queryset.filter(creator=self.request.user)
         return query_set
 
+    def filter_queryset(self, queryset):
+        for backend in list(self.filter_backends):
+            queryset = backend().filter_queryset(self.request, queryset, self)
+
+        statuses = self.request.query_params.getlist('status.status')
+        if statuses:
+            queryset = queryset.filter(status__in=statuses)
+        return queryset
+
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 

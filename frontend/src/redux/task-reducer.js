@@ -90,8 +90,16 @@ export const setTaskDetailAction = (task) => ({
 
 
 // Thunks taskAPI
-export const getTaskList = () => async (dispatch) => {
-    wrappedLoading(taskAPI.task_list, taskListAction, dispatch).then()
+export const getTaskList = (page=1, filters = {}) => async (dispatch) => {
+    dispatch(setLoadingAction(true));
+    try{
+        const response = await taskAPI.task_list(page, [filters]);
+        dispatch(taskListAction(response.data));
+    } catch (e) {
+        errorHandler(e, dispatch);
+    } finally {
+        dispatch(setLoadingAction(false));
+    }
 };
 
 export const createTask = (data) => async (dispatch) => {

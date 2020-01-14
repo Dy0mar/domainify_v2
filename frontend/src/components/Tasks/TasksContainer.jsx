@@ -5,8 +5,12 @@ import {compose} from "redux";
 import {connect} from "react-redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {NavLink, withRouter} from "react-router-dom";
-import {getTaskList} from "../../redux/task-reducer";
-import {getTaskListS, getTasksListPageTotalS} from "../../redux/task-selector";
+import {getStatusList, getTaskList} from "../../redux/task-reducer";
+import {
+    getStatusListS,
+    getTaskListS,
+    getTasksListPageTotalS
+} from "../../redux/task-selector";
 import style from "./Tasks.module.css";
 import {getIsLoadingS} from "../../redux/app-selector";
 import {getAbsoluteUrlOr404S} from "../../redux/company-selector";
@@ -14,13 +18,17 @@ import {getAbsoluteUrlOr404S} from "../../redux/company-selector";
 
 const TasksContainer = (props) => {
 
-    const {getTaskList} = props;
-    const {tasks, total, isLoading} = props;
+    const {getTaskList, getStatusList} = props;
+    const {tasks, total, isLoading, statuses} = props;
 
     useEffect(() => {
-        getTaskList()
-    },[getTaskList]);
+        getTaskList();
+        getStatusList();
+    },[getTaskList, getStatusList]);
 
+    const onApplyFilter = (pagination, filters, sorter, extra) => {
+        getTaskList(pagination.current, filters)
+    };
 
     const [config, setConfig] = useState({});
     useEffect(() => {
@@ -44,7 +52,7 @@ const TasksContainer = (props) => {
                 {...getColumn('Domain', 'domain.name')},
                 {
                     ...getColumn('Status', 'status.status'),
-                    // filters:
+                    filters: statuses
                 },
                 {...getColumn('Code', 'code.code')},
                 {
@@ -57,13 +65,13 @@ const TasksContainer = (props) => {
             dataSource: isLoading ? [] : tasks,
             rowKey: row => row.pk,
         })
-    }, [isLoading, tasks, total]);
+    }, [isLoading, tasks, total, statuses]);
     return (
         <div>
             <Divider>Tasks here</Divider>
             <Row>
                 <Col span={24} style={{padding: '0 15px'}}>
-                    <Table {...config} />
+                    <Table {...config} onChange={onApplyFilter}/>
                 </Col>
             </Row>
         </div>
@@ -75,10 +83,11 @@ const mapStateToProps = (state) => ({
     tasks: getTaskListS(state),
     total: getTasksListPageTotalS(state),
     isLoading: getIsLoadingS(state),
+    statuses: getStatusListS(state),
 });
 
 export default compose(
     withAuthRedirect,
     withRouter,
-    connect(mapStateToProps, {getTaskList})
+    connect(mapStateToProps, {getTaskList, getStatusList})
 )(TasksContainer);

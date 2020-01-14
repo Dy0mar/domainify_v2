@@ -108,8 +108,13 @@ export const companyAPI = {
 };
 
 export const taskAPI = {
-    task_list(){
-        return instance.get('tasks/')
+    task_list(page, filters=[]){
+        let url = `tasks/?page=${page}`;
+        let part_url = convertObjectToUrl(filters);
+
+        if (part_url !== '')
+            url += part_url;
+        return instance.get(url)
     },
     create(data){
         return instance.post('tasks/', {...data})
