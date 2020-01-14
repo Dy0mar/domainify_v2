@@ -7,7 +7,7 @@ import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {NavLink, withRouter} from "react-router-dom";
 import {getTaskList} from "../../redux/task-reducer";
 import {getTaskListS, getTasksListPageTotalS} from "../../redux/task-selector";
-import style from "../Domains/Domains.module.css";
+import style from "./Tasks.module.css";
 import {getIsLoadingS} from "../../redux/app-selector";
 import {getAbsoluteUrlOr404S} from "../../redux/company-selector";
 
@@ -25,6 +25,7 @@ const TasksContainer = (props) => {
     const [config, setConfig] = useState({});
     useEffect(() => {
         const getColumn = (title, field) => ({title: title, dataIndex: field, key: field});
+        const setRowColor = (row) => (row.status ? style['rowColor'+row.status.status] : '');
 
         setConfig({
             bordered: true,
@@ -34,7 +35,7 @@ const TasksContainer = (props) => {
                 position: total >= 10 ? 'bottom' : 'none'
             },
             loading: false,
-            rowClassName: record => style['highlight'+record.status],
+            rowClassName: row => setRowColor(row),
             columns: [
                 {
                     ...getColumn('Title', 'title'),
