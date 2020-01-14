@@ -9,7 +9,10 @@ const formItemLayout = {
 
 const getInitialField = (obj, fields) => {
     let value;
-    fields.forEach(field => value ? value = value[field] : value = obj[field]);
+    fields.forEach(field => {
+        let f = field.split('_')[0];
+        value ? value = value[f] : value = obj[f]
+    });
     return value
 };
 
@@ -23,13 +26,18 @@ export const createFormItem = (field, formErrors, getFieldDecorator, Component, 
         initial = getInitialField(obj, fields);
     }
 
+    let labelValue = field;
+    const doubleField =  field.split('_');
+    if (doubleField.length > 1) {
+        labelValue = doubleField.join(' ');
+    }
     return (
         <Form.Item
             {...formErrors[field] && {
                 help: formErrors[field],
                 validateStatus: 'error',
             }}
-            label={field} {...formItemLayout}>
+            label={labelValue} {...formItemLayout}>
             {getFieldDecorator(field, {
                 initialValue: initial,
                 rules: rules,
@@ -37,4 +45,3 @@ export const createFormItem = (field, formErrors, getFieldDecorator, Component, 
         </Form.Item>
     )
 };
-

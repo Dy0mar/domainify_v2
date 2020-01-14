@@ -4,7 +4,7 @@ import "antd/dist/antd.css";
 import {compose} from "redux";
 import {connect} from "react-redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
-import {Redirect, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import {submitCreateUpdateForm} from "../../utils/utils";
 import {
     createTask,
@@ -23,10 +23,15 @@ import {getUserFullList} from "../../redux/user-reducer";
 import {getUserListS} from "../../redux/users-selectors";
 import {autocompleteDomainList} from "../../redux/domain-reducer";
 import {getIsLoadingS} from "../../redux/app-selector";
+import {setRedirectTo} from "../../redux/app-reducer";
 
 
 const TaskContainer = (props) => {
     const taskId = props.match.params.taskId || 0;
+    let updateAction = false;
+    if (taskId)
+        updateAction = true;
+
     const {getFieldDecorator, validateFields} = props.form;
 
     const {
@@ -35,7 +40,8 @@ const TaskContainer = (props) => {
     } = props;
     const {
         getTaskDetail, updateTask, createTask,
-        getCodeList, getStatusList, getUserFullList, autocompleteDomainList
+        getCodeList, getStatusList, getUserFullList, autocompleteDomainList,
+        setRedirectTo,
     } = props;
 
     const [domainId, setDomainID] = useState(null);
@@ -53,22 +59,22 @@ const TaskContainer = (props) => {
     },[getCodeList, getStatusList, getUserFullList]);
 
     useEffect(() => {
-        if (taskId){
+        if (updateAction){
             getTaskDetail(taskId)
         }
-    },[getTaskDetail, taskId]);
+    },[getTaskDetail, taskId, updateAction]);
 
     const onSubmit = (e) => {
         e.preventDefault();
         let thunk = createTask;
-        if (taskId)
+        if (updateAction)
             thunk = updateTask;
-        submitCreateUpdateForm(validateFields, thunk, taskId);
+        submitCreateUpdateForm(validateFields, thunk, taskId, 'task');
     };
 
 
     const cancelLink = () => {
-        if (taskId) return <Redirect to={'/tasks'} />;
+        if (updateAction) setRedirectTo('/tasks');
         else setTaskType(0)
     };
 
@@ -94,8 +100,9 @@ const TaskContainer = (props) => {
             {taskType!==0 && isLoading===false && <Row>
                 <TaskForm {..._props}
                           dataSource={dataSource.map(item=>item[1])}
-                          domain={domainId}
-                          task={taskId ? task : false}
+                          domainId={domainId}
+                          task={updateAction ? task : false}
+                          taskType={taskType}
                 />
             </Row>}
         </div>
@@ -119,7 +126,7 @@ export default compose(
     withAuthRedirect,
     withRouter,
     connect(mapStateToProps, {
-        createTask, updateTask,
-        getTaskDetail, getCodeList, getStatusList, getUserFullList, autocompleteDomainList
+        createTask, updateTask, getTaskDetail, setRedirectTo,
+        getCodeList, getStatusList, getUserFullList, autocompleteDomainList
     })
 )(TaskComponent);

@@ -106,7 +106,7 @@ export const getTaskDetail = (pk) => async (dispatch) => {
 
 export const updateTask = (data) => async (dispatch) => {
     const msg = data.title + ' was updated successfully';
-    wrappedUpdate(taskAPI, data, msg, dispatch).then();
+    wrappedUpdate(taskAPI, data, msg, '/tasks', dispatch).then();
 };
 
 export const deleteTask = (pk) => async (dispatch) => {
@@ -132,7 +132,7 @@ export const getCodeDetail = (pk) => async (dispatch) => {
 
 export const updateCode = (data) => async (dispatch) => {
     const msg = data.code + ' was updated successfully';
-    wrappedUpdate(codesAPI, data, msg, dispatch).then();
+    wrappedUpdate(codesAPI, data, msg, '/settings', dispatch).then();
 };
 
 export const setDefaultCodes = () => async (dispatch) => {
@@ -174,7 +174,7 @@ export const getStatusDetail = (pk) => async (dispatch) => {
 
 export const updateStatus = (data) => async (dispatch) => {
     const msg = data.status + ' was updated successfully';
-    wrappedUpdate(statusAPI, data, msg, dispatch).then();
+    wrappedUpdate(statusAPI, data, msg, '/settings', dispatch).then();
 };
 
 export const deleteStatus = (pk) => async (dispatch) => {
@@ -229,11 +229,11 @@ const wrappedException = async (apiFunc, action, dispatch) => {
     }
 };
 
-export const wrappedUpdate = async (api, data, msg, dispatch) => {
+export const wrappedUpdate = async (api, data, msg,redirect, dispatch) => {
     try{
         await api.patch_field(data.pk, {...data});
         dispatch(addSuccessMessage(msg));
-        dispatch(redirectToAction('/settings'));
+        dispatch(redirectToAction(redirect));
         dispatch(setFormErrorsAction({}))
     } catch (e) {
         dispatch(setFormErrorsAction(e.response.data));

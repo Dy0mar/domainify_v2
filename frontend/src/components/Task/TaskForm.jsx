@@ -14,19 +14,26 @@ const TaskForm = (props) => {
     const { onSubmit, getFieldDecorator, cancelLink, onSearch, onSelect } = props;
 
     const {
-        codes, statuses, users, formErrors, dataSource, task,
+        codes, statuses, users, formErrors, dataSource, task, domainId, taskType
     } = props;
 
     const statusInitial = () => {
+        if (task && task.status) return task.status.pk;
+
         let status = statuses.filter(item => (item.status === 'NEW'));
         if (status.length)
             return status[0].pk
     };
+    const codeInitial = () => {
+        if (task && task.code) return task.code.pk;
+        return taskType
+    };
+
+
     const executorsInitial = () => {
         if (task.executors){
-            return task.executors.map(item=>(item.executor));
+            return task.executors.map(item => (item.executor));
         }
-
     };
 
     // wrapper
@@ -51,12 +58,13 @@ const TaskForm = (props) => {
                         <Select>
                             {statuses && statuses.map((item, index) => <Option key={index} value={item.pk}>{item.status}</Option>)}
                         </Select>,
-                        task ? '' : statusInitial()
+                        statusInitial()
                     )}
                     {formItem('code.code',
                         <Select>
                             {codes && codes.map((item, index) => <Option key={index} value={item.pk}>{item.code}</Option>)}
                         </Select>,
+                        codeInitial()
                     )}
 
                     <Form.Item>
@@ -73,7 +81,7 @@ const TaskForm = (props) => {
                     </Form.Item>
                 </Col>
                 <Col span={9}>
-                    {formItem('domain.name',
+                    {formItem('domain_name.name',
                         <AutoComplete dataSource={dataSource}
                                       placeholder="example.com"
                                       style={{ width: 200 }}
@@ -82,11 +90,15 @@ const TaskForm = (props) => {
                         />
                     )}
 
+                    {formItem('domain_pk.pk',
+                        <Input />,
+                        domainId,
+                    )}
 
                     {formItem('executors',
-                            <Checkbox.Group options={users.map(item => ({label: item.username, value: item.pk}))}/>,
+                        <Checkbox.Group options={users.map(item => ({label: item.username, value: item.pk}))}/>,
                         task ? executorsInitial() : []
-                        )}
+                    )}
                 </Col>
             </Row>
         </Form>

@@ -21,7 +21,14 @@ class StatusSerializer(serializers.ModelSerializer):
 class DomainTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Domain
-        fields = ('pk', 'name')
+        fields = ('pk',)
+
+    def to_representation(self, value):
+        ret = {
+            "pk": value.pk,
+            "name": value.name,
+        }
+        return ret
 
 
 class ExecutorTaskSerializer(serializers.ModelSerializer):
@@ -49,7 +56,6 @@ class TaskSerializer(serializers.ModelSerializer):
             "url", "pk", "title", "description", "domain", "status",
             "code", 'executors',
         )
-        extra_fields = ['pk']
 
     def get_instance_from_pk(self, model, field):
         field_data = self.initial_data.get(field)
@@ -72,7 +78,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
     def validate_executors(self, obj):
         data = self.initial_data.get('executors', {})
-        qs = User.objects.filter(pk__in=data.get('pk'))
+        qs = User.objects.filter(pk__in=[x.get('pk') for x in data])
         return list(qs) or []
 
     def create(self, validated_data):
@@ -87,19 +93,18 @@ class TaskSerializer(serializers.ModelSerializer):
 
         return instance
 
-    def save_dynamic_objects(self, model, field_plural):
-        qs = model.objects.filter(domain=self.instance)
-        objects = self.validated_data.get(field_plural, [])
-        saved_objects = []
-        for obj in objects:
-            obj.save()
-            saved_objects.append(obj.pk)
-        qs.exclude(pk__in=saved_objects).delete()
-
     def update(self, instance, validated_data):
 
+        executors = validated_data.pop('executors')
+        instance.executors.exclude(
+            executor__pk__in=[x.pk for x in executors]
+        ).delete()
+
+        for executor in executors:
+            instance.executors.get_or_create(executor=executor)
+
         for key in validated_data.keys():
-            if key in ('name', 'emails', 'telephones'):
+            if key in ('executors', ):
                 continue
             value = validated_data.get(key)
             if getattr(instance, key) != value:

@@ -1,7 +1,7 @@
 import {Modal} from "antd";
 const { confirm } = Modal;
 
-export const submitCreateUpdateForm = (validateFields, thunkFunction, fieldId=null) => {
+export const submitCreateUpdateForm = (validateFields, thunkFunction, fieldId=null, marker='') => {
     validateFields((err, values) => {
         if (!err) {
             const data = {
@@ -12,7 +12,7 @@ export const submitCreateUpdateForm = (validateFields, thunkFunction, fieldId=nu
                 data['pk'] = fieldId;
 
             // create/update domain data
-            ['code', 'company', 'manager', 'status', 'domain', 'executors'].forEach(item => {
+            ['company', 'manager', 'executors'].forEach(item => {
                 values[item]
                     ? data[item] = {pk: values[item]}
                     : data[item] = {}
@@ -23,6 +23,19 @@ export const submitCreateUpdateForm = (validateFields, thunkFunction, fieldId=nu
                 data['emails'] = getDynamic('email', values);
             if (values.telephones)
                 data['telephones'] = getDynamic('telephone', values);
+
+            if (marker === 'task'){
+                ['status', 'code'].forEach(item => {
+                    values[item]
+                        ? data[item] = {pk: values[item]}
+                        : data[item] = {}
+                });
+                data['executors'] = values['executors'].map(item => ({pk: item}));
+
+                values['domain_name'] && values['domain_pk']
+                    ? data['domain'] = {pk:values['domain_pk']}
+                    : data['domain'] = null
+            }
 
             thunkFunction(data);
         }
