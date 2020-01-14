@@ -34,7 +34,7 @@ const TasksContainer = (props) => {
                 pageSize: 10,
                 position: total >= 10 ? 'bottom' : 'none'
             },
-            loading: false,
+            loading: isLoading,
             rowClassName: row => setRowColor(row),
             columns: [
                 {

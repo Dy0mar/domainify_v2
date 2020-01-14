@@ -13,6 +13,11 @@ class TaskViewSet(BaseViewSetMixin, ModelViewSet):
     serializer_class = TaskSerializer
     pagination_class = BasePagination
 
+    def get_queryset(self):
+        queryset = self.queryset
+        query_set = queryset.filter(creator=self.request.user)
+        return query_set
+
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
