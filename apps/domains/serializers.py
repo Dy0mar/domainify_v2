@@ -40,12 +40,11 @@ class DomainSerializer(serializers.ModelSerializer):
     class Meta:
         model = Domain
         fields = (
-            "url", "name", "company", "alexa_status", "emails", "telephones",
-            "alexa_comment", "redirect", "register_date", "expire_date",
-            "status", "manager", "use_custom_address", "custom_company_address",
+            "url", 'pk', "name", "company", "alexa_status", "emails",
+            "telephones", "alexa_comment", "redirect", "register_date",
+            "expire_date", "status", "manager", "use_custom_address",
+            "custom_company_address",
         )
-
-        extra_fields = ['pk', 'telephone', 'email']
 
     def get_instance_from_pk(self, model, field):
         field_data = self.initial_data.get(field)
