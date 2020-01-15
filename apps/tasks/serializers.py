@@ -24,9 +24,17 @@ class DomainTaskSerializer(serializers.ModelSerializer):
         fields = ('pk',)
 
     def to_representation(self, value):
+        if value.use_custom_address:
+            address = value.custom_company_address
+        else:
+            address = value.company.address
+
         ret = {
             "pk": value.pk,
             "name": value.name,
+            "company_name": value.company.name,
+            "use_custom_address": value.use_custom_address,
+            "address": address
         }
         return ret
 

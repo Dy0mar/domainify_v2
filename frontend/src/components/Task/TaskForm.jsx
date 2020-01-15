@@ -14,7 +14,8 @@ const TaskForm = (props) => {
     const { onSubmit, getFieldDecorator, cancelLink, onSearch, onSelect } = props;
 
     const {
-        codes, statuses, users, formErrors, dataSource, task, domainId, taskType
+        codes, statuses, users, formErrors, dataSource, task, domainId,
+        taskType, companyInfo,
     } = props;
 
     const statusInitial = () => {
@@ -28,7 +29,6 @@ const TaskForm = (props) => {
         if (task && task.code) return task.code.pk;
         return taskType
     };
-
 
     const executorsInitial = () => {
         if (task.executors){
@@ -67,18 +67,16 @@ const TaskForm = (props) => {
                         codeInitial()
                     )}
 
-                    <Form.Item>
-                        <Col offset={6} span={6}>
-                            <Button type="primary" htmlType="submit" className={css.submitButton}>
-                                Save
-                            </Button>
-                        </Col>
-                        <Col span={6}>
-                            <Button type="danger" onClick={() => cancelLink()} className={css.submitButton} style={{marginLeft: 10}}>
-                                Cancel
-                            </Button>
-                        </Col>
-                    </Form.Item>
+                    {formItem('executors',
+                        <Checkbox.Group options={users.map(item => ({label: item.username, value: item.pk}))}/>,
+                        task ? executorsInitial() : []
+                    )}
+
+                    {formItem('notify',
+                        <Checkbox >notify executor(s)?</Checkbox>,
+                        false
+                    )}
+
                 </Col>
                 <Col span={9}>
                     {formItem('domain_name.name',
@@ -91,19 +89,33 @@ const TaskForm = (props) => {
                     )}
 
                     {formItem('domain_pk.pk',
-                        <Input style={{display: 'none'}} />,
+                        <Input />,
                         domainId,
                     )}
+                    <Row>
+                        <Col offset={3}>
+                            <div>Company: {companyInfo.company_name}</div>
+                            <div>Use custom address: {companyInfo.use_custom_address ? 'yes' : 'no'}</div>
+                            <div>Address: {companyInfo.address}</div>
+                        </Col>
+                    </Row>
 
-                    {formItem('executors',
-                        <Checkbox.Group options={users.map(item => ({label: item.username, value: item.pk}))}/>,
-                        task ? executorsInitial() : []
-                    )}
-
-                    {formItem('notify',
-                        <Checkbox >notify executor(s)?</Checkbox>,
-                        false
-                    )}
+                </Col>
+            </Row>
+            <Row>
+                <Col offset={8} span={6}>
+                    <Form.Item>
+                        <Col span={12}>
+                            <Button type="primary" htmlType="submit" className={css.submitButton}>
+                                Save
+                            </Button>
+                        </Col>
+                        <Col span={12}>
+                            <Button type="danger" onClick={() => cancelLink()} className={css.submitButton} style={{marginLeft: 10}}>
+                                Cancel
+                            </Button>
+                        </Col>
+                    </Form.Item>
                 </Col>
             </Row>
         </Form>

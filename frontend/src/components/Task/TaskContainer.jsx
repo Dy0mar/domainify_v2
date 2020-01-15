@@ -46,6 +46,7 @@ const TaskContainer = (props) => {
 
     const [domainId, setDomainID] = useState(null);
     const [taskType, setTaskType] = useState(taskId);
+    const [companyInfo, setCompanyInfo] = useState({});
 
     useEffect(() => {
         setTaskType(taskId)
@@ -64,6 +65,12 @@ const TaskContainer = (props) => {
         }
     },[getTaskDetail, taskId, updateAction]);
 
+    useEffect(() => {
+        if (updateAction && task && task.domain) {
+            setCompanyInfo(task.domain)
+        }
+    },[updateAction, task]);
+
     const onSubmit = (e) => {
         e.preventDefault();
         let thunk = createTask;
@@ -71,7 +78,6 @@ const TaskContainer = (props) => {
             thunk = updateTask;
         submitCreateUpdateForm(validateFields, thunk, taskId, 'task');
     };
-
 
     const cancelLink = () => {
         if (updateAction) setRedirectTo('/tasks');
@@ -81,15 +87,21 @@ const TaskContainer = (props) => {
     const onSearch = (value) => {
         if (value.length > 2) autocompleteDomainList(value);
     };
+
     const onSelect = (value) => {
         let obj = dataSource.filter(item => item[1] === value)[0];
-        setDomainID(obj[0])
+        setDomainID(obj[0]);
+        setCompanyInfo({
+            company_name: obj[5],
+            use_custom_address: obj[2],
+            address: obj[2] ? obj[3] : obj[4],
+        })
     };
 
     const _props = {
         codes, domains, statuses, users, formErrors, taskType,
         getFieldDecorator, cancelLink, onSearch, onSubmit,
-        onSelect,
+        onSelect, companyInfo,
     };
 
     return (

@@ -67,7 +67,11 @@ class AutocompleteDomainList(BaseViewSetMixin, ModelViewSet):
     def list(self, request, *args, **kwargs):
         query = request.GET.get('term', '').strip()
         qs = self.get_queryset().filter(
-            name__icontains=query).values_list('pk', 'name')
+            name__icontains=query
+        ).values_list(
+            'pk', 'name', 'use_custom_address', 'custom_company_address',
+            'company__address', 'company__name',
+        )
         data = list(qs)
         return Response(data)
 
