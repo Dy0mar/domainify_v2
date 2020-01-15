@@ -91,13 +91,18 @@ const TaskForm = (props) => {
                     )}
 
                     {formItem('domain_pk.pk',
-                        <Input />,
+                        <Input style={{display: 'none'}} />,
                         domainId,
                     )}
 
                     {formItem('executors',
                         <Checkbox.Group options={users.map(item => ({label: item.username, value: item.pk}))}/>,
                         task ? executorsInitial() : []
+                    )}
+
+                    {formItem('notify',
+                        <Checkbox >notify executor(s)?</Checkbox>,
+                        false
                     )}
                 </Col>
             </Row>

@@ -49,12 +49,13 @@ class TaskSerializer(serializers.ModelSerializer):
     status = StatusSerializer(required=False)
     code = CodeSerializer(required=False)
     executors = ExecutorTaskSerializer(required=False, many=True)
+    notify = serializers.BooleanField(required=False)
 
     class Meta:
         model = Task
         fields = (
             "url", "pk", "title", "description", "domain", "status",
-            "code", 'executors',
+            "code", "executors", "notify"
         )
 
     def get_instance_from_pk(self, model, field):
@@ -107,9 +108,15 @@ class TaskSerializer(serializers.ModelSerializer):
             if key in ('executors', ):
                 continue
             value = validated_data.get(key)
-            if getattr(instance, key) != value:
-                setattr(instance, key, validated_data.get(key))
+            try:
+                if getattr(instance, key) != value:
+                    setattr(instance, key, validated_data.get(key))
+            except AttributeError:
+                pass
 
         instance.save()
+        notify = self.validated_data.get('notify', False)
+        if notify:
+            self.instance.notify_users()
 
         return instance

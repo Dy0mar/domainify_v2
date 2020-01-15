@@ -36,7 +36,7 @@ export const submitCreateUpdateForm = (validateFields, thunkFunction, fieldId=nu
                     ? data['domain'] = {pk:values['domain_pk']}
                     : data['domain'] = null
             }
-
+            console.log(data);
             thunkFunction(data);
         }
     });

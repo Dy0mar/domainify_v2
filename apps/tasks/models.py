@@ -62,6 +62,35 @@ class Task(models.Model):
     def __str__(self):
         return "{}".format(self.title)
 
+    def get_notify_message(self):
+        code = self.code.code
+        msg = f'\nFrom - {self.creator}.'
+        if self.domain:
+            msg = f'{msg} Domain - {self.domain.name}'
+
+        msg = f'{msg}\n{self.code.name}'
+        if self.description:
+            msg = f'{msg}\n{self.description}\n'
+
+        if code == Code.EDIT_SITE_INFO:
+            if self.domain and self.domain.use_custom_address:
+                msg = f'{msg}\n{self.domain.custom_company_address}'
+            else:
+                msg = f'{msg}\n{self.domain.company.address}\n'
+
+        if code == Code.CHANGE_WHOIS:
+            pass
+        if code == Code.REMIND_ME:
+            pass
+
+        return msg
+
+    def notify_users(self):
+        executors = self.executors.all()
+        msg = self.get_notify_message()
+        for item in executors:
+            item.executor.send_message(msg)
+
 
 class Executor(models.Model):
     task = models.ForeignKey(

@@ -31,14 +31,24 @@ export const createFormItem = (field, formErrors, getFieldDecorator, Component, 
     if (doubleField.length > 1) {
         labelValue = doubleField.join(' ');
     }
+    // hidden field
+    const style = {};
+    if (field === 'domain_pk')
+        style['display'] = 'none';
+
+    // checkbox field
+    const param = {};
+    if (field === 'notify')
+        param['valuePropName'] = 'checked';
     return (
-        <Form.Item
+        <Form.Item style={{...style}}
             {...formErrors[field] && {
                 help: formErrors[field],
                 validateStatus: 'error',
             }}
             label={labelValue} {...formItemLayout}>
             {getFieldDecorator(field, {
+                ...param,
                 initialValue: initial,
                 rules: rules,
             })( Component )}

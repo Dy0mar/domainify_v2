@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
+from users.tasks import send_xmppp_message, send_mail_to_user
 
 
 class User(AbstractUser):
@@ -28,6 +29,15 @@ class User(AbstractUser):
 
     def __str__(self):
         return "{}".format(self.username)
+
+    def send_message(self, msg):
+        if self.settings.jabber:
+            send_xmppp_message.apply_async((self.profile.jabber_nick, msg))
+
+        if self.settings.email:
+            send_mail_to_user.apply_async(
+                ('Domainify BOT', msg, settings.EMAIL_HOST_USER, [self.email])
+            )
 
 
 class UserProfile(models.Model):
