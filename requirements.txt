@@ -8,3 +8,4 @@ mysqlclient==1.4.6
 sleekxmpp
 celery==4.4.0
 django-redis==4.11.0
+python-whois==0.7.2
