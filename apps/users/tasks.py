@@ -27,7 +27,7 @@ class SendMsgBot(ClientXMPP):
 
 
 @shared_task(soft_time_limit=60*3)  # мягкое ограничение по времени(sec)
-def send_xmppp_message(recipient, message):
+def send_xmpp_message(recipient, message):
     bot = SendMsgBot(recipient, message)
 
     bot.register_plugin('xep_0030')  # Service Discovery

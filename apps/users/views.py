@@ -9,7 +9,7 @@ from api.mixins import BaseViewSetMixin
 
 from .models import User
 from .serializers import UserSerializer
-from .tasks import send_xmppp_message, send_mail_to_user
+from .tasks import send_xmpp_message, send_mail_to_user
 
 from django.conf import settings
 
@@ -52,7 +52,7 @@ class CheckNotificationMethod(BaseViewSetMixin, ViewSet):
                 (subject, message, from_email, [request.user.email])
             )
         if check_method == 'jabber' and request.user.profile.jabber_nick:
-            send_xmppp_message.apply_async(
+            send_xmpp_message.apply_async(
                 (request.user.profile.jabber_nick, 'Check ok =]')
             )
         return Response('Message has been sent')

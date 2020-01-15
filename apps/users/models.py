@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
-from users.tasks import send_xmppp_message, send_mail_to_user
+from users.tasks import send_xmpp_message, send_mail_to_user
 
 
 class User(AbstractUser):
@@ -32,7 +32,7 @@ class User(AbstractUser):
 
     def send_message(self, msg):
         if self.settings.jabber:
-            send_xmppp_message.apply_async((self.profile.jabber_nick, msg))
+            send_xmpp_message.apply_async((self.profile.jabber_nick, msg))
 
         if self.settings.email:
             send_mail_to_user.apply_async(
