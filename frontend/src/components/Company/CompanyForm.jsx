@@ -8,6 +8,7 @@ import {
 } from 'antd';
 import "antd/dist/antd.css";
 import {NavLink} from "react-router-dom";
+import {createFormItem} from "../Common/FormItem/FormItem";
 
 
 const CompanyForm = (props) => {
@@ -16,43 +17,27 @@ const CompanyForm = (props) => {
 
     const cancelLink = props.cancelLink ? props.cancelLink : '/';
 
-    const getInitialValue = (propName, defaultValue='') => {
-        let value;
-        propName.split('.').forEach(e => value = value ? value[e] : props[e]);
-        return value || defaultValue
+    // wrapper
+    const formItem = (field, Component, initial='', rules=[]) => {
+        return createFormItem(field, formErrors, getFieldDecorator, Component, props.company, initial, rules)
     };
 
     return (
         <Form onSubmit={onSubmit}>
             <Row>
-                <Col span={8}>
-
-                    <Form.Item
-                        {...formErrors.name && {
-                            help: formErrors.name,
-                            validateStatus: 'error',
-                        }}>
-                        {getFieldDecorator('name', {
-                            rules: [{ required: true, message: 'Please input company name!' }],
-                            initialValue: getInitialValue('company.name'),
-                        })(
-                            <Input placeholder="company name"/>,
-                        )}
-                    </Form.Item>
+                <Col span={5}>
+                    {formItem('name',
+                        <Input placeholder="company name"/>,
+                        '',
+                        [{ required: true, message: 'Please input company name!' }],
+                    )}
                 </Col>
-                <Col span={1}>&nbsp;</Col>
-                <Col span={15}>
-                    <Form.Item
-                        {...formErrors.address && {
-                            help: formErrors.address,
-                            validateStatus: 'error',
-                        }}>
-                        {getFieldDecorator('address', {
-                            initialValue: getInitialValue('company.address'),
-                        })(
-                            <Input placeholder="company address"/>,
-                        )}
-                    </Form.Item>
+                <Col span={12}>
+                    {formItem('address',
+                        <Input placeholder="company address"/>,
+                        '',
+                        [{ required: true, message: 'Please input company name!' }],
+                    )}
                 </Col>
             </Row>
 
