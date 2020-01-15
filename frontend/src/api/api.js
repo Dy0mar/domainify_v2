@@ -44,7 +44,11 @@ export const usersAPI = {
     },
     manager_list(){
         return instance.get('users/manager_list/')
+    },
+    check_notification_method(m){
+        return instance.get('users/check-notification-method/?method='+m)
     }
+
 };
 
 export const domainsAPI = {

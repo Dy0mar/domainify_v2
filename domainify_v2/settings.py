@@ -13,6 +13,10 @@ import datetime
 import os
 import sys
 
+from datetime import timedelta
+from celery.schedules import crontab
+from kombu import Queue, Exchange
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.join(BASE_DIR, 'apps'))
@@ -170,12 +174,52 @@ JWT_AUTH = {
 
 REST_USE_JWT = True
 
-try:
-    from .settings_local import *  # noqa
-except ImportError:
-    pass
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    },
+}
+
+# REDIS related settings
+REDIS_HOST = '127.0.0.1'
+REDIS_PORT = '6379'
+BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
+CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+CELERY_TIMEZONE = TIME_ZONE
+
+
+CELERYBEAT_SCHEDULE = {
+    'auto_update_whois': {
+        'task': 'domains.tasks.auto_update_whois',
+        'schedule': crontab(hour=12, minute=0, day_of_week=1),
+    },
+    'auto_close_domain': {
+        'task': 'domains.tasks.auto_close_domain',
+        'schedule': crontab(hour=8, minute=0, day_of_week=1),
+    },
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'postmaster'
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'BOT <domainifybot@gmail.com>'
+
 
 try:
     from .settings_privacy import *  # noqa
 except ImportError:
     pass
+
+try:
+    from .settings_local import *  # noqa
+except ImportError:
+    pass
+

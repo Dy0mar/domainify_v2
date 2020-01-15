@@ -2,7 +2,10 @@ import React, {useState} from 'react'
 import {connect} from "react-redux";
 import "antd/dist/antd.css";
 import UserInfo from "./UserInfo";
-import {updateUserProfile} from "../../../redux/user-reducer";
+import {
+    checkNotificationMethod,
+    updateUserProfile
+} from "../../../redux/user-reducer";
 import UserInfoForm from "./UserInfoForm/UserInfoForm";
 import {Box} from "../../Common/Box/Box";
 
@@ -20,6 +23,9 @@ const UserInfoContainer = (props) => {
     const username=props.username;
     const email=props.email;
     const jabber_nick= props.profile.jabber_nick;
+    const handleOnclick = (method) => {
+        props.checkNotificationMethod(method)
+    };
     const _props = { username, email, jabber_nick };
 
     return (
@@ -29,6 +35,7 @@ const UserInfoContainer = (props) => {
         >
             {!editMode && <UserInfo
                 {..._props}
+                handleOnclick={handleOnclick}
                 activateEditMode={activateEditMode}
             />}
 
@@ -48,4 +55,6 @@ const mapStateToProps = (state) => ({
     profile: state.user.profile,
 });
 
-export default connect(mapStateToProps, {updateUserProfile})(UserInfoContainer)
+export default connect(mapStateToProps, {
+    updateUserProfile, checkNotificationMethod
+})(UserInfoContainer)

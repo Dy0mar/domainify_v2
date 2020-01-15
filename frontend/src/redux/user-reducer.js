@@ -181,4 +181,10 @@ export const updateUserProfile = (data) => async (dispatch, getState) => {
     }
 };
 
+export const checkNotificationMethod = (method) => async (dispatch) => {
+    const response = await usersAPI.check_notification_method(method);
+    dispatch(addSuccessMessage(response.data))
+};
+
+
 export default userReducer;
