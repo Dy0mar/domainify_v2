@@ -10,13 +10,14 @@ const formItemLayout = {
 const getInitialField = (obj, fields) => {
     let value;
     fields.forEach(field => {
-        let f = field.split('_')[0];
-        value ? value = value[f] : value = obj[f]
+        value ? value = value[field] : value = obj[field]
     });
     return value
 };
 
-export const createFormItem = (field, label, formErrors, getFieldDecorator, Component, obj=false, initial='', rules=[]) => {
+export const createFormItem = (
+    field, label, formErrors, getFieldDecorator, Component, obj=false, initial='', rules=[], onChange=false
+) => {
 
     //set field initial field
     let fields = field.split('.');
@@ -28,14 +29,18 @@ export const createFormItem = (field, label, formErrors, getFieldDecorator, Comp
 
     // hidden field
     const style = {};
-    if (field === 'domain_pk')
+    if (label === 'hide_field')
         style['display'] = 'none';
 
     // checkbox field
-    const param = {};
+    const params = {};
     const checkBoxes = ['notify', 'use_custom_address'];
     if (checkBoxes.indexOf(field) !== -1 )
-        param['valuePropName'] = 'checked';
+        params['valuePropName'] = 'checked';
+
+    if (onChange !== false)
+        params['onChange'] = onChange;
+
     return (
         <Form.Item style={{...style}}
             {...formErrors[field] && {
@@ -44,7 +49,7 @@ export const createFormItem = (field, label, formErrors, getFieldDecorator, Comp
             }}
             label={label} {...formItemLayout}>
             {getFieldDecorator(field, {
-                ...param,
+                ...params,
                 initialValue: initial,
                 rules: rules,
             })( Component )}

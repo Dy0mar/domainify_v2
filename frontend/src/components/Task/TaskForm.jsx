@@ -79,7 +79,7 @@ const TaskForm = (props) => {
 
                 </Col>
                 <Col span={9}>
-                    {formItem('domain_name.name', 'Domain name',
+                    {formItem('domain.name', 'Domain name',
                         <AutoComplete dataSource={dataSource}
                                       placeholder="example.com"
                                       style={{ width: 200 }}
@@ -88,7 +88,7 @@ const TaskForm = (props) => {
                         />
                     )}
 
-                    {formItem('domain_pk.pk', 'domain_pk',
+                    {formItem('domain.pk', 'hide_field',
                         <Input />,
                         domainId,
                     )}
