@@ -9,7 +9,7 @@ export const createDynamic = (props) => {
     // {pk: 'value', fieldName: 'value' }
 
     const {
-        formItemLayout, getFieldDecorator, getFieldValue, setFieldsValue,
+        getFieldDecorator, getFieldValue, setFieldsValue,
         limitCount, existsField
     } = props;
     const fieldName = props.name ? props.name : 'keys';
@@ -37,6 +37,10 @@ export const createDynamic = (props) => {
         setFieldsValue({
             [fieldName]: nextKeys,
         });
+    };
+    const formItemLayout = {
+        labelCol: { span: 8 },
+        wrapperCol: { span: 16 },
     };
 
     const formItemLayoutWithOutLabel = {

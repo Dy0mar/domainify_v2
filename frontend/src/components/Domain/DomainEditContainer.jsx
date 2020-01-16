@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import {Divider, Form} from 'antd';
 import "antd/dist/antd.css";
 import {compose} from "redux";
@@ -13,16 +13,15 @@ import {submitCreateUpdateForm} from "../../utils/utils";
 
 
 const DomainDetailContainer = (props) => {
-    const {getFieldDecorator, validateFields, getFieldValue, setFieldsValue } = props.form;
-    const {currentDomain, loadCurrentDomain} = props;
+    const {
+        getFieldDecorator, validateFields, getFieldValue, setFieldsValue
+    } = props.form;
+    const {
+        currentDomain, loadCurrentDomain, managers, statuses, formErrors,
+        alexa_statuses, companies, currentUser, emails, telephones
+    } = props;
+
     const {domainId} = props.match.params;
-
-    const [initManagerValuePk, setInitManagerValuePk] = useState(null);
-
-    useEffect(() => {
-        if (props.currentDomain.manager)
-            setInitManagerValuePk(props.currentDomain.manager.pk)
-    }, [props.currentDomain]);
 
     useEffect(() => {
         loadCurrentDomain(domainId)
@@ -34,17 +33,15 @@ const DomainDetailContainer = (props) => {
     };
 
     const cancelLink = '/domains/'+domainId;
+
+    const _props = {formErrors, managers, statuses, alexa_statuses, cancelLink,
+        companies, currentDomain, currentUser, onSubmit, getFieldDecorator,
+        setFieldsValue, getFieldValue, emails, telephones
+    };
     return (
         <div>
             <Divider>Domain detail</Divider>
-            <DomainForm {...props} {...currentDomain}
-                        onSubmit={onSubmit}
-                        getFieldDecorator={getFieldDecorator}
-                        getFieldValue={getFieldValue}
-                        setFieldsValue={setFieldsValue}
-                        initManagerValuePk={initManagerValuePk}
-                        cancelLink={cancelLink}
-            />
+            <DomainForm {..._props} />
         </div>
     )
 };

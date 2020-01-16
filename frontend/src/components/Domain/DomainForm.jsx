@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {
     Button,
     Col,
@@ -12,6 +12,7 @@ import css from "../Login/Login.module.css";
 import Checkbox from "antd/es/checkbox";
 import {createDynamic} from "../Common/DynamicForm/DynamicFieldSet";
 import {NavLink} from "react-router-dom";
+import {createFormItem} from "../Common/FormItem/FormItem";
 
 const { Option } = Select;
 
@@ -43,126 +44,98 @@ const TelephoneDynamic = (props) => {
 
 
 const DomainForm = (props) => {
+    /*
+    formErrors, managers, statuses, alexa_statuses, cancelLink,
+        companies, currentDomain, currentUser, onSubmit, getFieldDecorator,
+        setFieldsValue, getFieldValue
+     */
     const { onSubmit, getFieldDecorator, getFieldValue, setFieldsValue } = props;
 
     const cancelLink = props.cancelLink ? props.cancelLink : '/';
 
     const {
-        formErrors, managers, statuses, alexa_statuses, initManagerValuePk,
-        companies
+        formErrors, managers, statuses, alexa_statuses,
+        companies, currentDomain, currentUser,
     } = props;
 
-    const getInitialValue = (propName, defaultValue='') => {
-        let value;
-        propName.split('.').forEach(e => value = value ? value[e] : props[e]);
-        return value || defaultValue
-    };
+    const [companyAddress, setCompanyAddress] = useState('');
+    useEffect(() => {
+        if (currentDomain && currentDomain.company)
+            setCompanyAddress(currentDomain.company.address)
+    }, [currentDomain]);
 
-    const [companyAddress, setCompanyAddress] = useState(getInitialValue('company.address'));
-    const [customAddress, setCustomAddress] = useState(true);
+    const [customAddress, setCustomAddress] = useState(currentDomain ? !currentDomain.use_custom_address : true);
 
     const onChangeAddress = (value) => {
         const company = companies.filter(v => v.pk === value)[0];
         setCompanyAddress(company.address)
     };
 
-    const formItemLayout = {
-        labelCol: { span: 8 },
-        wrapperCol: { span: 16 },
+    // wrapper
+    const formItem = (field, label, Component, initial='', rules=[], onChange=false) => {
+        return createFormItem(field, label, formErrors, getFieldDecorator, Component, currentDomain, initial, rules, onChange)
     };
 
     return (
         <Form onSubmit={onSubmit}>
             <Row>
                 <Col span={7}>
-                    <Form.Item
-                        {...formErrors.name && {
-                            help: formErrors.name,
-                            validateStatus: 'error',
-                        }}
-                        label="Domain name" {...formItemLayout}>
-                        {getFieldDecorator('name', {
-                            initialValue: getInitialValue('name'),
-                            rules: [{ required: true, message: 'Please input domain name!' }],
-                        })( <Input disabled={!!getInitialValue('name')} placeholder="example.com" /> )}
-                    </Form.Item>
-                    <Form.Item
-                        {...formErrors.manager && {
-                            help: formErrors.manager,
-                            validateStatus: 'error',
-                        }}
-                        label="Manager" {...formItemLayout}>
-                        {getFieldDecorator('manager', {initialValue: initManagerValuePk})(
-                            <Select>
-                                {managers && managers.map((manager, index) => <Option key={index} value={manager.pk}>{manager.username}</Option>)}
-                            </Select>
-                        )}
-                    </Form.Item>
-                    <Form.Item
-                        {...formErrors.status && {
-                            help: formErrors.status,
-                            validateStatus: 'error',
-                        }}
-                        label="Status" {...formItemLayout}>
-                        {getFieldDecorator('status', {initialValue: getInitialValue('status', 'ACTIVE')})(
-                            <Select>
+                    {formItem('name', 'Domain name',
+                        <Input disabled={!!currentDomain} placeholder="example.com" />,
+                        '',
+                        [{ required: true, message: 'Please input company name!' }],
+                    )}
+
+                    {formItem('manager.pk', 'Manager',
+                        <Select>
+                            {managers && managers.map((manager, index) => <Option key={index} value={manager.pk}>{manager.username}</Option>)}
+                        </Select>,
+                        currentDomain ? '' : currentUser.pk
+                    )}
+
+                    {formItem('status', 'Status',
+                        <Select>
                                 {statuses && statuses.map((status, index) => <Option key={index} value={status.value}>{status.text}</Option>)}
-                            </Select>
-                        )}
-                    </Form.Item>
+                        </Select>,
+                        currentDomain ? '' : 'ACTIVE'
+                    )}
 
                     <EmailDynamic getFieldDecorator={getFieldDecorator}
                                   getFieldValue={getFieldValue}
                                   setFieldsValue={setFieldsValue}
-                                  formItemLayout={formItemLayout}
-                                  existsField={props.emails}
+                                  existsField={currentDomain ? currentDomain.emails : []}
                     />
 
                     <TelephoneDynamic getFieldDecorator={getFieldDecorator}
                                       getFieldValue={getFieldValue}
                                       setFieldsValue={setFieldsValue}
-                                      formItemLayout={formItemLayout}
-                                      existsField={props.telephones}
+                                      existsField={currentDomain ? currentDomain.telephones : []}
                     />
                 </Col>
                 <Col span={7}>
-                    <Form.Item
-                        {...formErrors.company && {
-                            help: formErrors.company,
-                            validateStatus: 'error',
-                        }}
-                        label="Company" {...formItemLayout}>
-                        {getFieldDecorator('company', {initialValue: getInitialValue('company.pk')})(
-                            <Select onChange={onChangeAddress}>
-                                {companies && companies.map((company, index) => <Option key={index} value={company.pk}>{company.name}</Option>)}
-                            </Select>
-                        )}
-                    </Form.Item>
-                    <Form.Item label="Company Address" {...formItemLayout}>
-                        <span>{companyAddress}</span>
-                    </Form.Item>
-                    <Form.Item
-                        {...formErrors.use_custom_address && {
-                            help: formErrors.use_custom_address,
-                            validateStatus: 'error',
-                        }}
-                        label="Check" {...formItemLayout}>
-                        {getFieldDecorator('use_custom_address', {
-                            valuePropName: 'checked',
-                            initialValue: getInitialValue('use_custom_address', false),
-                            onChange: (e) => setCustomAddress(!e.target.checked)
-                        })(<Checkbox>Use custom address instead Company address</Checkbox>)}
-                    </Form.Item>
-                    <Form.Item
-                        {...formErrors.custom_company_address && {
-                            help: formErrors.custom_company_address,
-                            validateStatus: 'error',
-                        }}
-                        label="Custom address" {...formItemLayout}>
-                        {getFieldDecorator('custom_company_address', {
-                            initialValue: getInitialValue('custom_company_address'),
-                        })( <Input disabled={customAddress} placeholder="custom address" /> )}
-                    </Form.Item>
+                    {formItem('company.pk', 'Company',
+                        <Select onChange={onChangeAddress}>
+                            {companies && companies.map((company, index) => <Option key={index} value={company.pk}>{company.name}</Option>)}
+                        </Select>,
+                    )}
+
+                    <Row className={'ant-form-item'}>
+                        <Col offset={2} >
+                            <div style={{color:'rgba(0, 0, 0, 0.85)'}}>Company Address: {companyAddress}</div>
+                        </Col>
+                    </Row>
+
+                    {formItem('use_custom_address', 'Check',
+                        <Checkbox>Use custom address instead Company address</Checkbox>,
+                        currentDomain ? '': false,
+                        [],
+                        (e) => setCustomAddress(!e.target.checked)
+                    )}
+
+                    {formItem('custom_company_address', 'Custom address',
+                        <Input disabled={customAddress} placeholder="custom address" />,
+                    )}
+
                     <Form.Item>
                         <Col offset={6} span={6}>
                             <Button type="primary" htmlType="submit" className={css.submitButton}>
@@ -179,40 +152,21 @@ const DomainForm = (props) => {
                     </Form.Item>
                 </Col>
                 <Col span={9}>
-                    <Form.Item
-                        {...formErrors.alexa_status && {
-                            help: formErrors.alexa_status,
-                            validateStatus: 'error',
-                        }}
-                        label="Alexa status" {...formItemLayout}>
-                        {getFieldDecorator('alexa_status', {
-                            initialValue: getInitialValue('alexa_status', 'OFF')
-                        })(
-                            <Select>
-                                {alexa_statuses && alexa_statuses.map((status, index) => <Option key={index} value={status.value}>{status.text}</Option>)}
-                            </Select>
-                        )}
-                    </Form.Item>
-                    <Form.Item
-                        {...formErrors.alexa_comment && {
-                            help: formErrors.alexa_comment,
-                            validateStatus: 'error',
-                        }}
-                        label="Alexa Comment" {...formItemLayout}>
-                        {getFieldDecorator('alexa_comment', {
-                            initialValue: getInitialValue('alexa_comment')
-                        })( <Input placeholder="Comment ..." /> )}
-                    </Form.Item>
-                    <Form.Item
-                        {...formErrors.redirect && {
-                            help: formErrors.redirect,
-                            validateStatus: 'error',
-                        }}
-                        label="Redirect email" {...formItemLayout}>
-                        {getFieldDecorator('redirect', {
-                            initialValue: getInitialValue('redirect'),
-                        })( <Input placeholder="email@example.com" /> )}
-                    </Form.Item>
+                    {formItem('alexa_status', 'Alexa status',
+                        <Select>
+                            {alexa_statuses && alexa_statuses.map((status, index) => <Option key={index} value={status.value}>{status.text}</Option>)}
+                        </Select>,
+                        currentDomain ? '' : 'OFF'
+                    )}
+
+                    {formItem('alexa_comment', 'Alexa Comment',
+                        <Input disabled={customAddress} placeholder="custom address" />,
+                    )}
+
+                    {formItem('redirect', 'Redirect email',
+                        <Input placeholder="email@example.com" />,
+                    )}
+
                 </Col>
             </Row>
         </Form>
