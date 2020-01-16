@@ -210,7 +210,6 @@ EMAIL_PORT = 25
 EMAIL_HOST_USER = 'postmaster'
 EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'BOT <domainifybot@gmail.com>'
 
 
 try:
