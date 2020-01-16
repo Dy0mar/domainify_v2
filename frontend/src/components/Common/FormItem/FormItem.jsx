@@ -16,7 +16,7 @@ const getInitialField = (obj, fields) => {
     return value
 };
 
-export const createFormItem = (field, formErrors, getFieldDecorator, Component, obj=false, initial='', rules=[]) => {
+export const createFormItem = (field, label, formErrors, getFieldDecorator, Component, obj=false, initial='', rules=[]) => {
 
     //set field initial field
     let fields = field.split('.');
@@ -26,11 +26,6 @@ export const createFormItem = (field, formErrors, getFieldDecorator, Component, 
         initial = getInitialField(obj, fields);
     }
 
-    let labelValue = field;
-    const doubleField =  field.split('_');
-    if (doubleField.length > 1) {
-        labelValue = doubleField.join(' ');
-    }
     // hidden field
     const style = {};
     if (field === 'domain_pk')
@@ -46,7 +41,7 @@ export const createFormItem = (field, formErrors, getFieldDecorator, Component, 
                 help: formErrors[field],
                 validateStatus: 'error',
             }}
-            label={labelValue} {...formItemLayout}>
+            label={label} {...formItemLayout}>
             {getFieldDecorator(field, {
                 ...param,
                 initialValue: initial,

@@ -37,49 +37,49 @@ const TaskForm = (props) => {
     };
 
     // wrapper
-    const formItem = (field, Component, initial='', rules=[]) => {
-        return createFormItem(field, formErrors, getFieldDecorator, Component, task, initial, rules)
+    const formItem = (field, label, Component, initial='', rules=[]) => {
+        return createFormItem(field, label, formErrors, getFieldDecorator, Component, task, initial, rules)
     };
 
     return (
         <Form onSubmit={onSubmit}>
             <Row>
                 <Col span={7}>
-                    {formItem('title',
+                    {formItem('title', 'Title',
                         <Input placeholder="Some title ..." />,
                         '',
                         [{ required: true, message: 'Please input title!' }],
                     )}
-                    {formItem('description', <TextArea rows={4} />)}
+                    {formItem('description','Description',  <TextArea rows={4} />)}
 
                 </Col>
                 <Col span={7}>
-                    {formItem('status.status',
+                    {formItem('status.status', 'Status',
                         <Select>
                             {statuses && statuses.map((item, index) => <Option key={index} value={item.pk}>{item.status}</Option>)}
                         </Select>,
                         statusInitial()
                     )}
-                    {formItem('code.code',
+                    {formItem('code.code', 'Code',
                         <Select>
                             {codes && codes.map((item, index) => <Option key={index} value={item.pk}>{item.code}</Option>)}
                         </Select>,
                         codeInitial()
                     )}
 
-                    {formItem('executors',
+                    {formItem('executors', 'Executors',
                         <Checkbox.Group options={users.map(item => ({label: item.username, value: item.pk}))}/>,
                         task ? executorsInitial() : []
                     )}
 
-                    {formItem('notify',
+                    {formItem('notify', 'Notify',
                         <Checkbox >notify executor(s)?</Checkbox>,
                         false
                     )}
 
                 </Col>
                 <Col span={9}>
-                    {formItem('domain_name.name',
+                    {formItem('domain_name.name', 'Domain name',
                         <AutoComplete dataSource={dataSource}
                                       placeholder="example.com"
                                       style={{ width: 200 }}
@@ -88,7 +88,7 @@ const TaskForm = (props) => {
                         />
                     )}
 
-                    {formItem('domain_pk.pk',
+                    {formItem('domain_pk.pk', 'domain_pk',
                         <Input />,
                         domainId,
                     )}

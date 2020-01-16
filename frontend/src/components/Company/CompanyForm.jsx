@@ -18,22 +18,22 @@ const CompanyForm = (props) => {
     const cancelLink = props.cancelLink ? props.cancelLink : '/';
 
     // wrapper
-    const formItem = (field, Component, initial='', rules=[]) => {
-        return createFormItem(field, formErrors, getFieldDecorator, Component, props.company, initial, rules)
+    const formItem = (field, label, Component, initial='', rules=[]) => {
+        return createFormItem(field, label, formErrors, getFieldDecorator, Component, props.company, initial, rules)
     };
 
     return (
         <Form onSubmit={onSubmit}>
             <Row>
-                <Col span={5}>
-                    {formItem('name',
+                <Col>
+                    {formItem('name', 'Name',
                         <Input placeholder="company name"/>,
                         '',
                         [{ required: true, message: 'Please input company name!' }],
                     )}
                 </Col>
-                <Col span={12}>
-                    {formItem('address',
+                <Col>
+                    {formItem('address', 'Address',
                         <Input placeholder="company address"/>,
                         '',
                         [{ required: true, message: 'Please input company name!' }],
