@@ -33,7 +33,8 @@ export const createFormItem = (field, label, formErrors, getFieldDecorator, Comp
 
     // checkbox field
     const param = {};
-    if (field === 'notify')
+    const checkBoxes = ['notify', 'use_custom_address'];
+    if (checkBoxes.indexOf(field) !== -1 )
         param['valuePropName'] = 'checked';
     return (
         <Form.Item style={{...style}}
