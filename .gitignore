@@ -7,6 +7,7 @@ syntax: glob
 env/*
 venv/*
 frontend/node_modules/*
+frontend/build/*
 public/static/tmp/*
 apps/domains/management/*
 db.sqlite3
