@@ -132,6 +132,10 @@ export const errorHandler = (e, dispatch) => {
         status = e.response.status
     }
     switch (status) {
+        case 401:
+            dispatch(redirectToAction('/login'));
+            break;
+
         case 404:
         case 500:
             dispatch(redirectToAction('/'+status));
