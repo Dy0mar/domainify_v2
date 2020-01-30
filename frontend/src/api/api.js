@@ -1,9 +1,9 @@
 import * as axios from "axios";
-
+import {host} from './privacy'
 
 
 const instance = axios.create({
-    baseURL: 'http://localhost:8000/api/',
+    baseURL: 'http://'+host+':8000/api/',
     headers: {
         'Accept': 'application/json, text/plain, */*',
         'Content-Type': 'application/json'

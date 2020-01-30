@@ -8,6 +8,7 @@ env/*
 venv/*
 frontend/node_modules/*
 frontend/build/*
+frontend/src/api/privacy.js
 public/static/tmp/*
 assets/*
 apps/domains/management/*
