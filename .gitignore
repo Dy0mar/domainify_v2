@@ -9,6 +9,7 @@ venv/*
 frontend/node_modules/*
 frontend/build/*
 public/static/tmp/*
+assets/*
 apps/domains/management/*
 db.sqlite3
 assets/bundles
