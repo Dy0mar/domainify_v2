@@ -107,18 +107,22 @@ export const initializeApp = () => (dispatch) => {
         ? dispatch(verifyToken())
         : new Promise((resolve, reject) => reject(1));
 
-    const setManagers = dispatch(getManagerList());
-    const setDomainStatuses = dispatch(getDomainStatusList());
-    const setAlexaStatuses = dispatch(getAlexaStatusList());
-    const setCompanies = dispatch(getCompanyList());
-
-    Promise.all([
-        verifyTokenPromise, setManagers, setDomainStatuses, setAlexaStatuses,
-        setCompanies
-    ]).then(
+    verifyTokenPromise.then(
         () => {
-            dispatch(setCurrentUser());
-            dispatch(initializedSuccess());
+            const setManagers = dispatch(getManagerList());
+            const setDomainStatuses = dispatch(getDomainStatusList());
+            const setAlexaStatuses = dispatch(getAlexaStatusList());
+            const setCompanies = dispatch(getCompanyList());
+            Promise.all([
+                setManagers, setDomainStatuses, setAlexaStatuses, setCompanies
+            ]).then(
+                () => {
+                    dispatch(setCurrentUser());
+                    dispatch(initializedSuccess());
+                    },
+                () => {
+                    dispatch(initializedSuccess());
+                });
         },
         () => {
             dispatch(initializedSuccess());

@@ -68,8 +68,8 @@ export const login = (username, password) => async (dispatch) => {
             const response = e.response;
             const errors = response.data.non_field_errors;
             dispatch(loginErrorsAction(errors))
-        }
-        errorHandler(e, dispatch)
+        } else
+            errorHandler(e, dispatch)
     }
 };
 
