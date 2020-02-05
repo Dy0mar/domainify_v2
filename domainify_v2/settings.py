@@ -16,6 +16,13 @@ import sys
 from datetime import timedelta
 from celery.schedules import crontab
 from kombu import Queue, Exchange
+from django.utils.deprecation import MiddlewareMixin
+
+
+class DisableCSRF(MiddlewareMixin):
+    def process_request(self, request):
+        setattr(request, '_dont_enforce_csrf_checks', True)
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -52,9 +59,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'domainify_v2.settings.DisableCSRF',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
