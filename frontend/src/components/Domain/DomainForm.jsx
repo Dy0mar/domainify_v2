@@ -160,7 +160,7 @@ const DomainForm = (props) => {
                     )}
 
                     {formItem('alexa_comment', 'Alexa Comment',
-                        <Input disabled={customAddress} placeholder="custom address" />,
+                        <Input placeholder="custom address" />,
                     )}
 
                     {formItem('redirect', 'Redirect email',
