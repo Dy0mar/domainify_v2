@@ -24,15 +24,19 @@ class DomainTaskSerializer(serializers.ModelSerializer):
         fields = ('pk',)
 
     def to_representation(self, value):
+
+        company_address = value.company.address if value.company else ''
+        company_name = value.company.name if value.company else ''
+
         if value.use_custom_address:
             address = value.custom_company_address
         else:
-            address = value.company.address
+            address = company_address
 
         ret = {
             "pk": value.pk,
             "name": value.name,
-            "company_name": value.company.name,
+            "company_name": company_name,
             "use_custom_address": value.use_custom_address,
             "address": address
         }
@@ -92,6 +96,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         executors = validated_data.pop('executors')
+        notify = validated_data.pop('notify', False)
 
         instance = Task(**validated_data)
         instance.creator = self.context['request'].user
@@ -99,6 +104,8 @@ class TaskSerializer(serializers.ModelSerializer):
         if executors:
             for executor in executors:
                 Executor(task=instance, executor=executor).save()
+        if notify:
+            instance.notify_users()
 
         return instance
 
