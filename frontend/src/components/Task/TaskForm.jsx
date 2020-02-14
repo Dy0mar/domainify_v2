@@ -88,7 +88,7 @@ const TaskForm = (props) => {
                         />
                     )}
 
-                    {formItem('domain.pk', 'hide_field',
+                    {formItem('domain_pk.pk', 'hide_field',
                         <Input />,
                         domainId,
                     )}

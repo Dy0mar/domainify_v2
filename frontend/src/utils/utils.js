@@ -32,7 +32,7 @@ export const submitCreateUpdateForm = (validateFields, thunkFunction, fieldId=nu
                 });
                 data['executors'] = values['executors'].map(item => ({pk: item}));
 
-                values['domain_name'] && values['domain_pk']
+                values['domain_pk']
                     ? data['domain'] = {pk:values['domain_pk']}
                     : data['domain'] = null
             }
