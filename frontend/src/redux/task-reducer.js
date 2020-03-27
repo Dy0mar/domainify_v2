@@ -13,7 +13,7 @@ const STATUS_DETAIL = 'task/STATUS_DETAIL';
 const CODE_DETAIL = 'task/CODE_DETAIL';
 const TASK_DETAIL = 'task/TASK_DETAIL';
 
-const initialSate = {
+const initialState = {
     count: 0,
     next: null,
     previous: null,
@@ -32,7 +32,7 @@ const initialSate = {
 };
 
 
-const taskReducer = (state=initialSate, action) => {
+const taskReducer = (state=initialState, action) => {
 
     switch (action.type) {
         case SET_TASK_LIST:

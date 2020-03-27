@@ -7,13 +7,13 @@ const SET_AUTH_COMPLETE = 'auth/SET_AUTH_COMPLETE';
 const LOGIN_ERROR_MESSAGES = 'auth/LOGIN_ERROR_MESSAGES';
 
 
-const initialSate = {
+const initialState = {
     isAuth: false,
     loginErrors: '',
 };
 
 
-const authReducer = (state=initialSate, action) => {
+const authReducer = (state=initialState, action) => {
 
     switch (action.type) {
         case SET_AUTH_COMPLETE:

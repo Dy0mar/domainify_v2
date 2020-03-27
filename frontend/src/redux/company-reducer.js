@@ -9,7 +9,7 @@ import {
 const SET_COMPANY_LIST = 'company/SET_COMPANY_LIST';
 const SET_FORM_ERROR_MESSAGES = 'company/SET_FORM_ERROR_MESSAGES';
 
-const initialSate = {
+const initialState = {
     count: 0,
     next: null,
     previous: null,
@@ -23,7 +23,7 @@ const initialSate = {
 };
 
 
-const companyReducer = (state=initialSate, action) => {
+const companyReducer = (state=initialState, action) => {
 
     switch (action.type) {
         case SET_COMPANY_LIST:

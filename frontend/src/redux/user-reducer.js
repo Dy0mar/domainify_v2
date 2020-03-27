@@ -10,7 +10,7 @@ const GET_MANAGER_LIST = 'user/GET_MANAGER_LIST';
 const GET_FULL_USER_LIST = 'user/GET_FULL_USER_LIST';
 
 
-const initialSate = {
+const initialState = {
     pk: null,
     username: "",
     email: "",
@@ -32,7 +32,7 @@ const initialSate = {
 };
 
 
-const userReducer = (state=initialSate, action) => {
+const userReducer = (state=initialState, action) => {
 
     switch (action.type) {
         case SET_CURRENT_USER:

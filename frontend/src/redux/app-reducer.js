@@ -15,7 +15,7 @@ const SET_ERROR_INFO = 'app/SET_ERROR_INFO';
 const SET_LOADING = 'app/SET_LOADING';
 
 
-const initialSate = {
+const initialState = {
     initialized: false,
     redirectTo: '',
     messages: [],
@@ -24,7 +24,7 @@ const initialSate = {
 };
 
 
-const appReducer = (state=initialSate, action) => {
+const appReducer = (state=initialState, action) => {
 
     switch (action.type) {
         case INITIALIZED_SUCCESS:

@@ -13,7 +13,7 @@ const SET_FORM_ERROR_MESSAGES = 'domain/SET_FORM_ERROR_MESSAGES';
 const AUTOCOMPLETE_DOMAIN_LIST = 'domain/AUTOCOMPLETE_DOMAIN_LIST';
 
 
-const initialSate = {
+const initialState = {
     count: 0,
     next: null,
     previous: null,
@@ -48,7 +48,7 @@ const initialSate = {
 };
 
 
-const domainsReducer = (state=initialSate, action) => {
+const domainsReducer = (state=initialState, action) => {
 
     switch (action.type) {
         case SET_LOADING:
