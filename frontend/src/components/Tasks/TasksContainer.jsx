@@ -12,7 +12,7 @@ import {
     getTasksListPageTotalS
 } from "../../redux/task-selector";
 import style from "./Tasks.module.css";
-import {getIsLoadingS} from "../../redux/S/app-selector";
+import {getIsLoadingS} from "../../redux/app-selector";
 import {getAbsoluteUrlOr404S} from "../../redux/company-selector";
 
 

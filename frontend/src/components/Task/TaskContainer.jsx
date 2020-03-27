@@ -22,7 +22,7 @@ import {
 import {getUserFullList} from "../../redux/user-reducer";
 import {getUserListS} from "../../redux/users-selectors";
 import {autocompleteDomainList} from "../../redux/domain-reducer";
-import {getIsLoadingS} from "../../redux/S/app-selector";
+import {getIsLoadingS} from "../../redux/app-selector";
 import {setRedirectTo} from "../../redux/app-reducer";
 
 
