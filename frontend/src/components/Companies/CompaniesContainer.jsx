@@ -9,7 +9,7 @@ import {
     getAbsoluteUrlOr404S,
     getCompanyListS
 } from "../../redux/company-selector";
-import {getIsLoadingS} from "../../redux/app-selector";
+import {getIsLoadingS} from "../../redux/S/app-selector";
 import {deleteCompany, getCompanyList} from "../../redux/company-reducer";
 
 const { confirm } = Modal;
