@@ -89,7 +89,7 @@ export const setTaskDetailAction = (task) => ({
 });
 
 
-// Thunks taskAPI
+// THUNKS taskAPI
 export const getTaskList = (page=1, filters = {}) => async (dispatch) => {
     dispatch(setLoadingAction(true));
     try{
@@ -123,7 +123,7 @@ export const deleteTask = (pk) => async (dispatch) => {
     );
 };
 
-// Thunks codeAPI
+// THUNKS codeAPI
 export const getCodeList = () => async (dispatch) => {
     wrappedLoading(codesAPI.codes_list, codeListAction, dispatch).then()
 };
@@ -165,7 +165,7 @@ export const deleteCode = (pk) => async (dispatch) => {
 };
 
 
-// Thunks statusAPI
+// THUNKS statusAPI
 export const getStatusList = () => async (dispatch) => {
     wrappedLoading(statusAPI.status_list, statusListAction, dispatch).then()
 };

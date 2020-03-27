@@ -88,7 +88,7 @@ export const managersListAction = (managers) => ({
 });
 
 
-// Thunks
+// THUNKS
 export const getManagerList = (update=false) => async (dispatch, getState) => {
     const managers = getState().user.managers;
     if (!update && managers.length !== 0)

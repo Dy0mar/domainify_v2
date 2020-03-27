@@ -109,7 +109,7 @@ export const autocompleteDomainListAction = (dataSource) => ({
     payload: {dataSource}
 });
 
-// Thunks
+// THUNKS
 export const setRedirectTo = (redirectTo) => async (dispatch) => {
     dispatch(redirectToAction(redirectTo));
 };

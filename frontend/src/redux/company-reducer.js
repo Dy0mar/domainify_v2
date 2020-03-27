@@ -49,7 +49,7 @@ export const setFormErrorsAction = (formErrors) => ({
 });
 
 
-// Thunks
+// THUNKS
 export const getCompanyList = () => async (dispatch) => {
     dispatch(setLoadingAction(true));
     try{
