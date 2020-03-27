@@ -9,15 +9,11 @@ import thunkMiddleware from "redux-thunk";
 import taskReducer from "./task-reducer";
 
 
-const composeEnhancers =
-  typeof window === 'object' &&
-  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-      // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
-    }) : compose;
+// @ts-ignore
+const composeEnhancers =  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 
-const reducers = combineReducers({
+const rootReducer = combineReducers({
     auth: authReducer,
     app: appReducer,
     user: userReducer,
@@ -26,7 +22,9 @@ const reducers = combineReducers({
     tasks: taskReducer,
 });
 
-const store = createStore(reducers, composeEnhancers(applyMiddleware(thunkMiddleware)));
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunkMiddleware)));
 
+type TRootReducer = typeof rootReducer
+export type TAppState = ReturnType<TRootReducer>
 
 export default store;
