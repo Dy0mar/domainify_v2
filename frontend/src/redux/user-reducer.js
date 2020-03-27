@@ -56,7 +56,7 @@ const userReducer = (state=initialState, action) => {
     }
 };
 
-// Actions
+// ACTIONS
 export const setCurrentUserAction = (pk, username, email) => ({
     type: SET_CURRENT_USER,
     payload: {pk, username, email}

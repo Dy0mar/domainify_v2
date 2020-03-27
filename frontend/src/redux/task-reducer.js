@@ -54,7 +54,7 @@ const taskReducer = (state=initialState, action) => {
     }
 };
 
-// Actions
+// ACTIONS
 export const taskListAction = (results) => ({
     type: SET_TASK_LIST,
     results: results

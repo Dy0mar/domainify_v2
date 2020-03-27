@@ -68,7 +68,7 @@ const domainsReducer = (state=initialState, action) => {
     }
 };
 
-// Actions
+// ACTIONS
 export const setLoadingAction = (isLoading) => ({
     type: SET_LOADING,
     payload: {isLoading}

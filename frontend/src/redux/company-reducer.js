@@ -36,7 +36,7 @@ const companyReducer = (state=initialState, action) => {
     }
 };
 
-// Actions
+// ACTIONS
 export const companyListAction = (results) => ({
     type: SET_COMPANY_LIST,
     payload: {results}
