@@ -26,13 +26,9 @@ class Domain(models.Model):
         (CLOSED, CLOSED),
     )
 
-    ALEXA_OFF = 'OFF'
-    ALEXA_ON = 'ON'
+    ALEXA_ON, ALEXA_OFF = 'ON', 'OFF'
 
-    ALEXA_STATUS = (
-        (ALEXA_OFF, ALEXA_OFF),
-        (ALEXA_ON, ALEXA_ON),
-    )
+    ALEXA_STATUS = [(i, i) for i in (ALEXA_OFF, ALEXA_ON)]
 
     name = models.CharField(max_length=255, unique=True)
     manager = models.ForeignKey(
