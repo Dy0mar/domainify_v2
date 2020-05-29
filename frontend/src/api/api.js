@@ -42,13 +42,9 @@ export const usersAPI = {
     get_user_list(page){
         return instance.get(`users/?page=${page}`)
     },
-    manager_list(){
-        return instance.get('users/manager_list/')
-    },
     check_notification_method(m){
         return instance.get('users/check-notification-method/?method='+m)
     }
-
 };
 
 export const domainsAPI = {
@@ -73,13 +69,16 @@ export const domainsAPI = {
         return instance.get(url)
     },
     autocomplete_domain_list(term){
-        return instance.get(`domains/autocomplete-domain-list/?term=${term}`)
+        return instance.get(`domains/search-domain-list/?term=${term}`)
     },
     status_list(){
-        return instance.get('domains/status_list/')
+        return instance.get('domains/status-list/')
     },
     alexa_status_list(){
-        return instance.get('domains/alexa_status_list/')
+        return instance.get('domains/alexa-status-list/')
+    },
+    manager_list(){
+        return instance.get('domains/manager-list/')
     },
 };
 

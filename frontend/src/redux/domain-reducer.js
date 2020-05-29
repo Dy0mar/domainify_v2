@@ -174,18 +174,20 @@ export const loadCurrentDomain = (pk) => async (dispatch) => {
 };
 
 export const getDomainStatusList = () => async (dispatch) => {
+    //todo 291149: move to domain edit
     try{
         const response = await domainsAPI.status_list();
-        dispatch(domainStatusListAction(response.data));
+        dispatch(domainStatusListAction(response.data.list));
     } catch (e) {
         errorHandler(e, dispatch);
     }
 };
 
 export const getAlexaStatusList = () => async (dispatch) => {
+    //todo 291149: move to domain edit
     try{
         const response = await domainsAPI.alexa_status_list();
-        dispatch(alexaStatusListAction(response.data));
+        dispatch(alexaStatusListAction(response.data.list));
     } catch (e) {
         errorHandler(e, dispatch);
     }
@@ -207,7 +209,7 @@ export const autocompleteDomainList = (term) => async (dispatch) => {
     dispatch(setLoadingAction(true));
     try{
         const response = await domainsAPI.autocomplete_domain_list(term);
-        dispatch(autocompleteDomainListAction(response.data));
+        dispatch(autocompleteDomainListAction(response.data.list));
     } catch (e) {
         errorHandler(e, dispatch);
     } finally {

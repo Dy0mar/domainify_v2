@@ -1,4 +1,4 @@
-import {usersAPI} from "../api/api";
+import {domainsAPI, usersAPI} from "../api/api";
 import {login} from "./auth-reducer";
 import {addSuccessMessage, errorHandler} from "./app-reducer";
 
@@ -90,12 +90,13 @@ export const managersListAction = (managers) => ({
 
 // THUNKS
 export const getManagerList = (update=false) => async (dispatch, getState) => {
+    //todo 291149: move to domain edit
     const managers = getState().user.managers;
-    if (!update && managers.length !== 0)
+    if (!update && managers?.length !== 0)
         return;
     try {
-        const response = await usersAPI.manager_list();
-        dispatch(managersListAction(response.data))
+        const response = await domainsAPI.manager_list();
+        dispatch(managersListAction(response.data.list))
     } catch (e) {
         errorHandler(e, dispatch)
     }

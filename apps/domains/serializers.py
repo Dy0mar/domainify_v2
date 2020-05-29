@@ -129,11 +129,3 @@ class DomainSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
-
-
-class ManagerSerializer(serializers.ModelSerializer):
-    manager = serializers.StringRelatedField(many=True)
-
-    class Meta:
-        model = Domain
-        fields = ("manager", )

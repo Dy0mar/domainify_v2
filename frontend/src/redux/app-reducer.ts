@@ -1,5 +1,5 @@
 import {verifyToken} from "./auth-reducer";
-import {getManagerList} from "./user-reducer";
+import {getManagerList, setCurrentUser} from "./user-reducer";
 import {newMessage} from "./S/g-selector";
 import {
     getAlexaStatusList,
@@ -143,12 +143,13 @@ export const initializeApp = (): TThunkVoid => (dispatch) => {
     const token = localStorage.token;
     if (token) {
         dispatch(verifyToken());
+        const setCurrUser = dispatch(setCurrentUser());
         const setManagers = dispatch(getManagerList());
         const setDomainStatuses = dispatch(getDomainStatusList());
         const setAlexaStatuses = dispatch(getAlexaStatusList());
         const setCompanies = dispatch(getCompanyList());
         Promise.all([
-            setManagers, setDomainStatuses, setAlexaStatuses, setCompanies
+            setCurrUser, setManagers, setDomainStatuses, setAlexaStatuses, setCompanies
         ]).finally( () => dispatch(initializedSuccess()))
     }
 };

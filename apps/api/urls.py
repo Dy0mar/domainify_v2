@@ -6,7 +6,6 @@ from rest_framework import routers
 from domains.views import DomainViewSet, CompanyViewSet
 from tasks import views as tasks_views
 from users.views import UserViewSet
-from domains import views as domains_views
 from users import views as user_views
 from rest_framework_jwt.views import (
     obtain_jwt_token, refresh_jwt_token, verify_jwt_token
@@ -21,16 +20,6 @@ router.register(r'statuses', tasks_views.StatusViewSet)
 router.register(r'codes', tasks_views.CodeViewSet)
 
 urlpatterns = [
-    path(r'users/manager_list/',
-         domains_views.manager_list, name='manager-list'),
-    path(r'domains/status_list/',
-         domains_views.status_list, name='status-list'),
-    path(r'domains/alexa_status_list/',
-         domains_views.alexa_status_list, name='alexa-status-list'),
-    path(r'domains/autocomplete-domain-list/',
-         domains_views.autocomplete_domain_list,
-         name='autocomplete-domain-list'),
-
     path(r'users/check-notification-method/',
          user_views.check_notification_method,
          name='check-notification-method'),
@@ -43,4 +32,3 @@ urlpatterns = [
     path(r'api-token-refresh/', refresh_jwt_token),
     path(r'api-token-verify/', verify_jwt_token),
 ]
-
