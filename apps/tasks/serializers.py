@@ -19,41 +19,34 @@ class StatusSerializer(serializers.ModelSerializer):
 
 
 class DomainTaskSerializer(serializers.ModelSerializer):
+    address = serializers.SerializerMethodField()
+    company_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Domain
-        fields = ('pk',)
+        fields = ('pk', 'name', 'use_custom_address', 'address', 'company_name')
 
-    def to_representation(self, value):
+    def get_address(self, instance):
+        if instance.use_custom_address:
+            return instance.custom_company_address
 
-        company_address = value.company.address if value.company else ''
-        company_name = value.company.name if value.company else ''
+        return instance.company.address if instance.company else ''
 
-        if value.use_custom_address:
-            address = value.custom_company_address
-        else:
-            address = company_address
+    def get_company_name(self, instance):
+        return instance.name if instance.company else ''
 
-        ret = {
-            "pk": value.pk,
-            "name": value.name,
-            "company_name": company_name,
-            "use_custom_address": value.use_custom_address,
-            "address": address
-        }
-        return ret
+
+class ExecutorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('pk', 'username')
 
 
 class ExecutorTaskSerializer(serializers.ModelSerializer):
+    executor = ExecutorSerializer(required=False)
     class Meta:
         model = Executor
         fields = ('pk', 'executor')
-
-    def to_representation(self, value):
-        ret = {
-            "executor": value.executor.pk,
-            "username": value.executor.username,
-        }
-        return ret
 
 
 class TaskSerializer(serializers.ModelSerializer):
