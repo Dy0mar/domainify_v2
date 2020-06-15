@@ -56,13 +56,13 @@ export type TDomain = {
     manager: TManager
     use_custom_address: false
     custom_company_address: string
-    executors: Array<number>
+    // executors: Array<number>
 }
 
 export type TUserList = {
     count: number
-    next: number
-    previous: number
+    next: null | string
+    previous: null | string
     results: Array<TUser>
 }
 

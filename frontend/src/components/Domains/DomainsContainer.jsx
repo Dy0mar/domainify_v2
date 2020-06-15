@@ -7,12 +7,12 @@ import {connect} from "react-redux"
 import {NavLink, withRouter} from "react-router-dom"
 import {getDomainList} from "../../redux/domain-reducer"
 import {
-    getDomainIsLoadingS,
     getDomainListPageTotalS,
     getDomainListS, getUrlOr404S
 } from "../../redux/domains-selectors"
 import style from "./Domains.module.css"
 import {getManagerListS} from "../../redux/users-selectors"
+import {getIsLoadingS} from "../../redux/app-selector";
 
 
 const DomainsContainer = (props) => {
@@ -95,7 +95,7 @@ const DomainsContainer = (props) => {
 const mapStateToProps = (state) => ({
     domains: getDomainListS(state),
     total: getDomainListPageTotalS(state),
-    isLoading: getDomainIsLoadingS(state),
+    isLoading: getIsLoadingS(state),
     managers: getManagerListS(state),
 })
 

@@ -38,8 +38,8 @@ authInstance.interceptors.request.use(
 
 export type TResponseList<A = []> = {
     count: number
-    next: number
-    previous: number
+    next: null | string
+    previous: null | string
     results: Array<A>
 }
 

@@ -6,20 +6,19 @@ import {TDomain, TEmails, TTelephones} from "../types/g-types"
 
 
 const SET_CURRENT_DOMAIN = 'domain/SET_CURRENT_DOMAIN'
-const SET_REDIRECT_TO = 'domain/SET_REDIRECT_TO'
 const SET_DOMAIN_STATUS_LIST = 'domain/SET_DOMAIN_STATUS_LIST'
 const SET_ALEXA_STATUS_LIST = 'domain/SET_ALEXA_STATUS_LIST'
 
 const SET_DOMAIN_LIST = 'domain/SET_DOMAIN_LIST'
-const GET_COMPANY_LIST = 'domain/GET_COMPANY_LIST'
+// const GET_COMPANY_LIST = 'domain/GET_COMPANY_LIST'
 const SET_FORM_ERROR_MESSAGES = 'domain/SET_FORM_ERROR_MESSAGES'
 const AUTOCOMPLETE_DOMAIN_LIST = 'domain/AUTOCOMPLETE_DOMAIN_LIST'
 
 
 const initialState = {
-    count: 0,
-    next: 0,
-    previous: 0,
+    count: null as number | null,
+    next: null as string | null,
+    previous: null as string | null,
     results: [{
         url: "",
         pk: 0,
@@ -46,7 +45,7 @@ const initialState = {
         use_custom_address: false,
         custom_company_address: ''
     }] as Array<TDomain>,
-    isLoading: true,
+
     statuses: [] as Array<string>,
     alexa_statuses: [] as Array<string>,
     formErrors: {},
@@ -94,7 +93,7 @@ export const actions = {
         payload: {alexa_statuses}
     } as const),
 
-     domainListAction: (count: number, next: number, previous: number, results: Array<TDomain>) => ({
+     domainListAction: (count: number, next: null | string, previous: null | string, results: Array<TDomain>) => ({
         type: SET_DOMAIN_LIST,
         payload: {count, next, previous, results}
     } as const),
