@@ -51,10 +51,10 @@ export const verifyToken = (): TThunk => async (dispatch) => {
 export const login = (username: string, password: string): TThunk => async (dispatch) => {
     const data = await authAPI.login(username, password)
     if (!!data?.token){
-        dispatch(actions.setAuthComplete(true))
         localStorage.setItem("token", data.token)
         const {pk, username, email, profile, settings } = data.user
         dispatch(userActions.setCurrentUserAction(pk, username, email, profile, settings))
+        dispatch(actions.setAuthComplete(true))
     }
 }
 

@@ -36,9 +36,9 @@ const userReducer = (state=initialState, action: TActions): TInitialState => {
 
     switch (action.type) {
         case SET_CURRENT_USER:
-        // // case SET_USER_INFO:
-        // // case REGISTER_ERROR_MESSAGES:
-        // // case GET_USER_LIST:
+        case SET_USER_INFO:
+        // case REGISTER_ERROR_MESSAGES:
+        // case GET_USER_LIST:
         // case GET_MANAGER_LIST:
             return {
                 ...state,
@@ -62,8 +62,8 @@ export type TActions = TInferActions<typeof actions>
 // ACTIONS
 export const actions = {
     setCurrentUserAction: (pk: number, username: string, email: string, profile: TProfile | undefined, settings: TSettings | undefined) => ({
-    type: SET_CURRENT_USER,
-    payload: {pk: pk, username: username, email: email, profile: profile, settings: settings}
+        type: SET_CURRENT_USER,
+        payload: {pk, username, email, profile, settings}
     } as const),
 
     userListAction: (users: Array<TUserList>) => ({
