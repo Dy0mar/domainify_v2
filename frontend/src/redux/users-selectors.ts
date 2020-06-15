@@ -37,13 +37,6 @@ export const getManagerListS = (state: TAppState) => {
             pk: currentUser.pk,
             username: currentUser.username,
         })
-        const manager = {
-            text: currentUser.username,
-            value: currentUser.pk,
-            pk: currentUser.pk,
-            username: currentUser.username,
-        }
-        return managers.push(manager)
     }
     return managers
 }
