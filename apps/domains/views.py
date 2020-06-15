@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.db.models import F
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -41,10 +42,11 @@ class DomainViewSet(BaseViewSetMixin, ModelViewSet):
     def manager_list(self, request):
         queryset = self.get_queryset().filter(
             manager__username__isnull=False
-        ).values_list(
-            'manager__pk', 'manager__username'
+        ).annotate(pk=F('manager__pk'), username=F('manager__username')).values(
+            'pk', 'username'
         ).order_by('manager__username').distinct()
-        return Response({'list': set(queryset)})
+        r = list(queryset)
+        return Response({'list': r})
 
     @action(detail=False, url_path='search-domain-list', permission_classes=(IsAuthenticated,))
     def search_domain_list(self, request):
