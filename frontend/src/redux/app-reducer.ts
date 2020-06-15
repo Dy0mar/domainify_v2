@@ -1,21 +1,20 @@
-import {verifyToken} from "./auth-reducer";
-import {getManagerList, setCurrentUser} from "./user-reducer";
-import {newMessage} from "./S/g-selector";
+import {verifyToken} from "./auth-reducer"
+import {getManagerList, setCurrentUser} from "./user-reducer"
+import {newMessage} from "./S/g-selector"
 import {
     getAlexaStatusList,
     getDomainStatusList
-} from "./domain-reducer";
-import {getCompanyList} from "./company-reducer";
-import {ThunkAction} from "redux-thunk";
-import {TAppState} from "./redux-store";
-import {TMessage} from "../types/g-types";
+} from "./domain-reducer"
+import {getCompanyList} from "./company-reducer"
+import {TBaseThunk, TInferActions} from "./redux-store"
+import {TMessage} from "../types/g-types"
 
-const INITIALIZED_SUCCESS = 'app/INITIALIZED_SUCCESS';
-const SHOW_MESSAGE = 'app/SHOW_MESSAGE';
-const ADD_MESSAGE = 'app/ADD_MESSAGE';
-const SET_REDIRECT_TO = 'app/SET_REDIRECT_TO';
-const SET_ERROR_INFO = 'app/SET_ERROR_INFO';
-const SET_LOADING = 'app/SET_LOADING';
+const INITIALIZED_SUCCESS = 'app/INITIALIZED_SUCCESS'
+const SHOW_MESSAGE = 'app/SHOW_MESSAGE'
+const ADD_MESSAGE = 'app/ADD_MESSAGE'
+const SET_REDIRECT_TO = 'app/SET_REDIRECT_TO'
+const SET_ERROR_INFO = 'app/SET_ERROR_INFO'
+const SET_LOADING = 'app/SET_LOADING'
 
 
 const initialState = {
@@ -24,156 +23,121 @@ const initialState = {
     messages: [] as Array<TMessage>,
     errorInfo: '',
     isLoading: false
-};
+}
 
-type InitialStateType = typeof initialState
-type TActions = TInitializedSuccess
-    | TRedirectToAction
-    | TSetErrorInfoAction
-    | TShowMessageAction
-    | TAddMessageAction
-    | TSetLoadingAction
+type TInitialState = typeof initialState
 
-const appReducer = (state=initialState, action: TActions): InitialStateType => {
+const appReducer = (state= initialState, action: TActions): TInitialState => {
 
     switch (action.type) {
+        case SET_LOADING:
         case INITIALIZED_SUCCESS:
         case SET_REDIRECT_TO:
         case SET_ERROR_INFO:
-        case SET_LOADING:
             return {
                 ...state,
                 ...action.payload,
-            };
+            }
         case SHOW_MESSAGE:
             return {
                 ...state,
-                messages: state.messages.filter(m => m.id !== action.message.id)
-            };
+                // messages: state.messages.filter(m => m.id !== action.msg.id)
+            }
         case ADD_MESSAGE:
             return {
                 ...state,
-                messages: [...state.messages, action.message]
-            };
-
-        default: return state;
+                // messages: [...state.messages, action.msg]
+            }
+        default: return state
     }
-};
+}
 
 // TYPES
-type TInitializedSuccess = {
-    type: typeof INITIALIZED_SUCCESS,
-    payload: { initialized: boolean }
-}
-type TRedirectToAction = {
-    type: typeof SET_REDIRECT_TO
-    payload: { redirectTo: string }
-}
-type TSetErrorInfoAction = {
-    type: typeof SET_ERROR_INFO
-    payload: {errorInfo: any }
-}
-type TShowMessageAction = {
-    type: typeof SHOW_MESSAGE
-    message: TMessage
-}
-type TAddMessageAction = {
-    type: typeof ADD_MESSAGE
-    message: TMessage
-}
-type TSetLoadingAction = {
-    type: typeof SET_LOADING
-    payload: { isLoading: boolean }
-}
+export type TActions = TInferActions<typeof actions>
 
 // ACTIONS
-export const initializedSuccess = (initialized=true): TInitializedSuccess => ({
-    type: INITIALIZED_SUCCESS,
-    payload: {initialized}
-});
-
-export const redirectToAction = (redirectTo: string): TRedirectToAction => ({
-    type: SET_REDIRECT_TO,
-    payload: {redirectTo}
-});
-
-export const setErrorInfoAction = (errorInfo: any): TSetErrorInfoAction => ({
-    type: SET_ERROR_INFO,
-    payload: {errorInfo}
-});
-
-export const showMessageAction = (message: TMessage): TShowMessageAction => ({
-    type: SHOW_MESSAGE,
-    message
-});
-
-export const addMessageAction = (message: TMessage): TAddMessageAction => ({
-    type: ADD_MESSAGE,
-    message
-});
-
-export const setLoadingAction = (isLoading: boolean): TSetLoadingAction => ({
-    type: SET_LOADING,
-    payload: {isLoading}
-});
+export const actions = {
+    showMessageAction: (msg: TMessage) => ({type: SHOW_MESSAGE, msg: msg} as const),
+    addMessageAction: (msg: TMessage) => ({type: ADD_MESSAGE, msg: msg} as const),
+    initializedSuccess: (initialized: boolean) => ({type: INITIALIZED_SUCCESS, payload: {initialized}} as const),
+    setAppLoading: (isLoading: boolean) => ({type: SET_LOADING, payload: {isLoading} as const}),
+    redirectToAction: (redirectTo: string) => ({type: SET_REDIRECT_TO, payload: {redirectTo}} as const),
+    setErrorInfoAction: (errorInfo: any) => ({type: SET_ERROR_INFO, payload: {errorInfo}} as const),
+}
 
 // THUNKS
-type TThunkVoid = ThunkAction<void, TAppState, unknown, TActions>
-type TThunk = ThunkAction<Promise<void>, TAppState, unknown, TActions>
+type TThunk = TBaseThunk<TActions>
 
 export const setRedirectTo = (redirectTo: string): TThunk => async (dispatch) => {
-    dispatch(redirectToAction(redirectTo));
-};
+    dispatch(actions.redirectToAction(redirectTo))
+}
 
-export const showedMessage = (message: TMessage): TThunkVoid => (dispatch) => {
-    dispatch(showMessageAction(message))
-};
+export const showedMessage = (message: TMessage): TThunk => async (dispatch) => {
+    dispatch(actions.showMessageAction(message))
+}
 
-export const addSuccessMessage = (msg: string): TThunkVoid => (dispatch, getState) => {
-    const message = newMessage(getState(), 'success', msg);
-    dispatch(addMessageAction(message))
-};
+export const addSuccessMessage = (msg: string): TThunk => async (dispatch, getState) => {
+    const message = newMessage(getState(), 'success', msg)
+    dispatch(actions.addMessageAction(message))
+}
 
-export const addErrorMessage = (msg: string): TThunkVoid => (dispatch, getState) => {
-    const message = newMessage(getState(), 'error', msg);
-    dispatch(addMessageAction(message))
-};
+export const addErrorMessage = (msg: string): TThunk => async (dispatch, getState) => {
+    const message = newMessage(getState(), 'error', msg)
+    dispatch(actions.addMessageAction(message))
+}
 
-export const initializeApp = (): TThunkVoid => (dispatch) => {
-    const token = localStorage.token;
+export const initializeApp = (): TThunk => async (dispatch) => {
+    const token = localStorage.token
+    let promises = [Promise.resolve()]
     if (token) {
-        dispatch(verifyToken());
-        const setCurrUser = dispatch(setCurrentUser());
-        const setManagers = dispatch(getManagerList());
-        const setDomainStatuses = dispatch(getDomainStatusList());
-        const setAlexaStatuses = dispatch(getAlexaStatusList());
-        const setCompanies = dispatch(getCompanyList());
-        Promise.all([
-            setCurrUser, setManagers, setDomainStatuses, setAlexaStatuses, setCompanies
-        ]).finally( () => dispatch(initializedSuccess()))
+        promises = [
+            dispatch(verifyToken()),
+            dispatch(setCurrentUser()),
+            dispatch(getManagerList()),
+            dispatch(getDomainStatusList()),
+            dispatch(getAlexaStatusList()),
+            dispatch(getCompanyList()),
+        ]
     }
-};
+    // todo: add reject
+    Promise.all(promises).finally( () => dispatch(actions.initializedSuccess(true)))
+}
+
+export const withProcessVisualization = function (operation: any, dispatch: any) {
+    return async () => {
+        dispatch(actions.setAppLoading(true))
+        await operation()
+        dispatch(actions.setAppLoading(false))
+    }
+}
+
+export const commonAsyncHandler = (operation: any, dispatch: any) => {
+    const visualized = withProcessVisualization(operation, dispatch)
+    return visualized()
+}
 
 export const errorHandler = (e: any, dispatch: any) => {
-    const pageError = '/503';
-    let status = null;
+    const pageError = '/503'
+    let status = null
     if (e && e.response && e.response.status) {
         status = e.response.status
     }
     switch (status) {
         case 401:
-            dispatch(redirectToAction('/login'));
-            break;
+            dispatch(actions.redirectToAction('/login'))
+            break
 
         case 404:
         case 500:
-            dispatch(redirectToAction('/'+status));
+            dispatch(actions.redirectToAction('/'+status))
 
-            break;
-        default: dispatch(redirectToAction(pageError)); break;
+            break
+        default:
+            dispatch(actions.redirectToAction(pageError))
+            break
     }
-    dispatch(setErrorInfoAction(e));
-};
+    dispatch(actions.setErrorInfoAction(e))
+}
 
 
-export default appReducer;
+export default appReducer

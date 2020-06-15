@@ -19,7 +19,7 @@ import {
     getDomainDataSourceS,
     getDomainListS
 } from "../../redux/domains-selectors";
-import {getUserFullList} from "../../redux/user-reducer";
+import {getUserList} from "../../redux/user-reducer";
 import {getUserListS} from "../../redux/users-selectors";
 import {autocompleteDomainList} from "../../redux/domain-reducer";
 import {getIsLoadingS} from "../../redux/app-selector";
@@ -40,7 +40,7 @@ const TaskContainer = (props) => {
     } = props;
     const {
         getTaskDetail, updateTask, createTask,
-        getCodeList, getStatusList, getUserFullList, autocompleteDomainList,
+        getCodeList, getStatusList, autocompleteDomainList,
         setRedirectTo,
     } = props;
 
@@ -56,8 +56,8 @@ const TaskContainer = (props) => {
     useEffect(() => {
         getCodeList();
         getStatusList();
-        getUserFullList();
-    },[getCodeList, getStatusList, getUserFullList]);
+        getUserList();
+    },[getCodeList, getStatusList, getUserList]);
 
     useEffect(() => {
         if (updateAction){
@@ -139,6 +139,6 @@ export default compose(
     withRouter,
     connect(mapStateToProps, {
         createTask, updateTask, getTaskDetail, setRedirectTo,
-        getCodeList, getStatusList, getUserFullList, autocompleteDomainList
+        getCodeList, getStatusList, getUserList, autocompleteDomainList
     })
 )(TaskComponent);
