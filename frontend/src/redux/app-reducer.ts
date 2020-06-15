@@ -31,6 +31,10 @@ const appReducer = (state= initialState, action: TActions): TInitialState => {
 
     switch (action.type) {
         case SET_LOADING:
+            return {
+                ...state,
+                isLoading: action.isLoading,
+            }
         case INITIALIZED_SUCCESS:
         case SET_REDIRECT_TO:
         case SET_ERROR_INFO:
@@ -41,12 +45,12 @@ const appReducer = (state= initialState, action: TActions): TInitialState => {
         case SHOW_MESSAGE:
             return {
                 ...state,
-                // messages: state.messages.filter(m => m.id !== action.msg.id)
+                messages: state.messages.filter(m => m.id !== action.msg.id)
             }
         case ADD_MESSAGE:
             return {
                 ...state,
-                // messages: [...state.messages, action.msg]
+                messages: [...state.messages, action.msg]
             }
         default: return state
     }
@@ -57,10 +61,10 @@ export type TActions = TInferActions<typeof actions>
 
 // ACTIONS
 export const actions = {
-    showMessageAction: (msg: TMessage) => ({type: SHOW_MESSAGE, msg: msg} as const),
-    addMessageAction: (msg: TMessage) => ({type: ADD_MESSAGE, msg: msg} as const),
+    showMessageAction: (msg: TMessage) => ({type: SHOW_MESSAGE, msg} as const),
+    addMessageAction: (msg: TMessage) => ({type: ADD_MESSAGE, msg} as const),
     initializedSuccess: (initialized: boolean) => ({type: INITIALIZED_SUCCESS, payload: {initialized}} as const),
-    setAppLoading: (isLoading: boolean) => ({type: SET_LOADING, payload: {isLoading} as const}),
+    setAppLoading: (isLoading: boolean) => ({type: SET_LOADING, isLoading} as const),
     redirectToAction: (redirectTo: string) => ({type: SET_REDIRECT_TO, payload: {redirectTo}} as const),
     setErrorInfoAction: (errorInfo: any) => ({type: SET_ERROR_INFO, payload: {errorInfo}} as const),
 }
