@@ -1,13 +1,13 @@
 import React from 'react'
-import {Button, Row} from 'antd';
-import "antd/dist/antd.css";
-import {Box} from "../Common/Box/Box";
-import {NavLink} from "react-router-dom";
+import {Button, Row} from 'antd'
+import "antd/dist/antd.css"
+import {Box} from "../Common/Box/Box"
+import {NavLink} from "react-router-dom"
 
 
 const SettingsBox = (props) => {
-    const {getBoxIfEmpty, getNewItem} = props;
-    const {objectList, createLink, boxTitleText} = props;
+    const {getBoxIfEmpty, getNewItem} = props
+    const {objectList, createLink, boxTitleText} = props
 
     return (
         <Box boxTitleText={boxTitleText} icon={'info-circle'} onClickMethod={null}>
@@ -22,6 +22,6 @@ const SettingsBox = (props) => {
             </Row>
         </Box>
     )
-};
+}
 
-export default SettingsBox;
+export default SettingsBox

@@ -1,5 +1,5 @@
-import React from 'react';
-import 'antd/dist/antd.css';
+import React from 'react'
+import 'antd/dist/antd.css'
 
 import {
     Form,
@@ -8,8 +8,8 @@ import {
     Icon,
     Button,
     Divider,
-} from 'antd';
-import {NavLink} from "react-router-dom";
+} from 'antd'
+import {NavLink} from "react-router-dom"
 
 
 const RegistrationForm = (props) => {
@@ -17,7 +17,7 @@ const RegistrationForm = (props) => {
     const {
         handleSubmit, getFieldDecorator, validateToNextPassword, registerErrors,
         compareToFirstPassword, handleConfirmBlur
-    } = props;
+    } = props
 
     const formItemLayout = {
         labelCol: {
@@ -28,7 +28,7 @@ const RegistrationForm = (props) => {
             xs: { span: 24 },
             sm: { span: 15 },
         },
-    };
+    }
     const tailFormItemLayout = {
         wrapperCol: {
             xs: {
@@ -40,7 +40,7 @@ const RegistrationForm = (props) => {
                 offset: 8,
             },
         },
-    };
+    }
 
 
     return (
@@ -140,7 +140,7 @@ const RegistrationForm = (props) => {
                 </Button> Or <NavLink to="/login" activeClassName='active'>login</NavLink>
             </Form.Item>
         </Form>
-    );
-};
+    )
+}
 
 export default RegistrationForm

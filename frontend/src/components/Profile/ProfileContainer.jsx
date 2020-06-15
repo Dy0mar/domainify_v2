@@ -1,10 +1,10 @@
 import React from 'react'
-import {Divider, Row, Col} from 'antd';
-import "antd/dist/antd.css";
-import UserInfoContainer from "./UserInfo/UserInfoContainer";
-import {compose} from "redux";
-import {withAuthRedirect} from "../../hoc/withAuthRedirect";
-import SettingsContainer from "./Settings/SettingsContainer";
+import {Divider, Row, Col} from 'antd'
+import "antd/dist/antd.css"
+import UserInfoContainer from "./UserInfo/UserInfoContainer"
+import {compose} from "redux"
+import {withAuthRedirect} from "../../hoc/withAuthRedirect"
+import SettingsContainer from "./Settings/SettingsContainer"
 
 
 const ProfileContainer = (props) => {
@@ -23,8 +23,8 @@ const ProfileContainer = (props) => {
             </Row>
         </div>
     )
-};
+}
 
 export default compose(
     withAuthRedirect,
-)(ProfileContainer);
+)(ProfileContainer)

@@ -1,8 +1,8 @@
-import React from 'react';
-import 'antd/dist/antd.css';
-import {Button, Form, Icon, Input, message} from 'antd';
+import React from 'react'
+import 'antd/dist/antd.css'
+import {Button, Form, Icon, Input, message} from 'antd'
 
-let id = 0;
+let id = 0
 
 export const createDynamic = (props) => {
     // existsField like object
@@ -11,55 +11,55 @@ export const createDynamic = (props) => {
     const {
         getFieldDecorator, getFieldValue, setFieldsValue,
         limitCount, existsField
-    } = props;
-    const fieldName = props.name ? props.name : 'keys';
+    } = props
+    const fieldName = props.name ? props.name : 'keys'
 
     const remove = k => {
         // can use data-binding to get
-        const keys = getFieldValue(fieldName);
+        const keys = getFieldValue(fieldName)
 
         // can use data-binding to set
         setFieldsValue({
             [fieldName]: keys.filter(key => key !== k),
-        });
-    };
+        })
+    }
 
     const add = (e) => {
-        const keys = getFieldValue(fieldName);
+        const keys = getFieldValue(fieldName)
 
         if (limitCount && keys.length === limitCount) {
-            message.error('only available  ' + limitCount + ' fields');
-            return;
+            message.error('only available  ' + limitCount + ' fields')
+            return
         }
-        const nextKeys = keys.concat(id++);
+        const nextKeys = keys.concat(id++)
         // can use data-binding to set
         // important! notify form to detect changes
         setFieldsValue({
             [fieldName]: nextKeys,
-        });
-    };
+        })
+    }
     const formItemLayout = {
         labelCol: { span: 8 },
         wrapperCol: { span: 16 },
-    };
+    }
 
     const formItemLayoutWithOutLabel = {
         wrapperCol: {
             xs: { span: 20, offset: 4 },
             sm: { span: 12, offset: 12 },
         },
-    };
+    }
 
-    getFieldDecorator(fieldName, { initialValue: existsField ? existsField.map(item => (item)) : [] });
+    getFieldDecorator(fieldName, { initialValue: existsField ? existsField.map(item => (item)) : [] })
 
     if (existsField) {
         existsField.forEach(item => {
-            const name = `${props.field_name}_${item.pk}`;
+            const name = `${props.field_name}_${item.pk}`
             getFieldDecorator(name, {initialValue: item[props.field_name] })
         })
     }
 
-    const keys = getFieldValue(fieldName);
+    const keys = getFieldValue(fieldName)
     const formItems = keys.map((item, index) => (
 
         <Form.Item
@@ -80,7 +80,7 @@ export const createDynamic = (props) => {
                 />
             ) : null}
         </Form.Item>
-    ));
+    ))
     return (
         <>
             {formItems}
@@ -90,7 +90,7 @@ export const createDynamic = (props) => {
                 </Button>
             </Form.Item>
         </>
-    );
+    )
 
-};
+}
 

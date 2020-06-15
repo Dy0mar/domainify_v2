@@ -1,14 +1,14 @@
 import React from 'react'
-import {Button, Col, Row, Typography} from 'antd';
-import "antd/dist/antd.css";
-import {Box} from "../../Common/Box/Box";
-import {NavLink} from "react-router-dom";
+import {Button, Col, Row, Typography} from 'antd'
+import "antd/dist/antd.css"
+import {Box} from "../../Common/Box/Box"
+import {NavLink} from "react-router-dom"
 
-const { Title, Text} = Typography;
+const { Title, Text} = Typography
 
 
 const DomainInfoContainer = (props) => {
-    const {domain, editLink, deleteConfirm} = props;
+    const {domain, editLink, deleteConfirm} = props
 
 
     return (
@@ -61,6 +61,6 @@ const DomainInfoContainer = (props) => {
             </Row>
         </>
     )
-};
+}
 
-export default DomainInfoContainer;
+export default DomainInfoContainer

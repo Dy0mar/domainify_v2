@@ -1,8 +1,8 @@
 import React from 'react'
-import {Typography} from "antd";
-import {connect} from "react-redux";
+import {Typography} from "antd"
+import {connect} from "react-redux"
 
-const { Text } = Typography;
+const { Text } = Typography
 
 
 export const Page404 = (props) => {
@@ -11,7 +11,7 @@ export const Page404 = (props) => {
             <Text strong type="danger" >Page Not Found</Text>
         </div>
     )
-};
+}
 
 export const Page500 = (props) => {
     return (
@@ -19,7 +19,7 @@ export const Page500 = (props) => {
             <Text strong type="danger">Something went wrong</Text>
         </div>
     )
-};
+}
 
 export const Page503 = (props) => {
     return (
@@ -33,10 +33,10 @@ export const Page503 = (props) => {
             </div>
         </div>
     )
-};
+}
 
 const mapStateToProps = (state) => ({
     errorInfo: state.app.errorInfo
-});
+})
 
-export const Page503Component = connect(mapStateToProps, {})(Page503);
+export const Page503Component = connect(mapStateToProps, {})(Page503)

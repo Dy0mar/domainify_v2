@@ -1,28 +1,28 @@
 import React, {useEffect} from 'react'
-import {Divider, Row, Col} from 'antd';
-import "antd/dist/antd.css";
-import {compose} from "redux";
-import {connect} from "react-redux";
-import {withAuthRedirect} from "../../hoc/withAuthRedirect";
-import {withRouter} from "react-router-dom";
+import {Divider, Row, Col} from 'antd'
+import "antd/dist/antd.css"
+import {compose} from "redux"
+import {connect} from "react-redux"
+import {withAuthRedirect} from "../../hoc/withAuthRedirect"
+import {withRouter} from "react-router-dom"
 import {
     deleteCode,
     deleteStatus,
     getCodeList,
     getStatusList, setDefaultCodes,
     setDefaultStatuses
-} from "../../redux/task-reducer";
+} from "../../redux/task-reducer"
 import {
     getCodeListS,
     getStatusListS,
     getTaskListS
-} from "../../redux/task-selector";
+} from "../../redux/task-selector"
 import {
     CodeBoxItem, CodeDefaultBox,
     StatusBoxItem,
     StatusDefaultBox
-} from "./SettingsBoxComponents";
-import SettingsBox from "./SettingsBox";
+} from "./SettingsBoxComponents"
+import SettingsBox from "./SettingsBox"
 
 
 const SettingsContainer = (props) => {
@@ -30,30 +30,30 @@ const SettingsContainer = (props) => {
         codes, statuses,
         getStatusList, setDefaultStatuses, deleteStatus,
         getCodeList, setDefaultCodes, deleteCode,
-    } = props;
+    } = props
 
     useEffect(() => {
-        getStatusList();
+        getStatusList()
         getCodeList()
-    }, [getStatusList, getCodeList]);
+    }, [getStatusList, getCodeList])
 
     const getStatusBoxIfEmpty = () => {
         return <StatusDefaultBox setDefault={setDefaultStatuses}/>
-    };
+    }
 
     const getNewStatusItem = (item, index) => {
         return <StatusBoxItem key={index} item={item} deleteThunk={deleteStatus}/>
-    };
+    }
 
     const getCodeBoxIfEmpty = () => {
         return <CodeDefaultBox setDefault={setDefaultCodes}/>
-    };
+    }
 
     const getNewCodeItem = (item, index) => {
         return <CodeBoxItem key={index} item={item} deleteThunk={deleteCode}/>
-    };
+    }
 
-    const getCreateLink = (link) => `/settings/${link}/create`;
+    const getCreateLink = (link) => `/settings/${link}/create`
 
     return (
         <div>
@@ -80,14 +80,14 @@ const SettingsContainer = (props) => {
             </Row>
         </div>
     )
-};
+}
 
 
 const mapStateToProps = (state) => ({
     tasks: getTaskListS(state),
     codes: getCodeListS(state),
     statuses: getStatusListS(state)
-});
+})
 
 export default compose(
     withAuthRedirect,
@@ -96,4 +96,4 @@ export default compose(
         getStatusList, getCodeList, setDefaultStatuses, deleteStatus, setDefaultCodes,
         deleteCode
     })
-)(SettingsContainer);
+)(SettingsContainer)

@@ -1,20 +1,20 @@
 import React from 'react'
-import {logout} from "../../redux/auth-reducer";
-import Header from "./Header";
-import {connect} from "react-redux";
-import {compose} from "redux";
-import {withRouter} from "react-router-dom";
+import {logout} from "../../redux/auth-reducer"
+import Header from "./Header"
+import {connect} from "react-redux"
+import {compose} from "redux"
+import {withRouter} from "react-router-dom"
 
 const HeaderContainer = (props) => {
     return (
         <Header {...props} />
     )
-};
+}
 
 const mapStateToProps = (state) => ({
     isAuth: state.auth.isAuth,
     username: state.user.username,
-});
+})
 
 
 

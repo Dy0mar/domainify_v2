@@ -1,20 +1,20 @@
 import React from 'react'
-import {Button, Col, Form, Input, Row} from 'antd';
-import "antd/dist/antd.css";
+import {Button, Col, Form, Input, Row} from 'antd'
+import "antd/dist/antd.css"
 
-import {NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom"
 
 const CodeForm = (props) => {
-    const {getFieldDecorator, onSubmit} = props;
-    const {formErrors} = props;
+    const {getFieldDecorator, onSubmit} = props
+    const {formErrors} = props
 
-    const cancelLink = '/settings';
+    const cancelLink = '/settings'
 
     const getInitialValue = (propName, defaultValue='') => {
-        let value;
-        propName.split('.').forEach(e => value = value ? value[e] : props[e]);
+        let value
+        propName.split('.').forEach(e => value = value ? value[e] : props[e])
         return value || defaultValue
-    };
+    }
     return (
         <Form onSubmit={onSubmit}>
             <Row>
@@ -80,6 +80,6 @@ const CodeForm = (props) => {
             </Row>
         </Form>
     )
-};
+}
 
 export default CodeForm

@@ -8,6 +8,6 @@ const Footer = (props) => {
             <Layout.Footer>Domainify_v2 ©2019 Developed by Dy0mar</Layout.Footer>
         </div>
     )
-};
+}
 
 export default Footer

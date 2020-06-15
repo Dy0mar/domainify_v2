@@ -1,7 +1,7 @@
 import React from 'react'
-import "antd/dist/antd.css";
-import {Icon} from 'antd';
-import css from "./Box.module.css";
+import "antd/dist/antd.css"
+import {Icon} from 'antd'
+import css from "./Box.module.css"
 
 export const Box = ({children, boxTitleText, onClickMethod, icon}) => {
     return (
@@ -18,5 +18,5 @@ export const Box = ({children, boxTitleText, onClickMethod, icon}) => {
             </section>
         </section>
     )
-};
+}
 

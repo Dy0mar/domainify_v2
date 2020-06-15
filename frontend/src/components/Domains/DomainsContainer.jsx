@@ -1,37 +1,37 @@
 import React, {useEffect, useState} from 'react'
-import {Divider, Row, Col, Table, Popover, Button} from 'antd';
-import "antd/dist/antd.css";
-import {compose} from "redux";
-import {withAuthRedirect} from "../../hoc/withAuthRedirect";
-import {connect} from "react-redux";
-import {NavLink, withRouter} from "react-router-dom";
-import {getDomainList} from "../../redux/domain-reducer";
+import {Divider, Row, Col, Table, Popover, Button} from 'antd'
+import "antd/dist/antd.css"
+import {compose} from "redux"
+import {withAuthRedirect} from "../../hoc/withAuthRedirect"
+import {connect} from "react-redux"
+import {NavLink, withRouter} from "react-router-dom"
+import {getDomainList} from "../../redux/domain-reducer"
 import {
     getDomainIsLoadingS,
     getDomainListPageTotalS,
     getDomainListS, getUrlOr404S
-} from "../../redux/domains-selectors";
-import style from "./Domains.module.css";
-import {getManagerListS} from "../../redux/users-selectors";
+} from "../../redux/domains-selectors"
+import style from "./Domains.module.css"
+import {getManagerListS} from "../../redux/users-selectors"
 
 
 const DomainsContainer = (props) => {
-    const {domains, managers, total, isLoading} = props;
-    const {getDomainList } = props;
+    const {domains, managers, total, isLoading} = props
+    const {getDomainList } = props
 
     // load
     useEffect(() => {
-        getDomainList();
-    }, [getDomainList]);
+        getDomainList()
+    }, [getDomainList])
 
 
     const onApplyFilter = (pagination, filters, sorter, extra) => {
         getDomainList(pagination.current, filters)
-    };
+    }
 
-    const [config, setConfig] = useState({});
+    const [config, setConfig] = useState({})
     useEffect(() => {
-        const getColumn = (title, field) => ({title: title, dataIndex: field, key: field});
+        const getColumn = (title, field) => ({title: title, dataIndex: field, key: field})
 
         setConfig({
             bordered: true,
@@ -78,7 +78,7 @@ const DomainsContainer = (props) => {
             dataSource: isLoading ? [] : domains,
             rowKey: row => row.name
         })
-    }, [isLoading, domains, total, managers]);
+    }, [isLoading, domains, total, managers])
 
     return (
         <div>
@@ -90,17 +90,17 @@ const DomainsContainer = (props) => {
             </Row>
         </div>
     )
-};
+}
 
 const mapStateToProps = (state) => ({
     domains: getDomainListS(state),
     total: getDomainListPageTotalS(state),
     isLoading: getDomainIsLoadingS(state),
     managers: getManagerListS(state),
-});
+})
 
 export default compose(
     withAuthRedirect,
     withRouter,
     connect(mapStateToProps, {getDomainList})
-)(DomainsContainer);
+)(DomainsContainer)

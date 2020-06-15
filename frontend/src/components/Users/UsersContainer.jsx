@@ -1,36 +1,36 @@
 import React, {useEffect, useState} from 'react'
-import {Divider, Row, Col, Table, Typography, Tag} from 'antd';
-import "antd/dist/antd.css";
-import {compose} from "redux";
-import {withAuthRedirect} from "../../hoc/withAuthRedirect";
-import {connect} from "react-redux";
-import {withRouter} from "react-router-dom";
-import {getUserListPageTotalS, getUserListS} from "../../redux/users-selectors";
-import {getUserList} from "../../redux/user-reducer";
+import {Divider, Row, Col, Table, Typography, Tag} from 'antd'
+import "antd/dist/antd.css"
+import {compose} from "redux"
+import {withAuthRedirect} from "../../hoc/withAuthRedirect"
+import {connect} from "react-redux"
+import {withRouter} from "react-router-dom"
+import {getUserListPageTotalS, getUserListS} from "../../redux/users-selectors"
+import {getUserList} from "../../redux/user-reducer"
 import style from './Users.module.css'
 
-const {Text} = Typography;
+const {Text} = Typography
 
 const UsersContainer = (props) => {
-    const {users, total, getUserList} = props;
+    const {users, total, getUserList} = props
 
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(1)
     useEffect(() => {
         getUserList(page)
-    }, [page, getUserList]);
+    }, [page, getUserList])
 
     const changePage = (page) => {
-        setPage(page);
-    };
+        setPage(page)
+    }
 
-    const [loading, setLoading] = useState(!users.length);
+    const [loading, setLoading] = useState(!users.length)
     useEffect(() => {
         setLoading(!users.length)
-    }, [users.length]);
+    }, [users.length])
 
-    const [config, setConfig] = useState({});
+    const [config, setConfig] = useState({})
     useEffect(() => {
-        const getColumn = (title, field) => ({title: title, dataIndex: field, key: field});
+        const getColumn = (title, field) => ({title: title, dataIndex: field, key: field})
 
         setConfig({
             pagination : {
@@ -61,7 +61,7 @@ const UsersContainer = (props) => {
             dataSource: users,
             rowKey: u => u.pk
         })
-    }, [page, loading, users, total, props.user.username]);
+    }, [page, loading, users, total, props.user.username])
 
     return (
         <div>
@@ -73,16 +73,16 @@ const UsersContainer = (props) => {
             </Row>
         </div>
     )
-};
+}
 
 const mapStateToProps = (state) => ({
     user: state.user,
     users: getUserListS(state),
     total: getUserListPageTotalS(state)
-});
+})
 
 export default compose(
     withAuthRedirect,
     withRouter,
     connect(mapStateToProps, {getUserList})
-)(UsersContainer);
+)(UsersContainer)

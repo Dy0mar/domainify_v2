@@ -1,10 +1,10 @@
 import React from 'react'
-import "antd/dist/antd.css";
-import {Avatar, Button, Col, Row} from "antd";
+import "antd/dist/antd.css"
+import {Avatar, Button, Col, Row} from "antd"
 
 
 export const TaskItemsType = (props) => {
-    const {codes, handleClick} = props;
+    const {codes, handleClick} = props
     return (
         <Row>
             {codes.map((item, index) => {
@@ -16,11 +16,11 @@ export const TaskItemsType = (props) => {
             })}
         </Row>
     )
-};
+}
 
 
 const TaskBlock = (props) => {
-    const {item, handleClick} = props;
+    const {item, handleClick} = props
     return (
         <Row style={{textAlign: 'center', }}>
             <Button style={{backgroundColor: '#e6f7ff', color: 'dimgrey', height: 'auto'}} onClick={() => handleClick(item.pk)} >
@@ -30,4 +30,4 @@ const TaskBlock = (props) => {
             {item.name}
         </Row>
     )
-};
+}

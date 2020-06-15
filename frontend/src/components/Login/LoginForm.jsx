@@ -1,7 +1,7 @@
-import React from "react";
-import {Form, Icon, Input, Button, Divider, Alert} from 'antd';
+import React from "react"
+import {Form, Icon, Input, Button, Divider, Alert} from 'antd'
 import css from './Login.module.css'
-import {NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom"
 
 const LoginForm = ({onSubmit, getFieldDecorator, loginErrors}) => {
     return (
@@ -40,7 +40,7 @@ const LoginForm = ({onSubmit, getFieldDecorator, loginErrors}) => {
                 </Form.Item>
             </Form>
         </div>
-    );
-};
+    )
+}
 
 export default LoginForm

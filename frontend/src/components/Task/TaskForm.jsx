@@ -1,45 +1,45 @@
 import React from 'react'
-import "antd/dist/antd.css";
+import "antd/dist/antd.css"
 import {
     Button, Col, Form, Input, Row, Select, Checkbox, AutoComplete
-} from "antd";
-import css from "../Login/Login.module.css";
-import {createFormItem} from "../Common/FormItem/FormItem";
+} from "antd"
+import css from "../Login/Login.module.css"
+import {createFormItem} from "../Common/FormItem/FormItem"
 
-const { Option } = Select;
-const { TextArea } = Input;
+const { Option } = Select
+const { TextArea } = Input
 
 const TaskForm = (props) => {
 
-    const { onSubmit, getFieldDecorator, cancelLink, onSearch, onSelect } = props;
+    const { onSubmit, getFieldDecorator, cancelLink, onSearch, onSelect } = props
 
     const {
         codes, statuses, users, formErrors, dataSource, task, domainId,
         taskType, companyInfo,
-    } = props;
+    } = props
 
     const statusInitial = () => {
-        if (task && task.status) return task.status.pk;
+        if (task && task.status) return task.status.pk
 
-        let status = statuses.filter(item => (item.status === 'NEW'));
+        let status = statuses.filter(item => (item.status === 'NEW'))
         if (status.length)
             return status[0].pk
-    };
+    }
     const codeInitial = () => {
-        if (task && task.code) return task.code.pk;
+        if (task && task.code) return task.code.pk
         return taskType
-    };
+    }
 
     const executorsInitial = () => {
         if (task.executors){
-            return task.executors.map(item => (item.executor));
+            return task.executors.map(item => (item.executor))
         }
-    };
+    }
 
     // wrapper
     const formItem = (field, label, Component, initial='', rules=[]) => {
         return createFormItem(field, label, formErrors, getFieldDecorator, Component, task, initial, rules)
-    };
+    }
 
     return (
         <Form onSubmit={onSubmit}>
@@ -120,7 +120,7 @@ const TaskForm = (props) => {
             </Row>
         </Form>
     )
-};
+}
 
 
 

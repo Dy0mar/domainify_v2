@@ -1,26 +1,26 @@
 import React, {useEffect, useState} from 'react'
-import {Divider, Row, Col, Table, Button, Modal} from 'antd';
-import "antd/dist/antd.css";
-import {compose} from "redux";
-import {connect} from "react-redux";
-import {NavLink, withRouter} from "react-router-dom";
-import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import {Divider, Row, Col, Table, Button, Modal} from 'antd'
+import "antd/dist/antd.css"
+import {compose} from "redux"
+import {connect} from "react-redux"
+import {NavLink, withRouter} from "react-router-dom"
+import {withAuthRedirect} from "../../hoc/withAuthRedirect"
 import {
     getAbsoluteUrlOr404S,
     getCompanyListS
-} from "../../redux/company-selector";
-import {getIsLoadingS} from "../../redux/app-selector";
-import {deleteCompany, getCompanyList} from "../../redux/company-reducer";
+} from "../../redux/company-selector"
+import {getIsLoadingS} from "../../redux/app-selector"
+import {deleteCompany, getCompanyList} from "../../redux/company-reducer"
 
-const { confirm } = Modal;
+const { confirm } = Modal
 
 const CompaniesContainer = (props) => {
-    const { companies, isLoading, total, getCompanyList, deleteCompany} = props;
+    const { companies, isLoading, total, getCompanyList, deleteCompany} = props
 
-    const [config, setConfig] = useState({});
+    const [config, setConfig] = useState({})
     useEffect(() => {
         getCompanyList()
-    }, [getCompanyList]);
+    }, [getCompanyList])
 
 
     useEffect(() => {
@@ -35,9 +35,9 @@ const CompaniesContainer = (props) => {
                     deleteCompany(company.pk)
                 },
                 onCancel() {},
-            });
-        };
-        const getColumn = (title, field) => ({title: title, dataIndex: field, key: field});
+            })
+        }
+        const getColumn = (title, field) => ({title: title, dataIndex: field, key: field})
 
         setConfig({
             bordered: true,
@@ -70,7 +70,7 @@ const CompaniesContainer = (props) => {
                 },
             ],
         })
-    }, [companies, isLoading, total, deleteCompany]);
+    }, [companies, isLoading, total, deleteCompany])
 
     return (
         <div>
@@ -82,16 +82,16 @@ const CompaniesContainer = (props) => {
             </Row>
         </div>
     )
-};
+}
 
 const mapStateToProps = (state) => ({
     companies: getCompanyListS(state),
     isLoading: getIsLoadingS(state),
     total: state.companies.count,
-});
+})
 
 export default compose(
     withAuthRedirect,
     withRouter,
     connect(mapStateToProps, {getCompanyList, deleteCompany})
-)(CompaniesContainer);
+)(CompaniesContainer)
