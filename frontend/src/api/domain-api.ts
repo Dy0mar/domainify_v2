@@ -1,6 +1,14 @@
 import {instance, TResponseList} from "./api";
 import {TDomain} from "../types/g-types";
 
+export type TManager = {
+    pk: number
+    username: string
+}
+
+type TResponseManagerList = {
+    list: Array<TManager>
+}
 
 export const domainsAPI = {
     create(data: TDomain) {
@@ -34,7 +42,7 @@ export const domainsAPI = {
         return instance.get('domains/alexa-status-list/').then(r => r.data)
     },
     manager_list() {
-        return instance.get('domains/manager-list/').then(r => r.data)
+        return instance.get<TResponseManagerList>('domains/manager-list/').then(r => r.data)
     },
 }
 

@@ -1,10 +1,10 @@
 import {login} from "./auth-reducer"
 import {addSuccessMessage} from "./app-reducer"
 import {usersAPI} from "../api/users-api"
-import {authAPI} from "../api/auth-api";
-import {domainsAPI} from "../api/domain-api";
-import {TManager, TProfile, TSettings, TUser, TUserList} from "../types/g-types";
-import {TBaseThunk, TInferActions} from "./redux-store";
+import {authAPI} from "../api/auth-api"
+import {domainsAPI, TManager} from "../api/domain-api"
+import {TProfile, TSettings, TUser, TUserList} from "../types/g-types"
+import {TBaseThunk, TInferActions} from "./redux-store"
 
 const SET_CURRENT_USER = 'user/SET_CURRENT_USER'
 const SET_USER_INFO = 'user/SET_CURRENT_USER'
@@ -23,8 +23,8 @@ const initialState = {
     registerErrors: {},
     users: {
         count: 0,
-        next: 0,
-        previous: 0,
+        next: null as string | null,
+        previous: null as string | null,
         results: [] as Array<TUser>
     },
     managers: [] as Array<TManager>
@@ -38,8 +38,8 @@ const userReducer = (state=initialState, action: TActions): TInitialState => {
         case SET_CURRENT_USER:
         case SET_USER_INFO:
         // case REGISTER_ERROR_MESSAGES:
-        // case GET_USER_LIST:
-        // case GET_MANAGER_LIST:
+        case GET_MANAGER_LIST:
+        case GET_USER_LIST:
             return {
                 ...state,
                 ...action.payload,
@@ -66,7 +66,7 @@ export const actions = {
         payload: {pk, username, email, profile, settings}
     } as const),
 
-    userListAction: (users: Array<TUserList>) => ({
+    userListAction: (users: TUserList) => ({
         type: GET_USER_LIST,
         payload: {users}
     } as const),
@@ -76,7 +76,7 @@ export const actions = {
     //     users: users
     // } as const),
 
-    managersListAction: (managers: Array<TUser>) => ({
+    managersListAction: (managers: Array<TManager>) => ({
         type: GET_MANAGER_LIST,
         payload: {managers}
     } as const),

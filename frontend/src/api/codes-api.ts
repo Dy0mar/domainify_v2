@@ -6,7 +6,6 @@ export const codesAPI = {
         return instance.get<Array<TCode>>('codes/').then(r => r.data)
     },
     create(data: TCreateCode) {
-        debugger
         return instance.post('codes/', {...data}).then(r => r.data)
     },
     patch_field(pk: number, data: any) {

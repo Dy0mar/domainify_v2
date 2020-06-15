@@ -1,4 +1,3 @@
-import {createSelector} from "reselect"
 import {TAppState} from "./redux-store"
 
 export const getLastMessage = (state: TAppState) => {

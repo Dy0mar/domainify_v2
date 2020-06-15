@@ -19,7 +19,7 @@ export const usersAPI = {
             .then(r => r.data)
     },
     get_user_list(page: number) {
-        return instance.get<Array<TUserList>>(`users/?page=${page}`)
+        return instance.get<TUserList>(`users/?page=${page}`)
             .then(r => r.data)
     },
     check_notification_method(m: string) {
