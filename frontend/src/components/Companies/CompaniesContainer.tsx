@@ -11,10 +11,12 @@ import {
 } from "../../redux/company-selector"
 import {getIsLoadingS} from "../../redux/app-selector"
 import {deleteCompany, getCompanyList} from "../../redux/company-reducer"
+import {TAppState} from "../../redux/redux-store"
+import {TCompany} from "../../types/g-types"
 
 const { confirm } = Modal
 
-const CompaniesContainer = (props) => {
+const CompaniesContainer: React.FC<TMapProps & TDispatchProps> = (props) => {
     const { companies, isLoading, total, getCompanyList, deleteCompany} = props
 
     const [config, setConfig] = useState({})
@@ -24,7 +26,7 @@ const CompaniesContainer = (props) => {
 
 
     useEffect(() => {
-        const deleteConfirm = (company) => {
+        const deleteConfirm = (company: TCompany) => {
             confirm({
                 title: `Are you sure delete ${company.name}?`,
                 content: 'One does not simply, need confirm',
@@ -37,7 +39,7 @@ const CompaniesContainer = (props) => {
                 onCancel() {},
             })
         }
-        const getColumn = (title, field) => ({title: title, dataIndex: field, key: field})
+        const getColumn = (title: string, field: string) => ({title: title, dataIndex: field, key: field})
 
         setConfig({
             bordered: true,
@@ -47,19 +49,18 @@ const CompaniesContainer = (props) => {
                 position: total >= 10 ? 'bottom' : 'none'
             },
             dataSource: isLoading ? [] : companies,
-            rowKey: item => item.pk,
+            rowKey: (item: TCompany) => item.pk,
             loading: isLoading,
 
             columns: [
-
                 {
                     ...getColumn('Company name', 'name'),
-                    render: (name, row) => <NavLink to={getAbsoluteUrlOr404S(row.url)} >{name}</NavLink>
+                    render: (name: string, row: TCompany) => <NavLink to={getAbsoluteUrlOr404S(row.url)} >{name}</NavLink>
                 },
                 {...getColumn('Address', 'address'),},
                 {
                     title: 'Action',
-                    render: (row) => <span style={{textAlign: 'center'}}>
+                    render: (row: TCompany) => <span style={{textAlign: 'center'}}>
                         <NavLink to={getAbsoluteUrlOr404S(row.url) + 'edit/'} >
                             <Button type="primary" icon={'edit'}> Edit </Button>
                         </NavLink>
@@ -84,14 +85,25 @@ const CompaniesContainer = (props) => {
     )
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: TAppState): TMapProps => ({
     companies: getCompanyListS(state),
     isLoading: getIsLoadingS(state),
     total: state.companies.count,
 })
 
+type TMapProps = {
+    companies: Array<TCompany>
+    isLoading: boolean
+    total: number
+}
+
+export type TDispatchProps = {
+    deleteCompany: (pk: number) => void
+    getCompanyList: () => void
+}
+
 export default compose(
     withAuthRedirect,
     withRouter,
-    connect(mapStateToProps, {getCompanyList, deleteCompany})
+    connect<TMapProps, TDispatchProps, {}, TAppState>(mapStateToProps, {getCompanyList, deleteCompany})
 )(CompaniesContainer)
