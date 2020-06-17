@@ -2,24 +2,27 @@ import React, {useState, useEffect} from 'react'
 import {Layout, Menu, Button} from 'antd'
 import css from './Header.module.css'
 import {NavLink} from "react-router-dom"
+import {RouteComponentProps} from "react-router"
+import {TDispatchProps, TMapStateProps} from "./HeaderContainer";
 const {Item} = Menu
 
 const { SubMenu } = Menu
 
-const Header = (props) => {
+const Header: React.FC<TMapStateProps & TDispatchProps & RouteComponentProps> = (props) => {
     const disabled = !props.isAuth
-    const [currentItem, setCurrentItem] = useState('')
-    const setMenu = (path) => {
-        switch (path) {
-            case '/domains': return 'domain_list'
-            case '/profile': return 'profile'
-            case '/tasks/create': return 'task_create'
-            case '/tasks': return 'task_list'
-            case '/users': return 'user_list'
-            case '/companies': return 'company_list'
-            case '/settings': return 'settings'
+    const [currentItem, setCurrentItem] = useState<Array<string> | undefined>(['',])
 
-            default: return ''
+    const setMenu = (path: string) => {
+        switch (path) {
+            case '/domains': return ['domain_list', ]
+            case '/profile': return ['profile', ]
+            case '/tasks/create': return ['task_create', ]
+            case '/tasks': return ['task_list', ]
+            case '/users': return ['user_list', ]
+            case '/companies': return ['company_list', ]
+            case '/settings': return ['settings', ]
+
+            default: return ['', ]
         }
     }
     useEffect(() => {
