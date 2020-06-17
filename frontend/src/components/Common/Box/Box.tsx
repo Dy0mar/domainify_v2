@@ -3,7 +3,14 @@ import "antd/dist/antd.css"
 import {Icon} from 'antd'
 import css from "./Box.module.css"
 
-export const Box = ({children, boxTitleText, onClickMethod, icon}) => {
+type TBoxProps = {
+    boxTitleText: string
+    onClickMethod: () => void
+    icon: string
+}
+
+export const Box: React.FC<TBoxProps> = (props) => {
+    const {children, boxTitleText, onClickMethod, icon} = props
     return (
         <section className={css.box}>
             <section className={css.boxContainer}>
