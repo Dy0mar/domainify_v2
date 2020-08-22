@@ -19,7 +19,7 @@ const DomainsContainer = (props) => {
     const {domains, managers, total, isLoading} = props
     const {getDomainList} = props
 
-    const [filteredTotal] = useState(total)
+    const [filteredTotal, setFilteredTotal] = useState(total)
 
     const [searchText, setSearchText] = useState('')
     const [searchedColumn, setSearchedColumn] = useState('')
@@ -30,23 +30,29 @@ const DomainsContainer = (props) => {
         getDomainList()
     }, [getDomainList])
 
+    useEffect(() => {
+        setFilteredTotal(total)
+    }, [total])
+
 
     const onApplyFilter = (pagination, filters, sorter, extra) => {
+        setFilteredTotal(extra.currentDataSource.length)
         getDomainList(pagination.current, filters)
-    }
-
-    const handleSearch = (selectedKeys, confirm, dataIndex) => {
-        confirm()
-        setSearchText(selectedKeys[0])
-        setSearchedColumn(dataIndex)
-    }
-    const handleReset = clearFilters => {
-        clearFilters()
-        setSearchText('')
     }
 
     const [config, setConfig] = useState({})
     useEffect(() => {
+        const handleSearch = (selectedKeys, confirm, dataIndex) => {
+            confirm()
+            setSearchText(selectedKeys[0])
+            setSearchedColumn(dataIndex)
+        }
+
+        const handleReset = clearFilters => {
+            clearFilters()
+            setFilteredTotal(total)
+            setSearchText('')
+        }
         const getColumn = (title, field) => ({title: title, dataIndex: field, key: field})
         const getColumnSearchProps = dataIndex => ({
 
@@ -80,15 +86,14 @@ const DomainsContainer = (props) => {
             ),
             onFilter: (value, record) => {
                 if (searchedColumn === 'telephones'){
-                    let a = record[dataIndex].map(i => i.telephone
+                    const a = record[dataIndex].map(i => i.telephone
                       .toString()
                       .toLowerCase()
                     ).join(', ')
-                      console.log(a)
 
-                      return a.includes(value.toLowerCase())
+                    return a.includes(value.toLowerCase())
                 } else
-                    record[dataIndex]
+                    return record[dataIndex]
                       .toString()
                       .toLowerCase()
                       .includes(value.toLowerCase())
@@ -160,7 +165,7 @@ const DomainsContainer = (props) => {
             dataSource: isLoading ? [] : domains,
             rowKey: row => row.name
         })
-    }, [isLoading, domains, filteredTotal, managers, searchedColumn, searchText])
+    }, [isLoading, domains, filteredTotal, managers, searchedColumn, searchText, total])
 
     return (
       <div>
