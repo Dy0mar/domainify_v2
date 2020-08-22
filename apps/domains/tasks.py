@@ -40,7 +40,7 @@ def auto_update_whois():
 @shared_task
 def auto_close_domain():
     qs = Domain.objects.filter(
-        date_expire__lt=datetime.datetime.now(),
+        expire_date__lt=datetime.datetime.now(),
     ).exclude(status=Domain.CLOSED)
 
     for domain in qs:
