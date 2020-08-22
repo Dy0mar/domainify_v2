@@ -16,10 +16,20 @@ class DomainViewSet(BaseViewSetMixin, ModelViewSet):
     def filter_queryset(self, queryset):
         for backend in list(self.filter_backends):
             queryset = backend().filter_queryset(self.request, queryset, self)
+        params = self.request.query_params
 
-        managers = self.request.query_params.getlist('manager')
+        managers = params.getlist('manager')
         if managers:
             queryset = queryset.filter(manager__pk__in=managers)
+
+        term = params.get('telephones')
+        if term and term.isdigit():
+            queryset = queryset.filter(telephones__telephone__contains=term)
+
+        term = params.get('name')
+        if term:
+            queryset = queryset.filter(name__icontains=term)
+
         return queryset
 
     def list(self, request, *args, **kwargs):
