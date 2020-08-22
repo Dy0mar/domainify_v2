@@ -19,8 +19,6 @@ const DomainsContainer = (props) => {
     const {domains, managers, total, isLoading} = props
     const {getDomainList} = props
 
-    const [filteredTotal, setFilteredTotal] = useState(total)
-
     const [searchText, setSearchText] = useState('')
     const [searchedColumn, setSearchedColumn] = useState('')
 
@@ -30,13 +28,7 @@ const DomainsContainer = (props) => {
         getDomainList()
     }, [getDomainList])
 
-    useEffect(() => {
-        setFilteredTotal(total)
-    }, [total])
-
-
     const onApplyFilter = (pagination, filters, sorter, extra) => {
-        setFilteredTotal(extra.currentDataSource.length)
         getDomainList(pagination.current, filters)
     }
 
@@ -50,7 +42,6 @@ const DomainsContainer = (props) => {
 
         const handleReset = clearFilters => {
             clearFilters()
-            setFilteredTotal(total)
             setSearchText('')
         }
         const getColumn = (title, field) => ({title: title, dataIndex: field, key: field})
@@ -103,9 +94,9 @@ const DomainsContainer = (props) => {
               searchedColumn === dataIndex ? (
                 <Highlighter
                   highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-                  searchWords={[searchText]}
+                  searchWords={[searchText + '123']}
                   autoEscape
-                  textToHighlight={text.toString()}
+                  textToHighlight={text.toString() + '123'}
                 />
               ) : (
                 text
@@ -115,9 +106,9 @@ const DomainsContainer = (props) => {
         setConfig({
             bordered: true,
             pagination : {
-                total: filteredTotal,
+                total: total,
                 pageSize: 10,
-                position: filteredTotal >= 10 ? 'bottom' : 'none'
+                position: total >= 10 ? 'bottom' : 'none'
             },
             loading: isLoading,
             rowClassName: record => style['highlight'+record.status],
@@ -165,7 +156,7 @@ const DomainsContainer = (props) => {
             dataSource: isLoading ? [] : domains,
             rowKey: row => row.name
         })
-    }, [isLoading, domains, filteredTotal, managers, searchedColumn, searchText, total])
+    }, [isLoading, domains, managers, searchedColumn, searchText, total])
 
     return (
       <div>
