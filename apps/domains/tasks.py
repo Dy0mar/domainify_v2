@@ -37,14 +37,24 @@ def auto_update_whois():
         time.sleep(2)
 
 
+def update(qs, status):
+    for domain in qs:
+        domain.status = status
+        domain.save()
+
+
 @shared_task
-def auto_close_domain():
+def update_status_domain():
     qs = Domain.objects.filter(
         expire_date__lt=datetime.datetime.now(),
     ).exclude(status=Domain.CLOSED)
 
-    for domain in qs:
-        domain.status = Domain.CLOSED
-        domain.save()
-        time.sleep(1)
+    update(qs, Domain.CLOSED)
+
+    qs = Domain.objects.filter(
+        expire_date__gt=datetime.datetime.now(),
+        status=Domain.CLOSED
+    )
+    update(qs, Domain.ACTIVE)
+
 

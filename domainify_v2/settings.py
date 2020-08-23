@@ -205,13 +205,14 @@ CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
 CELERY_TIMEZONE = TIME_ZONE
 
 
+# Monday
 CELERYBEAT_SCHEDULE = {
     'auto_update_whois': {
         'task': 'domains.tasks.auto_update_whois',
         'schedule': crontab(hour=12, minute=0, day_of_week=1),
     },
-    'auto_close_domain': {
-        'task': 'domains.tasks.auto_close_domain',
+    'update_status_domain': {
+        'task': 'domains.tasks.update_status_domain',
         'schedule': crontab(hour=8, minute=0, day_of_week=1),
     },
 }
