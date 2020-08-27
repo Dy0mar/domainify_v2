@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 import DomainForm from "./DomainForm";
 import {domainCreate, setRedirectTo} from "../../redux/domain-reducer";
 import {additionalDomainProps} from "../../hoc/additionalDomainProps";
-import {getCurrentUserS} from "../../redux/users-selectors";
+import {getCurrentUserS} from "../../selectors/users-selectors";
 import {redirectHoc} from "../../hoc/redirectTo";
 import {submitCreateUpdateForm} from "../../utils/utils";
 

@@ -20,7 +20,7 @@ import {
     getDomainListS
 } from "../../selectors/domains-selectors"
 import {getUserFullList} from "../../redux/user-reducer"
-import {getUserListS} from "../../redux/users-selectors"
+import {getUserListS} from "../../selectors/users-selectors"
 import {autocompleteDomainList} from "../../redux/domain-reducer"
 import {setRedirectTo} from "../../redux/app-reducer"
 import {getIsLoadingS} from "../../selectors/app-selector"

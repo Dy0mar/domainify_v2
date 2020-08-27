@@ -5,7 +5,7 @@ import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import {getUserListPageTotalS, getUserListS} from "../../redux/users-selectors";
+import {getUserListPageTotalS, getUserListS} from "../../selectors/users-selectors";
 import {getUserList} from "../../redux/user-reducer";
 import style from './Users.module.css'
 

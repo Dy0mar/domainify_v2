@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {getManagerListS} from "../redux/users-selectors";
+import {getManagerListS} from "../selectors/users-selectors";
 import {
     getAlexaStatusListS,
     getDomainStatusListS

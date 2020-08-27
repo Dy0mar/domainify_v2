@@ -12,7 +12,7 @@ import {
     getDomainListS, getUrlOr404S
 } from "../../selectors/domains-selectors"
 import style from "./Domains.module.css"
-import {getManagerListS} from "../../redux/users-selectors"
+import {getManagerListS} from "../../selectors/users-selectors"
 import Highlighter from 'react-highlight-words'
 
 const DomainsContainer = (props) => {
