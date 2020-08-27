@@ -5,7 +5,7 @@ import {
     getAlexaStatusListS,
     getDomainStatusListS
 } from "../redux/domains-selectors";
-import {getCompanyListS} from "../redux/company-selector";
+import {getCompanyListS} from "../selectors/company-selector";
 
 const mapStateToProps = (state) => ({
     formErrors: state.domains.formErrors,

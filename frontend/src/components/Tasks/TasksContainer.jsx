@@ -12,8 +12,8 @@ import {
     getTasksListPageTotalS
 } from "../../redux/task-selector"
 import style from "./Tasks.module.css"
-import {getAbsoluteUrlOr404S} from "../../redux/company-selector"
 import {getIsLoadingS} from "../../selectors/app-selector"
+import {getAbsoluteUrlOr404S} from "../../selectors/company-selector";
 
 
 const TasksContainer = (props) => {

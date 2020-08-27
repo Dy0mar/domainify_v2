@@ -6,9 +6,9 @@ import {connect} from "react-redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {withRouter} from "react-router-dom";
 import CompanyForm from "./CompanyForm";
-import {getCompanyByIdS} from "../../redux/company-selector";
 import {submitCreateUpdateForm} from "../../utils/utils";
 import {updateCompany} from "../../redux/company-reducer";
+import {getCompanyByIdS} from "../../selectors/company-selector";
 
 
 const CompanyEditContainer = (props) => {
