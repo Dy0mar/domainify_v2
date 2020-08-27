@@ -1,4 +1,4 @@
-import {usersAPI} from "../api/api";
+import {usersAPI, authAPI} from "../api/api";
 import {login} from "./auth-reducer";
 import {addSuccessMessage, errorHandler} from "./app-reducer";
 
@@ -146,7 +146,7 @@ export const register = (username, email, password, jabber_nick) => async (dispa
 };
 
 export const setCurrentUser = () => async (dispatch) => {
-    const data = await usersAPI.me()
+    const data = await authAPI.me()
     const {pk, username, email, profile, settings} = data
     dispatch(setCurrentUserAction(pk, username, email, profile, settings))
 }

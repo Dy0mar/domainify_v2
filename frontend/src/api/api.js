@@ -27,10 +27,6 @@ export const usersAPI = {
     register(username, email, password, profile) {
         return instance.post('users/', {username, email, password, profile})
     },
-    // todo: move to auth
-    me() {
-        return instance.get('auth/user/').then(r => r.data)
-    },
     get_user_info(pk){
         return instance.get(`users/${pk}/`)
     },
@@ -88,6 +84,9 @@ export const domainsAPI = {
 export const authAPI = {
     verify() {
         return instance.post('api-token-verify/', {'token': localStorage.getItem("token")})
+    },
+    me() {
+        return instance.get('auth/user/').then(r => r.data)
     },
     login(username, password) {
         return instance.post('auth/login/', {username, password})
