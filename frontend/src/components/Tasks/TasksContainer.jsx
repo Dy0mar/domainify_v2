@@ -10,7 +10,7 @@ import {
     getStatusListS,
     getTaskListS,
     getTasksListPageTotalS
-} from "../../redux/task-selector"
+} from "../../selectors/task-selector"
 import style from "./Tasks.module.css"
 import {getIsLoadingS} from "../../selectors/app-selector"
 import {getAbsoluteUrlOr404S} from "../../selectors/company-selector";

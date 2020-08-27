@@ -16,7 +16,7 @@ import {
     getCodeListS,
     getStatusListS,
     getTaskListS
-} from "../../redux/task-selector";
+} from "../../selectors/task-selector";
 import {
     CodeBoxItem, CodeDefaultBox,
     StatusBoxItem,

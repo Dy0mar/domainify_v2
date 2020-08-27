@@ -13,7 +13,7 @@ import {
     getTaskDetail, updateTask
 } from "../../redux/task-reducer"
 import {TaskItemsType} from "./TaskComponents"
-import {getCodeListS, getStatusListS} from "../../redux/task-selector"
+import {getCodeListS, getStatusListS} from "../../selectors/task-selector"
 import TaskForm from "./TaskForm"
 import {
     getDomainDataSourceS,
