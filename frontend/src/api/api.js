@@ -1,4 +1,4 @@
-import * as axios from "axios";
+import * as axios from "axios"
 import {url} from './privacy'
 
 
@@ -8,25 +8,26 @@ const instance = axios.create({
         'Accept': 'application/json, text/plain, */*',
         'Content-Type': 'application/json'
     },
-});
+})
 
 instance.interceptors.request.use(
     function (config) {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("token")
         if (token)
-            config.headers.Authorization = `Bearer ${token}`;
+            config.headers.Authorization = `Bearer ${token}`
         return config;
     },
     function (error) {
         return Promise.reject (error);
     }
-);
+)
 
 
 export const usersAPI = {
     register(username, email, password, profile) {
         return instance.post('users/', {username, email, password, profile})
     },
+    // todo: move to auth
     me(){
         return instance.get('auth/user/')
     },
@@ -49,7 +50,7 @@ export const usersAPI = {
         return instance.get('users/check-notification-method/?method='+m)
     }
 
-};
+}
 
 export const domainsAPI = {
     create(data){
@@ -81,7 +82,7 @@ export const domainsAPI = {
     alexa_status_list(){
         return instance.get('domains/alexa_status_list/')
     },
-};
+}
 
 
 export const authAPI = {
@@ -94,7 +95,7 @@ export const authAPI = {
     logout() {
         return instance.post('auth/logout/')
     },
-};
+}
 
 export const companyAPI = {
     company_list(){
@@ -109,7 +110,7 @@ export const companyAPI = {
     delete(pk){
         return instance.delete(`companies/${pk}/`)
     },
-};
+}
 
 export const taskAPI = {
     task_list(page, filters=[]){
@@ -132,7 +133,7 @@ export const taskAPI = {
     delete(pk){
         return instance.delete(`tasks/${pk}/`)
     },
-};
+}
 
 export const statusAPI = {
     status_list(){
@@ -150,7 +151,7 @@ export const statusAPI = {
     delete(pk){
         return instance.delete(`statuses/${pk}/`)
     },
-};
+}
 
 export const codesAPI = {
     codes_list(){
@@ -168,7 +169,7 @@ export const codesAPI = {
     delete(pk){
         return instance.delete(`codes/${pk}/`)
     },
-};
+}
 
 
 

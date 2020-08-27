@@ -156,6 +156,11 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ],
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+}
+
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'users.serializers.UserSerializer',
 }
 
 CORS_ORIGIN_WHITELIST = (
@@ -234,4 +239,3 @@ try:
     from .settings_local import *  # noqa
 except ImportError:
     pass
-
