@@ -1,5 +1,5 @@
 import {verifyToken} from "./auth-reducer";
-import {getManagerList} from "./user-reducer";
+import {getManagerList, setCurrentUser} from "./user-reducer";
 import {newMessage} from "./S/g-selector";
 import {
     getAlexaStatusList,
@@ -139,19 +139,22 @@ export const addErrorMessage = (msg: string): TThunkVoid => (dispatch, getState)
     dispatch(addMessageAction(message))
 };
 
-export const initializeApp = (): TThunkVoid => (dispatch) => {
-    const token = localStorage.token;
+export const initializeApp = () => async (dispatch: any) => {
+    const token = localStorage.token
+    let promises = [Promise.resolve()]
     if (token) {
-        dispatch(verifyToken());
-        const setManagers = dispatch(getManagerList());
-        const setDomainStatuses = dispatch(getDomainStatusList());
-        const setAlexaStatuses = dispatch(getAlexaStatusList());
-        const setCompanies = dispatch(getCompanyList());
-        Promise.all([
-            setManagers, setDomainStatuses, setAlexaStatuses, setCompanies
-        ]).finally( () => dispatch(initializedSuccess()))
+        promises = [
+            dispatch(verifyToken()),
+            dispatch(setCurrentUser()),
+            dispatch(getManagerList()),
+            dispatch(getDomainStatusList()),
+            dispatch(getAlexaStatusList()),
+            dispatch(getCompanyList()),
+        ]
     }
-};
+    // todo: add catch
+    Promise.all(promises).finally( () => dispatch(initializedSuccess(true)))
+}
 
 export const errorHandler = (e: any, dispatch: any) => {
     const pageError = '/503';

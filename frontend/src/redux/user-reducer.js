@@ -57,9 +57,9 @@ const userReducer = (state=initialState, action) => {
 };
 
 // ACTIONS
-export const setCurrentUserAction = (pk, username, email) => ({
+export const setCurrentUserAction = (pk, username, email, profile, settings) => ({
     type: SET_CURRENT_USER,
-    payload: {pk, username, email}
+    payload: {pk, username, email, profile, settings}
 });
 
 export const setUserInfoAction = (profile, settings) => ({
@@ -146,15 +146,10 @@ export const register = (username, email, password, jabber_nick) => async (dispa
 };
 
 export const setCurrentUser = () => async (dispatch) => {
-
-    const response = await usersAPI.me();
-
-    if (response.status === 200){
-        const {pk, username, email} = response.data;
-        dispatch(setCurrentUserAction(pk, username, email));
-        dispatch(setUserInfo(pk));
-    }
-};
+    const data = await usersAPI.me()
+    const {pk, username, email, profile, settings} = data
+    dispatch(setCurrentUserAction(pk, username, email, profile, settings))
+}
 
 export const setUserInfo = (pk) => async (dispatch) => {
     const response = await usersAPI.get_user_info(pk);
