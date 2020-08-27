@@ -4,7 +4,7 @@ import {getManagerListS} from "../redux/users-selectors";
 import {
     getAlexaStatusListS,
     getDomainStatusListS
-} from "../redux/domains-selectors";
+} from "../selectors/domains-selectors";
 import {getCompanyListS} from "../selectors/company-selector";
 
 const mapStateToProps = (state) => ({

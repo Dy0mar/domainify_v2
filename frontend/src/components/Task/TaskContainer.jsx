@@ -18,7 +18,7 @@ import TaskForm from "./TaskForm"
 import {
     getDomainDataSourceS,
     getDomainListS
-} from "../../redux/domains-selectors"
+} from "../../selectors/domains-selectors"
 import {getUserFullList} from "../../redux/user-reducer"
 import {getUserListS} from "../../redux/users-selectors"
 import {autocompleteDomainList} from "../../redux/domain-reducer"

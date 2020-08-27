@@ -10,7 +10,7 @@ import {
     getDomainIsLoadingS,
     getDomainListPageTotalS,
     getDomainListS, getUrlOr404S
-} from "../../redux/domains-selectors"
+} from "../../selectors/domains-selectors"
 import style from "./Domains.module.css"
 import {getManagerListS} from "../../redux/users-selectors"
 import Highlighter from 'react-highlight-words'
