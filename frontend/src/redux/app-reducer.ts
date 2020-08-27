@@ -1,6 +1,6 @@
 import {verifyToken} from "./auth-reducer";
 import {getManagerList, setCurrentUser} from "./user-reducer";
-import {newMessage} from "./S/g-selector";
+import {newMessage} from "../selectors/g-selector";
 import {
     getAlexaStatusList,
     getDomainStatusList

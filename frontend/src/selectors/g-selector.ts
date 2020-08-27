@@ -1,6 +1,6 @@
 import {createSelector} from "reselect";
-import {TAppState} from "../redux-store";
-import {TMessage, TMessageTypes} from "../../types/g-types";
+import {TAppState} from "../redux/redux-store";
+import {TMessage, TMessageTypes} from "../types/g-types";
 
 
 export const getLastMessage = (state: TAppState) => {
