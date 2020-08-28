@@ -10,7 +10,7 @@ export const getLastMessage = (state: TAppState) => {
 export const getLastMessageID = createSelector(
     getLastMessage,
     (message) => message ? message.id : 1
-    )
+)
 
 export const newMessage = (state: TAppState, type: TMessageTypes, msg: string): TMessage => {
     return {
