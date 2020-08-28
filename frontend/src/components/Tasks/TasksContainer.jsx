@@ -12,8 +12,7 @@ import {
     getTasksListPageTotalS
 } from "../../selectors/task-selector"
 import style from "./Tasks.module.css"
-import {getIsLoadingS} from "../../selectors/app-selector"
-import {getAbsoluteUrlOr404S} from "../../selectors/company-selector"
+import {getIsLoadingS, getUrlOr404S} from "../../selectors/app-selector"
 
 
 const TasksContainer = (props) => {
@@ -47,7 +46,7 @@ const TasksContainer = (props) => {
             columns: [
                 {
                     ...getColumn('Title', 'title'),
-                    render: (title, row) => <NavLink to={getAbsoluteUrlOr404S(row.url)} >{title}</NavLink>
+                    render: (title, row) => <NavLink to={getUrlOr404S(row.url)} >{title}</NavLink>
                 },
                 {...getColumn('Domain', 'domain.name')},
                 {

@@ -8,12 +8,12 @@ import {NavLink, withRouter} from "react-router-dom"
 import {getDomainList} from "../../redux/domain-reducer"
 import {
     getDomainListPageTotalS,
-    getDomainListS, getUrlOr404S
+    getDomainListS
 } from "../../selectors/domains-selectors"
 import style from "./Domains.module.css"
 import {getManagerListS} from "../../selectors/users-selectors"
 import Highlighter from 'react-highlight-words'
-import {getIsLoadingS} from "../../selectors/app-selector"
+import {getIsLoadingS, getUrlOr404S} from "../../selectors/app-selector"
 
 const DomainsContainer = (props) => {
     const {domains, managers, total, isLoading} = props

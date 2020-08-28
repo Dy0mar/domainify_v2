@@ -5,11 +5,8 @@ import {compose} from "redux";
 import {connect} from "react-redux";
 import {NavLink, withRouter} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
-import {
-    getAbsoluteUrlOr404S,
-    getCompanyListS
-} from "../../selectors/company-selector";
-import {getIsLoadingS} from "../../selectors/app-selector";
+import {getCompanyListS} from "../../selectors/company-selector";
+import {getIsLoadingS, getUrlOr404S} from "../../selectors/app-selector";
 import {deleteCompany, getCompanyList} from "../../redux/company-reducer";
 
 const { confirm } = Modal;
@@ -54,13 +51,13 @@ const CompaniesContainer = (props) => {
 
                 {
                     ...getColumn('Company name', 'name'),
-                    render: (name, row) => <NavLink to={getAbsoluteUrlOr404S(row.url)} >{name}</NavLink>
+                    render: (name, row) => <NavLink to={getUrlOr404S(row.url)} >{name}</NavLink>
                 },
                 {...getColumn('Address', 'address'),},
                 {
                     title: 'Action',
                     render: (row) => <span style={{textAlign: 'center'}}>
-                        <NavLink to={getAbsoluteUrlOr404S(row.url) + 'edit/'} >
+                        <NavLink to={getUrlOr404S(row.url) + 'edit/'} >
                             <Button type="primary" icon={'edit'}> Edit </Button>
                         </NavLink>
                         <Button type="danger" icon={'delete'} style={{marginLeft: 10}} onClick={() => deleteConfirm(row)}>
