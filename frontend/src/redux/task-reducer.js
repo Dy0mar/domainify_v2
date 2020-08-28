@@ -1,10 +1,6 @@
 import {taskAPI, statusAPI, codesAPI} from "../api/api";
-import {
-    addSuccessMessage,
-    errorHandler, redirectToAction,
-    setLoadingAction
-} from "./app-reducer";
-
+import {addSuccessMessage, errorHandler} from "./app-reducer";
+import {actions as appActions} from "./app-reducer";
 const SET_TASK_LIST = 'task/SET_TASK_LIST';
 const SET_CODE_LIST = 'task/SET_CODES_LIST';
 const SET_STATUS_LIST = 'task/SET_STATUS_LIST';
@@ -91,21 +87,14 @@ export const setTaskDetailAction = (task) => ({
 
 // THUNKS taskAPI
 export const getTaskList = (page=1, filters = {}) => async (dispatch) => {
-    dispatch(setLoadingAction(true));
-    try{
-        const response = await taskAPI.task_list(page, [filters]);
-        dispatch(taskListAction(response.data));
-    } catch (e) {
-        errorHandler(e, dispatch);
-    } finally {
-        dispatch(setLoadingAction(false));
-    }
+    const response = await taskAPI.task_list(page, [filters]);
+    dispatch(taskListAction(response.data));
 };
 
 export const createTask = (data) => async (dispatch) => {
     await taskAPI.create(data);
     dispatch(addSuccessMessage('Task has been created'));
-    dispatch(redirectToAction('/tasks'));
+    dispatch(appActions.redirectToAction('/tasks'));
 };
 
 export const getTaskDetail = (pk) => async (dispatch) => {
@@ -131,7 +120,7 @@ export const getCodeList = () => async (dispatch) => {
 export const createCode = (data) => async (dispatch) => {
     await codesAPI.create(data);
     dispatch(addSuccessMessage('Code has been created'));
-    dispatch(redirectToAction('/settings'));
+    dispatch(appActions.redirectToAction('/settings'));
 };
 
 export const getCodeDetail = (pk) => async (dispatch) => {
@@ -173,7 +162,7 @@ export const getStatusList = () => async (dispatch) => {
 export const createStatus = (data) => async (dispatch) => {
     await statusAPI.create(data);
     dispatch(addSuccessMessage('Status has been created'));
-    dispatch(redirectToAction('/settings'));
+    dispatch(appActions.redirectToAction('/settings'));
 };
 
 export const getStatusDetail = (pk) => async (dispatch) => {
@@ -209,11 +198,9 @@ export const setDefaultStatuses = () => async (dispatch) => {
 // wrapper
 export const wrappedDetail = async (api, pk, action, dispatch) => {
     try{
-        dispatch(setLoadingAction(true));
         const response = await api.detail(pk);
         dispatch(action(response.data));
         dispatch(setFormErrorsAction({}));
-        dispatch(setLoadingAction(false))
     } catch (e) {
         dispatch(setFormErrorsAction(e.response.data));
         errorHandler(e, dispatch)
@@ -221,10 +208,10 @@ export const wrappedDetail = async (api, pk, action, dispatch) => {
 };
 
 const wrappedLoading = async (apiFunc, action, dispatch) => {
-    dispatch(setLoadingAction(true));
+    dispatch(appActions.setAppLoading(true));
     wrappedException(apiFunc, action, dispatch).then(
-        () => dispatch(setLoadingAction(false)),
-        () => dispatch(setLoadingAction(false))
+        () => dispatch(appActions.setAppLoading(false)),
+        () => dispatch(appActions.setAppLoading(false))
     )
 };
 
@@ -241,7 +228,7 @@ export const wrappedUpdate = async (api, data, msg,redirect, dispatch) => {
     try{
         await api.patch_field(data.pk, {...data});
         dispatch(addSuccessMessage(msg));
-        dispatch(redirectToAction(redirect));
+        dispatch(appActions.redirectToAction(redirect));
         dispatch(setFormErrorsAction({}))
     } catch (e) {
         dispatch(setFormErrorsAction(e.response.data));

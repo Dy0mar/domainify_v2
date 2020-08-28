@@ -1,11 +1,6 @@
 import {companyAPI} from "../api/api";
-import {
-    addSuccessMessage,
-    errorHandler,
-    redirectToAction,
-    setLoadingAction
-} from "./app-reducer";
-
+import {addSuccessMessage, errorHandler} from "./app-reducer";
+import {actions as appActions} from './app-reducer'
 const SET_COMPANY_LIST = 'company/SET_COMPANY_LIST';
 const SET_FORM_ERROR_MESSAGES = 'company/SET_FORM_ERROR_MESSAGES';
 
@@ -51,15 +46,8 @@ export const setFormErrorsAction = (formErrors) => ({
 
 // THUNKS
 export const getCompanyList = () => async (dispatch) => {
-    dispatch(setLoadingAction(true));
-    try{
-        const response = await companyAPI.company_list();
-        dispatch(companyListAction(response.data));
-    } catch (e) {
-        errorHandler(e, dispatch);
-    } finally {
-        dispatch(setLoadingAction(false));
-    }
+    const response = await companyAPI.company_list();
+    dispatch(companyListAction(response.data));
 };
 
 export const createCompany = (data) => async (dispatch) => {
@@ -67,15 +55,13 @@ export const createCompany = (data) => async (dispatch) => {
         const response = await companyAPI.create(data);
         if (response.status === 201){
             dispatch(addSuccessMessage('Company has been created'));
-            dispatch(redirectToAction('/companies'));
+            dispatch(appActions.redirectToAction('/companies'));
             dispatch(setFormErrorsAction({}));
         }
     } catch (e) {
         const response = e.response;
         const errors = response.data;
         dispatch(setFormErrorsAction(errors))
-    } finally {
-        dispatch(setLoadingAction(false));
     }
 };
 
@@ -84,7 +70,7 @@ export const updateCompany = (data) => async (dispatch) => {
         await companyAPI.patch_field(data.pk, {...data});
         const msg = data.name + ' data was updated successfully';
         dispatch(addSuccessMessage(msg));
-        dispatch(redirectToAction('/companies'));
+        dispatch(appActions.redirectToAction('/companies'));
         dispatch(setFormErrorsAction({}))
     } catch (e) {
         const response = e.response;
