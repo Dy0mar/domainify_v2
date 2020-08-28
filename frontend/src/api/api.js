@@ -136,7 +136,7 @@ export const taskAPI = {
 
 export const statusAPI = {
     status_list(){
-        return instance.get('statuses/')
+        return instance.get('statuses/').then(r => r.data)
     },
     create(data){
         return instance.post('statuses/', {...data})
@@ -154,7 +154,7 @@ export const statusAPI = {
 
 export const codesAPI = {
     codes_list(){
-        return instance.get('codes/')
+        return instance.get('codes/').then(r => r.data)
     },
     create(data){
         return instance.post('codes/', {...data})

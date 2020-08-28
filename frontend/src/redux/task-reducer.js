@@ -114,7 +114,8 @@ export const deleteTask = (pk) => async (dispatch) => {
 
 // THUNKS codeAPI
 export const getCodeList = () => async (dispatch) => {
-    wrappedLoading(codesAPI.codes_list, codeListAction, dispatch).then()
+    const data = await codesAPI.codes_list()
+    dispatch(codeListAction(data))
 };
 
 export const createCode = (data) => async (dispatch) => {
@@ -156,7 +157,8 @@ export const deleteCode = (pk) => async (dispatch) => {
 
 // THUNKS statusAPI
 export const getStatusList = () => async (dispatch) => {
-    wrappedLoading(statusAPI.status_list, statusListAction, dispatch).then()
+    const data = await statusAPI.status_list()
+    dispatch(statusListAction(data))
 };
 
 export const createStatus = (data) => async (dispatch) => {
@@ -207,22 +209,6 @@ export const wrappedDetail = async (api, pk, action, dispatch) => {
     }
 };
 
-const wrappedLoading = async (apiFunc, action, dispatch) => {
-    dispatch(appActions.setAppLoading(true));
-    wrappedException(apiFunc, action, dispatch).then(
-        () => dispatch(appActions.setAppLoading(false)),
-        () => dispatch(appActions.setAppLoading(false))
-    )
-};
-
-const wrappedException = async (apiFunc, action, dispatch) => {
-    try{
-        const response = await apiFunc();
-        dispatch(action(response.data));
-    } catch (e) {
-        errorHandler(e, dispatch);
-    }
-};
 
 export const wrappedUpdate = async (api, data, msg,redirect, dispatch) => {
     try{
