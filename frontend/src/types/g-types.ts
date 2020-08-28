@@ -5,3 +5,10 @@ export type TMessage = {
     type: TMessageTypes,
     message: string
 }
+
+export type TCompany = {
+    pk: number
+    name: string
+    address: string
+    url: string
+}
