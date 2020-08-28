@@ -1,5 +1,9 @@
 import {companyAPI} from "../api/api";
-import {addSuccessMessage, errorHandler} from "./app-reducer";
+import {
+    addSuccessMessage,
+    commonAsyncHandler,
+    errorHandler
+} from "./app-reducer";
 import {actions as appActions} from './app-reducer'
 const SET_COMPANY_LIST = 'company/SET_COMPANY_LIST';
 const SET_FORM_ERROR_MESSAGES = 'company/SET_FORM_ERROR_MESSAGES';
@@ -46,8 +50,10 @@ export const setFormErrorsAction = (formErrors) => ({
 
 // THUNKS
 export const getCompanyList = () => async (dispatch) => {
-    const response = await companyAPI.company_list();
-    dispatch(companyListAction(response.data));
+    await commonAsyncHandler(async () => {
+        const data = await companyAPI.company_list();
+        dispatch(companyListAction(data));
+    }, dispatch)
 };
 
 export const createCompany = (data) => async (dispatch) => {

@@ -67,7 +67,7 @@ export const domainsAPI = {
 
         if (part_url !== '')
             url += part_url;
-        return instance.get(url)
+        return instance.get(url).then(r => r.data)
     },
     autocomplete_domain_list(term){
         return instance.get(`domains/autocomplete-domain-list/?term=${term}`)
@@ -98,7 +98,7 @@ export const authAPI = {
 
 export const companyAPI = {
     company_list(){
-        return instance.get('companies/')
+        return instance.get('companies/').then(r => r.data)
     },
     create(data){
         return instance.post('companies/', {...data})

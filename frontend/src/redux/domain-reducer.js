@@ -1,5 +1,9 @@
 import {domainsAPI} from "../api/api";
-import {addSuccessMessage, errorHandler} from "./app-reducer";
+import {
+    addSuccessMessage,
+    commonAsyncHandler,
+    errorHandler
+} from "./app-reducer";
 
 const SET_LOADING = 'domain/SET_LOADING';
 const SET_CURRENT_DOMAIN = 'domain/SET_CURRENT_DOMAIN';
@@ -192,15 +196,10 @@ export const getAlexaStatusList = () => async (dispatch) => {
 };
 
 export const getDomainList = (page=1, filters = {}) => async (dispatch) => {
-    dispatch(setLoadingAction(true));
-    try{
-        const response = await domainsAPI.domain_list(page, [filters]);
-        dispatch(domainListAction(response.data));
-    } catch (e) {
-        errorHandler(e, dispatch);
-    } finally {
-        dispatch(setLoadingAction(false));
-    }
+    await commonAsyncHandler( async () => {
+        const data = await domainsAPI.domain_list(page, [filters])
+        dispatch(domainListAction(data))
+    }, dispatch)
 };
 
 export const autocompleteDomainList = (term) => async (dispatch) => {
