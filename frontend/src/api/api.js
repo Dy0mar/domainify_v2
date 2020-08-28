@@ -175,9 +175,9 @@ export const codesAPI = {
 function convertObjectToUrl(objList) {
     // objList = [{param: ['value1', 'value2', ...]}, {...}]
     if (objList.length === 0 && Object.entries(objList[0]).length === 0)
-        return '';
+        return ''
 
-    let url = '';
+    let url = ''
     objList.forEach(paramObj => {
         for (let [param, values] of Object.entries(paramObj)){
             if (values.length !== 0){
@@ -185,6 +185,6 @@ function convertObjectToUrl(objList) {
                 url += separator + values.join(separator);
             }
         }
-    });
+    })
     return url
 }

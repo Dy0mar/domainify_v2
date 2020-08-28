@@ -8,8 +8,8 @@ import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {
     getAbsoluteUrlOr404S,
     getCompanyListS
-} from "../../redux/company-selector";
-import {getIsLoadingS} from "../../redux/app-selector";
+} from "../../selectors/company-selector";
+import {getIsLoadingS} from "../../selectors/app-selector";
 import {deleteCompany, getCompanyList} from "../../redux/company-reducer";
 
 const { confirm } = Modal;

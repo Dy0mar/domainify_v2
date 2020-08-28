@@ -13,7 +13,7 @@ import {
 } from "../../selectors/task-selector"
 import style from "./Tasks.module.css"
 import {getIsLoadingS} from "../../selectors/app-selector"
-import {getAbsoluteUrlOr404S} from "../../selectors/company-selector";
+import {getAbsoluteUrlOr404S} from "../../selectors/company-selector"
 
 
 const TasksContainer = (props) => {
@@ -58,7 +58,7 @@ const TasksContainer = (props) => {
                 {
                     ...getColumn('Executors', 'executors'),
                     render: executors=> executors
-                        ? executors.map((item, index) => <span key={index}>{item.username}&nbsp</span>)
+                        ? executors.map((item, index) => <span key={index}>{item.username}&nbsp;</span>)
                         : null
                 },
             ],
