@@ -39,18 +39,13 @@ export const loginErrorsAction = (loginErrors) => ({
 
 
 export const verifyToken = () => async (dispatch) => {
-    try{
-        const response = await authAPI.verify();
-        if (response.status === 200){
-            dispatch(setAuthComplete(true))
-        } else {
-            dispatch(setAuthComplete(false));
-            return Promise.reject(response.data.message)
-        }
-    } catch (e) {
-        errorHandler(e, dispatch);
-    }
-};
+    const token = localStorage.getItem("token")
+    const data = await authAPI.verify(token)
+    if (data?.token)
+        dispatch(setAuthComplete(true))
+    else
+        dispatch(setAuthComplete(false))
+}
 
 export const login = (username, password) => async (dispatch) => {
     try {
