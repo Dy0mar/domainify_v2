@@ -5,14 +5,19 @@ import {compose} from "redux";
 import {connect} from "react-redux";
 import {NavLink, withRouter} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
-import {getCompanyListS} from "../../selectors/company-selector";
+import {
+    getCompanyListPageSizeS,
+    getCompanyListPageTotalS,
+    getCompanyListS
+} from "../../selectors/company-selector";
 import {getIsLoadingS, getUrlOr404S} from "../../selectors/app-selector";
 import {deleteCompany, getCompanyList} from "../../redux/company-reducer";
 
 const { confirm } = Modal;
 
 const CompaniesContainer = (props) => {
-    const { companies, isLoading, total, getCompanyList, deleteCompany} = props;
+    const { companies, isLoading, total, getCompanyList, deleteCompany, page_size
+    } = props;
 
     const [config, setConfig] = useState({});
     useEffect(() => {
@@ -40,8 +45,8 @@ const CompaniesContainer = (props) => {
             bordered: true,
             pagination : {
                 total: total,
-                pageSize: 100,
-                position: total >= 10 ? 'bottom' : 'none'
+                pageSize: page_size,
+                position: total >= page_size ? 'bottom' : 'none'
             },
             dataSource: isLoading ? [] : companies,
             rowKey: item => item.pk,
@@ -67,14 +72,18 @@ const CompaniesContainer = (props) => {
                 },
             ],
         })
-    }, [companies, isLoading, total, deleteCompany]);
+    }, [companies, page_size,  isLoading, total, deleteCompany]);
+
+    const onApplyFilter = (pagination, filters, sorter, extra) => {
+        getCompanyList(pagination.current)
+    }
 
     return (
         <div>
             <Divider>Companies here / <NavLink to={'companies/create/'} >Add company</NavLink></Divider>
             <Row>
                 <Col span={24}>
-                    <Table {...config} />
+                    <Table {...config} onChange={onApplyFilter} />
                 </Col>
             </Row>
         </div>
@@ -84,7 +93,8 @@ const CompaniesContainer = (props) => {
 const mapStateToProps = (state) => ({
     companies: getCompanyListS(state),
     isLoading: getIsLoadingS(state),
-    total: state.companies.count,
+    total: getCompanyListPageTotalS(state),
+    page_size: getCompanyListPageSizeS(state)
 });
 
 export default compose(

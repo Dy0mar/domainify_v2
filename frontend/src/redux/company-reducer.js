@@ -12,6 +12,7 @@ const initialState = {
     count: 0,
     next: null,
     previous: null,
+    page_size: 10,
     results: [{
             pk: 0,
             name: "",
@@ -36,9 +37,9 @@ const companyReducer = (state=initialState, action) => {
 };
 
 // ACTIONS
-export const companyListAction = (results) => ({
+export const companyListAction = (results, count, page_size) => ({
     type: SET_COMPANY_LIST,
-    payload: {results}
+    payload: {results, count, page_size}
 });
 
 
@@ -49,10 +50,10 @@ export const setFormErrorsAction = (formErrors) => ({
 
 
 // THUNKS
-export const getCompanyList = () => async (dispatch) => {
+export const getCompanyList = (page=1) => async (dispatch) => {
     await commonAsyncHandler(async () => {
-        const data = await companyAPI.company_list();
-        dispatch(companyListAction(data));
+        const data = await companyAPI.company_list(page);
+        dispatch(companyListAction(data.results, data.count, data.page_size));
     }, dispatch)
 };
 

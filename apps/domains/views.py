@@ -3,7 +3,7 @@ from django.db.models import F
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet, ViewSet
+from rest_framework.viewsets import ModelViewSet
 
 from api.mixins import BaseViewSetMixin, BasePagination
 from .models import Domain, Company
@@ -79,6 +79,18 @@ class DomainViewSet(BaseViewSetMixin, ModelViewSet):
         return Response({'results': set(queryset)})
 
 
+class CompanyPagination(BasePagination):
+    page_size = 20
+
+    def get_paginated_response(self, data):
+        return Response({
+            'page_size': self.page_size,
+            'count': self.page.paginator.count,
+            'results': data
+        })
+
+
 class CompanyViewSet(BaseViewSetMixin, ModelViewSet):
     queryset = Company.objects.all().order_by('name')
     serializer_class = CompanySerializer
+    pagination_class = CompanyPagination

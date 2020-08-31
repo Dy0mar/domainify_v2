@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 from rest_framework.response import Response
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import ModelViewSet, ViewSet
 
-from api.mixins import BaseViewSetMixin
+from api.mixins import BaseViewSetMixin, BasePagination
 
 from .models import User
 from .serializers import UserSerializer
@@ -12,9 +11,7 @@ from .tasks import send_xmpp_message, send_mail_to_user
 from django.conf import settings
 
 
-class UserPagination(PageNumberPagination):
-    page_size = 10
-    page_size_query_param = 'page_size'
+class UserPagination(BasePagination):
 
     def get_paginated_response(self, data):
         return Response({
