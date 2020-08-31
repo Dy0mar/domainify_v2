@@ -94,6 +94,7 @@ export const managersListAction = (managers) => ({
 
 
 // THUNKS
+// todo move to domains reducer
 export const getManagerList = (update=false) => async (dispatch, getState) => {
     const managers = getState().user.managers;
     if (!update && managers.length !== 0)
@@ -120,7 +121,6 @@ export const getUserFullList = () => async (dispatch) => {
     let page = 1;
     do {
         let data = await usersAPI.get_user_list(page);
-        debugger
         dispatch(userFullListAction(data.results));
         data.next ? page++ : page=0
     } while (page)
