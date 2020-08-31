@@ -21,16 +21,6 @@ router.register(r'statuses', tasks_views.StatusViewSet)
 router.register(r'codes', tasks_views.CodeViewSet)
 
 urlpatterns = [
-    path(r'users/manager_list/',
-         domains_views.manager_list, name='manager-list'),
-    path(r'domains/status_list/',
-         domains_views.status_list, name='status-list'),
-    path(r'domains/alexa_status_list/',
-         domains_views.alexa_status_list, name='alexa-status-list'),
-    path(r'domains/autocomplete-domain-list/',
-         domains_views.autocomplete_domain_list,
-         name='autocomplete-domain-list'),
-
     path(r'users/check-notification-method/',
          user_views.check_notification_method,
          name='check-notification-method'),

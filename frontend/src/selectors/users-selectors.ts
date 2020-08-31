@@ -18,28 +18,14 @@ export const getCurrentUserS = (state: TAppState) => {
     }
 }
 
-type Manager = {
-    value: number,
-    text: string,
-    pk: number,
-    username: string
-}
-export const getManagerListS = (state: TAppState): Array<Manager> => {
-    let managers = state.user.managers.map((u: Array<(string|number)>) => ({
-        value: u[0],
-        text: u[1],
-        pk: u[0],
-        username: u[1],
+type Manager = { pk: number, username: string }
+type TFilter = { value: number, text: string }
+
+export const getManagerListS = (state: TAppState): Array<Manager & TFilter> => {
+    return state.user.managers.map((u: Manager) => ({
+        value: u.pk,
+        text: u.username,
+        pk: u.pk,
+        username: u.username,
     }))
-    const currentUser = state.user
-    // if current user is not in the manager list - add one
-    if (currentUser.pk && managers.filter((u: Manager) => u.pk === currentUser.pk ).length === 0){
-        managers.push({
-            text: currentUser.username,
-            value: currentUser.pk,
-            pk: currentUser.pk,
-            username: currentUser.username,
-        })
-    }
-    return managers
 }

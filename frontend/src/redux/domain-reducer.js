@@ -5,7 +5,6 @@ import {
     errorHandler
 } from "./app-reducer";
 
-const SET_LOADING = 'domain/SET_LOADING';
 const SET_CURRENT_DOMAIN = 'domain/SET_CURRENT_DOMAIN';
 const SET_REDIRECT_TO = 'domain/SET_REDIRECT_TO';
 const SET_DOMAIN_STATUS_LIST = 'domain/SET_DOMAIN_STATUS_LIST';
@@ -42,7 +41,6 @@ const initialState = {
             "url": ""
         }
     }],
-    isLoading: true,
     statuses: [],
     alexa_statuses: [],
     formErrors: {},
@@ -55,7 +53,6 @@ const initialState = {
 const domainsReducer = (state=initialState, action) => {
 
     switch (action.type) {
-        case SET_LOADING:
         case SET_CURRENT_DOMAIN:
         case SET_REDIRECT_TO:
         case SET_DOMAIN_STATUS_LIST:
@@ -71,12 +68,6 @@ const domainsReducer = (state=initialState, action) => {
         default: return state;
     }
 };
-
-// ACTIONS
-export const setLoadingAction = (isLoading) => ({
-    type: SET_LOADING,
-    payload: {isLoading}
-});
 
 export const setCurrentDomainAction = (currentDomain) => ({
     type: SET_CURRENT_DOMAIN,
@@ -120,7 +111,6 @@ export const setRedirectTo = (redirectTo) => async (dispatch) => {
 
 export const domainCreate = (data) => async (dispatch) => {
     try{
-        dispatch(setLoadingAction(true));
         const response = await domainsAPI.create(data);
         if (response.status === 201){
             dispatch(addSuccessMessage('Domain has been created'));
@@ -131,8 +121,6 @@ export const domainCreate = (data) => async (dispatch) => {
         const response = e.response;
         const errors = response.data;
         dispatch(setFormErrorsAction(errors))
-    } finally {
-        dispatch(setLoadingAction(false));
     }
 };
 
@@ -147,52 +135,32 @@ export const updateDomain = (data) => async (dispatch) => {
         const response = e.response;
         const errors = response.data;
         dispatch(setFormErrorsAction(errors))
-    } finally {
-        dispatch(setLoadingAction(false));
     }
 };
 
 export const deleteDomain = (pk) => async (dispatch) => {
-    dispatch(setLoadingAction(true));
     try{
         await domainsAPI.delete(pk);
         dispatch(setCurrentDomainAction({}));
         dispatch(redirectToAction('/domains'));
     } catch (e) {
         errorHandler(e, dispatch);
-    } finally {
-        dispatch(setLoadingAction(false));
     }
 };
 
 export const loadCurrentDomain = (pk) => async (dispatch) => {
-    dispatch(setLoadingAction(true));
-    try{
-        const response = await domainsAPI.domain_detail(pk);
-        dispatch(setCurrentDomainAction(response.data));
-    } catch (e) {
-        errorHandler(e, dispatch);
-    } finally {
-        dispatch(setLoadingAction(false));
-    }
+    const response = await domainsAPI.domain_detail(pk);
+    dispatch(setCurrentDomainAction(response.data));
 };
 
 export const getDomainStatusList = () => async (dispatch) => {
-    try{
-        const response = await domainsAPI.status_list();
-        dispatch(domainStatusListAction(response.data));
-    } catch (e) {
-        errorHandler(e, dispatch);
-    }
+    const data = await domainsAPI.status_list();
+    dispatch(domainStatusListAction(data.results));
 };
 
 export const getAlexaStatusList = () => async (dispatch) => {
-    try{
-        const response = await domainsAPI.alexa_status_list();
-        dispatch(alexaStatusListAction(response.data));
-    } catch (e) {
-        errorHandler(e, dispatch);
-    }
+    const data = await domainsAPI.alexa_status_list();
+    dispatch(alexaStatusListAction(data.results));
 };
 
 export const getDomainList = (page=1, filters = {}) => async (dispatch) => {
@@ -203,15 +171,8 @@ export const getDomainList = (page=1, filters = {}) => async (dispatch) => {
 };
 
 export const autocompleteDomainList = (term) => async (dispatch) => {
-    dispatch(setLoadingAction(true));
-    try{
-        const response = await domainsAPI.autocomplete_domain_list(term);
-        dispatch(autocompleteDomainListAction(response.data));
-    } catch (e) {
-        errorHandler(e, dispatch);
-    } finally {
-        dispatch(setLoadingAction(false));
-    }
+    const data = await domainsAPI.autocomplete_domain_list(term);
+    dispatch(autocompleteDomainListAction(data.results));
 };
 
 export default domainsReducer;

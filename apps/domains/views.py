@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-
+from django.db.models import F
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ViewSet
 
@@ -43,50 +45,40 @@ class DomainViewSet(BaseViewSetMixin, ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
+    @action(['GET'], detail=False, url_path='status-list',
+            permission_classes=(IsAuthenticated,))
+    def status_list(self, request):
+        return Response({'results': Domain.DOMAIN_STATUS})
 
-class CompanyViewSet(BaseViewSetMixin, ModelViewSet):
-    queryset = Company.objects.all().order_by('name')
-    serializer_class = CompanySerializer
+    @action(['GET'], detail=False, url_path='alexa-status-list',
+            permission_classes=(IsAuthenticated,))
+    def alexa_status_list(self, request):
+        return Response({'results': Domain.ALEXA_STATUS})
 
+    @action(['GET'], url_path='manager-list', detail=False,
+            permission_classes=(IsAuthenticated,))
+    def manager_list(self, request):
+        queryset = self.get_queryset().filter(
+            manager__username__isnull=False
+        ).annotate(pk=F('manager__pk'), username=F('manager__username')).values(
+            'pk', 'username'
+        ).order_by('manager__username').distinct()
+        r = list(queryset)
+        return Response({'results': r})
 
-class ManagerViewSet(BaseViewSetMixin, ModelViewSet):
-    queryset = Domain.objects.filter(
-        manager__username__isnull=False
-    ).values_list(
-        'manager__pk', 'manager__username'
-    ).order_by('manager__username').distinct()
-
-    def list(self, request, *args, **kwargs):
-        data = list(self.get_queryset())
-        return Response(data)
-
-
-class StatusList(BaseViewSetMixin, ViewSet):
-    def list(self, request, *args, **kwargs):
-        return Response(list(Domain.DOMAIN_STATUS))
-
-
-class AlexaStatusList(BaseViewSetMixin, ViewSet):
-    def list(self, request, *args, **kwargs):
-        return Response(list(Domain.ALEXA_STATUS))
-
-
-class AutocompleteDomainList(BaseViewSetMixin, ModelViewSet):
-    queryset = Domain.objects.all()
-
-    def list(self, request, *args, **kwargs):
+    @action(detail=False, url_path='search-domain-list',
+            permission_classes=(IsAuthenticated,))
+    def search_domain_list(self, request):
         query = request.GET.get('term', '').strip()
-        qs = self.get_queryset().filter(
+        queryset = self.get_queryset().filter(
             name__icontains=query
         ).values_list(
             'pk', 'name', 'use_custom_address', 'custom_company_address',
             'company__address', 'company__name',
         )
-        data = list(qs)
-        return Response(data)
+        return Response({'results': set(queryset)})
 
 
-status_list = StatusList.as_view({'get': 'list'})
-alexa_status_list = AlexaStatusList.as_view({'get': 'list'})
-manager_list = ManagerViewSet.as_view({'get': 'list'})
-autocomplete_domain_list = AutocompleteDomainList.as_view({'get': 'list'})
+class CompanyViewSet(BaseViewSetMixin, ModelViewSet):
+    queryset = Company.objects.all().order_by('name')
+    serializer_class = CompanySerializer

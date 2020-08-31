@@ -40,9 +40,6 @@ export const usersAPI = {
     get_user_list(page: number){
         return instance.get(`users/?page=${page}`).then(r => r.data)
     },
-    manager_list(){
-        return instance.get('users/manager_list/')
-    },
     check_notification_method(m: 'jabber' | 'email'){
         return instance.get('users/check-notification-method/?method='+m)
     }
@@ -71,13 +68,16 @@ export const domainsAPI = {
         return instance.get(url).then(r => r.data)
     },
     autocomplete_domain_list(term: string){
-        return instance.get(`domains/autocomplete-domain-list/?term=${term}`)
+        return instance.get(`domains/search-domain-list/?term=${term}`).then(r => r.data)
     },
     status_list(){
-        return instance.get('domains/status_list/')
+        return instance.get('domains/status-list/').then(r => r.data)
     },
     alexa_status_list(){
-        return instance.get('domains/alexa_status_list/')
+        return instance.get('domains/alexa-status-list/').then(r => r.data)
+    },
+    manager_list(){
+        return instance.get('domains/manager-list/').then(r => r.data)
     },
 }
 

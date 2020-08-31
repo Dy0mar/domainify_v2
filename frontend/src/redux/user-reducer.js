@@ -1,4 +1,4 @@
-import {usersAPI, authAPI} from "../api/api";
+import {usersAPI, authAPI, domainsAPI} from "../api/api";
 import {login} from "./auth-reducer";
 import {
     addSuccessMessage,
@@ -98,22 +98,18 @@ export const getManagerList = (update=false) => async (dispatch, getState) => {
     const managers = getState().user.managers;
     if (!update && managers.length !== 0)
         return;
-    try {
-        const response = await usersAPI.manager_list();
-        dispatch(managersListAction(response.data))
-    } catch (e) {
-        errorHandler(e, dispatch)
-    }
+    const data = await domainsAPI.manager_list();
+    dispatch(managersListAction(data.results))
 };
 
 export const getUserList = (page=1) => async (dispatch) => {
     await commonAsyncHandler( async () => {
         const data = await usersAPI.get_user_list(page)
-        console.log(data)
         dispatch(userListAction(data))
     }, dispatch)
 };
 
+// todo: get all users from back
 export const getUserFullList = () => async (dispatch) => {
     dispatch(userListAction({
         count: 0,
@@ -123,9 +119,10 @@ export const getUserFullList = () => async (dispatch) => {
     }));
     let page = 1;
     do {
-        let response = await usersAPI.get_user_list(page);
-        dispatch(userFullListAction(response.data.results));
-        response.data.next ? page++ : page=0
+        let data = await usersAPI.get_user_list(page);
+        debugger
+        dispatch(userFullListAction(data.results));
+        data.next ? page++ : page=0
     } while (page)
 };
 
