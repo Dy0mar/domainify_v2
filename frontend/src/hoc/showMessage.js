@@ -3,7 +3,7 @@ import 'antd/dist/antd.css';
 import { message } from 'antd';
 import {connect} from "react-redux";
 import {showedMessage} from "../redux/app-reducer";
-import {getLastMessage} from "../selectors/users-selectors";
+import {getLastMessage} from "../selectors/app-selector";
 
 const mapStateToProps = (state) => ({
     lastMessage: getLastMessage(state)

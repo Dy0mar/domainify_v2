@@ -1,10 +1,5 @@
 import {TAppState} from "../redux/redux-store"
 
-// todo: move to app
-export const getLastMessage = (state: TAppState) => {
-    return state.app.messages[state.app.messages.length-1]
-}
-
 export const getUserListS = (state: TAppState) => state.user.users.results
 
 export const getUserPageSizeS = (state: TAppState) => state.user.users.page_size
