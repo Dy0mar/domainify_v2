@@ -38,7 +38,7 @@ export const usersAPI = {
         return instance.put(`users/${pk}/`, {...data})
     },
     get_user_list(page: number){
-        return instance.get(`users/?page=${page}`)
+        return instance.get(`users/?page=${page}`).then(r => r.data)
     },
     manager_list(){
         return instance.get('users/manager_list/')

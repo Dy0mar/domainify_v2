@@ -1,46 +1,44 @@
 import React, {useEffect, useState} from 'react'
-import {Divider, Row, Col, Table, Typography, Tag} from 'antd';
-import "antd/dist/antd.css";
-import {compose} from "redux";
-import {withAuthRedirect} from "../../hoc/withAuthRedirect";
-import {connect} from "react-redux";
-import {withRouter} from "react-router-dom";
-import {getUserListPageTotalS, getUserListS} from "../../selectors/users-selectors";
-import {getUserList} from "../../redux/user-reducer";
+import {Divider, Row, Col, Table, Typography, Tag} from 'antd'
+import "antd/dist/antd.css"
+import {compose} from "redux"
+import {withAuthRedirect} from "../../hoc/withAuthRedirect"
+import {connect} from "react-redux"
+import {withRouter} from "react-router-dom"
+import {
+    getUserListPageTotalS,
+    getUserListS,
+    getUserPageSizeS
+} from "../../selectors/users-selectors"
+import {getUserList} from "../../redux/user-reducer"
 import style from './Users.module.css'
+import {getIsLoadingS} from "../../selectors/app-selector"
 
-const {Text} = Typography;
+const {Text} = Typography
 
 const UsersContainer = (props) => {
-    const {users, total, getUserList} = props;
+    const {user, users, total, getUserList, isLoading, page_size} = props
 
-    const [page, setPage] = useState(1);
     useEffect(() => {
-        getUserList(page)
-    }, [page, getUserList]);
+        getUserList()
+    }, [getUserList])
 
-    const changePage = (page) => {
-        setPage(page);
-    };
+    const onApplyFilter = (pagination, filters, sorter, extra) => {
+        getUserList(pagination.current)
+    }
 
-    const [loading, setLoading] = useState(!users.length);
+    const [config, setConfig] = useState({})
     useEffect(() => {
-        setLoading(!users.length)
-    }, [users.length]);
-
-    const [config, setConfig] = useState({});
-    useEffect(() => {
-        const getColumn = (title, field) => ({title: title, dataIndex: field, key: field});
+        const getColumn = (title, field) => ({title: title, dataIndex: field, key: field})
 
         setConfig({
             pagination : {
                 total: total,
-                pageSize: 10,
-                onChange: changePage,
-                position: total >= 10 ? 'bottom' : 'none'
+                pageSize: page_size,
+                position: total >= page_size ? 'bottom' : 'none'
             },
-            rowClassName: record => record.username === props.user.username ? style.highlightRow: '',
-            loading: loading,
+            rowClassName: row => row.username === user.username ? style.highlightRow: '',
+            loading: isLoading,
             columns: [
                 {
                     ...getColumn('Username', 'username'),
@@ -61,28 +59,30 @@ const UsersContainer = (props) => {
             dataSource: users,
             rowKey: u => u.pk
         })
-    }, [page, loading, users, total, props.user.username]);
+    }, [isLoading, users, total, user.username, page_size])
 
     return (
         <div>
             <Divider>Users here</Divider>
             <Row>
                 <Col span={24}>
-                    <Table {...config} />
+                    <Table {...config} onChange={onApplyFilter} />
                 </Col>
             </Row>
         </div>
     )
-};
+}
 
 const mapStateToProps = (state) => ({
     user: state.user,
     users: getUserListS(state),
-    total: getUserListPageTotalS(state)
-});
+    total: getUserListPageTotalS(state),
+    page_size: getUserPageSizeS(state),
+    isLoading: getIsLoadingS(state)
+})
 
 export default compose(
     withAuthRedirect,
     withRouter,
     connect(mapStateToProps, {getUserList})
-)(UsersContainer);
+)(UsersContainer)

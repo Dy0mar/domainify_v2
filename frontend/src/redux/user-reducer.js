@@ -1,6 +1,10 @@
 import {usersAPI, authAPI} from "../api/api";
 import {login} from "./auth-reducer";
-import {addSuccessMessage, errorHandler} from "./app-reducer";
+import {
+    addSuccessMessage,
+    commonAsyncHandler,
+    errorHandler
+} from "./app-reducer";
 
 const SET_CURRENT_USER = 'user/SET_CURRENT_USER';
 const SET_USER_INFO = 'user/SET_CURRENT_USER';
@@ -26,6 +30,7 @@ const initialState = {
         count: 0,
         next: null,
         previous: null,
+        page_size: 10,
         results: []
     },
     managers: []
@@ -102,10 +107,11 @@ export const getManagerList = (update=false) => async (dispatch, getState) => {
 };
 
 export const getUserList = (page=1) => async (dispatch) => {
-    const response = await usersAPI.get_user_list(page);
-    if (response.status === 200) {
-        dispatch(userListAction(response.data));
-    }
+    await commonAsyncHandler( async () => {
+        const data = await usersAPI.get_user_list(page)
+        console.log(data)
+        dispatch(userListAction(data))
+    }, dispatch)
 };
 
 export const getUserFullList = () => async (dispatch) => {

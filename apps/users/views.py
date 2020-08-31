@@ -2,9 +2,7 @@
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import ModelViewSet, ViewSet
-from rest_framework.permissions import AllowAny
 
-from api.permissions import IsLoggedInUserOrAdmin, IsAdminUser
 from api.mixins import BaseViewSetMixin
 
 from .models import User
@@ -15,33 +13,37 @@ from django.conf import settings
 
 
 class UserPagination(PageNumberPagination):
-    page_size = 10
+    page_size = 5
     page_size_query_param = 'page_size'
 
+    def get_paginated_response(self, data):
+        return Response({
+            'page_size': self.page_size,
+            'count': self.page.paginator.count,
+            'results': data
+        })
 
-class UserViewSet(ModelViewSet):
+
+class UserViewSet(BaseViewSetMixin, ModelViewSet):
     queryset = User.objects.all().order_by('username')
     serializer_class = UserSerializer
     pagination_class = UserPagination
 
-    def get_permissions(self):
-        permission_classes = []
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
 
-        if self.action == 'create':
-            permission_classes = [AllowAny]
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
 
-        elif self.action in ['retrieve', 'update', 'partial_update']:
-            permission_classes = [IsLoggedInUserOrAdmin]
-
-        elif self.action == 'list' or self.action == 'destroy':
-            permission_classes = [IsAdminUser]
-
-        return [permission() for permission in permission_classes]
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class CheckNotificationMethod(BaseViewSetMixin, ViewSet):
     def get(self, request, *args, **kwargs):
-        check_method = request.GET.get('method')
+        check_method = self.request.GET.get('method')
 
         if check_method == 'email' and request.user.email:
             subject = 'Domainify BOT - Check ok'
