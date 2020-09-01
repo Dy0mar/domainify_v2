@@ -1,6 +1,5 @@
 import {authAPI} from "../api/api"
 import {TActions as TActionsApp, actions as actionsApp} from "./user-reducer"
-import {errorHandler} from "./app-reducer"
 import {TBaseThunk, TInferActions} from "./redux-store"
 
 
@@ -63,21 +62,15 @@ export const verifyToken = (): TThunk => async (dispatch) => {
 }
 
 export const login = (username: string, password: string): TThunk => async (dispatch) => {
-    try {
-        const response = await authAPI.login(username, password)
-        if (response.status === 200 && response.data.token){
-            localStorage.setItem("token", response.data.token)
-            const {pk, username, email, profile, settings} = response.data.user
-            dispatch(actionsApp.setCurrentUserAction(pk, username, email, profile, settings))
-            dispatch(actions.setAuthComplete(true))
-        }
-    } catch (e) {
-        if (e && e.response && e.response.data){
-            const response = e.response
-            const errors = response.data.non_field_errors
-            dispatch(actions.loginErrorsAction(errors))
-        } else
-            errorHandler(e, dispatch)
+    const data = await authAPI.login(username, password)
+    if (!!data?.token){
+        localStorage.setItem("token", data.token)
+        const {pk, username, email, profile, settings} = data.user
+        dispatch(actionsApp.setCurrentUserAction(pk, username, email, profile, settings))
+        dispatch(actions.setAuthComplete(true))
+    } else {
+        const errors = data.non_field_errors
+        dispatch(actions.loginErrorsAction(errors))
     }
 }
 

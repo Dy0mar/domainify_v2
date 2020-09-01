@@ -93,6 +93,8 @@ export const authAPI = {
     },
     login(username: string, password: string) {
         return instance.post('auth/login/', {username, password})
+            .then(r => r.data)
+            .catch(e => e.response.data)
     },
     logout() {
         return instance.post('auth/logout/')

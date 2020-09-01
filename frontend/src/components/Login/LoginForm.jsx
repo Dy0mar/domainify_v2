@@ -30,7 +30,7 @@ const LoginForm = ({onSubmit, getFieldDecorator, loginErrors}) => {
                     )}
                 </Form.Item>
                 <Form.Item>
-                    {loginErrors ? loginErrors.map(msg => <Alert message={msg} type="error" />) : '' }
+                    {loginErrors ? loginErrors.map((msg, index) => <Alert key={index} message={msg} type="error" />) : '' }
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit" className={css.submitButton}>
