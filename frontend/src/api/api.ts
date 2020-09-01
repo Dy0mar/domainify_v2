@@ -190,7 +190,7 @@ function convertObjectToUrl(objList: any) {
             if (paramValues.length !== 0) {
                 let separator = '&' + paramName + '='
                 // @ts-ignore
-                url += separator + values.join(separator)
+                url += separator + paramValues.join(separator)
             }
         }
     })
