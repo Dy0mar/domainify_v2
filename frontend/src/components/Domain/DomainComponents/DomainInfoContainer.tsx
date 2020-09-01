@@ -1,11 +1,11 @@
 import React from 'react'
-import {Button, Col, Row, Typography} from 'antd';
-import "antd/dist/antd.css";
-import {Box} from "../../Common/Box/Box";
-import {NavLink} from "react-router-dom";
-import {TDomain} from "../../../types/g-types";
+import {Button, Col, Row, Typography} from 'antd'
+import "antd/dist/antd.css"
+import {Box} from "../../Common/Box/Box"
+import {NavLink} from "react-router-dom"
+import {TDomain} from "../../../types/g-types"
 
-const { Title, Text} = Typography;
+const { Title, Text} = Typography
 
 type TProps = {
     domain: TDomain
@@ -14,7 +14,7 @@ type TProps = {
 }
 
 const DomainInfoContainer: React.FC<TProps> = (props) => {
-    const {domain, editLink, deleteConfirm} = props;
+    const {domain, editLink, deleteConfirm} = props
 
     return (
         <>
@@ -32,7 +32,7 @@ const DomainInfoContainer: React.FC<TProps> = (props) => {
                     <Box boxTitleText={'Company'} icon={'info-circle'} >
                         <Row><Text strong>Company:</Text> {domain.company ? domain.company.name: '--'}</Row>
                         <Row><Text strong>Company address:</Text> {domain.company ? domain.company.address: '--'}</Row>
-                        <Row>&nbsp;</Row>
+                        <Row>&nbsp</Row>
                         <Row><Text>Custom company address - используется, если надо прописать адрес, отличный от Company address</Text></Row>
                         <Row><Text strong>Use custom address:</Text> {domain.use_custom_address ? 'yes': 'no'}</Row>
                         <Row><Text strong>Custom company address:</Text> {domain.custom_company_address? domain.custom_company_address: ''}</Row>
@@ -44,7 +44,7 @@ const DomainInfoContainer: React.FC<TProps> = (props) => {
                     <Box boxTitleText={'Contacts'} icon={'phone'} >
                         <Row><Text strong>Emails:</Text> {domain.emails ? domain.emails.map(item=>item.email).join(', ') : '-'}</Row>
                         <Row><Text strong>Redirect email:</Text> {domain.redirect}</Row>
-                        <Row>&nbsp;</Row>
+                        <Row>&nbsp</Row>
                         <Row><Text strong>Telephones:</Text> {domain.telephones ? domain.telephones.map(item=>item.telephone).join(', ') : '-'}</Row>
                     </Box>
                 </Col>
@@ -66,6 +66,6 @@ const DomainInfoContainer: React.FC<TProps> = (props) => {
             </Row>
         </>
     )
-};
+}
 
-export default DomainInfoContainer;
+export default DomainInfoContainer
