@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ViewSet
 
@@ -36,6 +38,13 @@ class UserViewSet(BaseViewSetMixin, ModelViewSet):
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+    @action(['GET'], detail=False, url_path='all',
+            permission_classes=(IsAuthenticated,))
+    def list_of_all_users(self, request):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({'results': serializer.data})
 
 
 class CheckNotificationMethod(BaseViewSetMixin, ViewSet):

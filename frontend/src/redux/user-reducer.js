@@ -7,7 +7,6 @@ import {
 } from "./app-reducer";
 
 const SET_CURRENT_USER = 'user/SET_CURRENT_USER';
-const SET_USER_INFO = 'user/SET_CURRENT_USER';
 const REGISTER_ERROR_MESSAGES = 'user/REGISTER_ERROR_MESSAGES';
 const GET_USER_LIST = 'user/GET_USER_LIST';
 const GET_MANAGER_LIST = 'user/GET_MANAGER_LIST';
@@ -41,7 +40,6 @@ const userReducer = (state=initialState, action) => {
 
     switch (action.type) {
         case SET_CURRENT_USER:
-        case SET_USER_INFO:
         case REGISTER_ERROR_MESSAGES:
         case GET_USER_LIST:
         case GET_MANAGER_LIST:
@@ -54,7 +52,7 @@ const userReducer = (state=initialState, action) => {
                 ...state,
                 users: {
                     ...state.users,
-                    results: [...state.users.results, ...action.users]
+                    results: [...action.users]
                 }
             };
         default: return state;
@@ -67,10 +65,6 @@ export const setCurrentUserAction = (pk, username, email, profile, settings) => 
     payload: {pk, username, email, profile, settings}
 });
 
-export const setUserInfoAction = (profile, settings) => ({
-    type: SET_USER_INFO,
-    payload: {profile, settings}
-});
 
 export const registerErrorsAction = (registerErrors) => ({
     type: REGISTER_ERROR_MESSAGES,
@@ -112,18 +106,8 @@ export const getUserList = (page=1) => async (dispatch) => {
 
 // todo: get all users from back
 export const getUserFullList = () => async (dispatch) => {
-    dispatch(userListAction({
-        count: 0,
-        next: null,
-        previous: null,
-        results: []
-    }));
-    let page = 1;
-    do {
-        let data = await usersAPI.get_user_list(page);
-        dispatch(userFullListAction(data.results));
-        data.next ? page++ : page=0
-    } while (page)
+    let data = await usersAPI.get_all_user_list();
+    dispatch(userFullListAction(data.results));
 };
 
 export const register = (username, email, password, jabber_nick) => async (dispatch) => {
@@ -154,29 +138,15 @@ export const setCurrentUser = () => async (dispatch) => {
     dispatch(setCurrentUserAction(pk, username, email, profile, settings))
 }
 
-export const setUserInfo = (pk) => async (dispatch) => {
-    const response = await usersAPI.get_user_info(pk);
-
-    if (response.status === 200){
-        let {profile, settings} = response.data;
-        settings = settings ? settings : {};
-        dispatch(setUserInfoAction(profile, settings));
-    }
-};
 
 export const updateUserProfile = (data) => async (dispatch, getState) => {
 
     const user = getState().user;
-    const response = await usersAPI.patch_field(user.pk, {...data});
-
-    if (response.status === 200){
-
-        const {pk, username, email, profile, settings} = response.data;
-        dispatch(setCurrentUserAction(pk, username, email));
-        dispatch(setUserInfoAction(profile, settings));
-        const msg = Object.keys(data) + ' data was updated successfully';
-        dispatch(addSuccessMessage(msg));
-    }
+    const data = await usersAPI.patch_field(user.pk, {...data});
+    const {pk, username, email, profile, settings} = data;
+    dispatch(setCurrentUserAction(pk, username, email, profile, settings));
+    const msg = 'User updated successfully';
+    dispatch(addSuccessMessage(msg));
 };
 
 export const checkNotificationMethod = (method) => async (dispatch) => {

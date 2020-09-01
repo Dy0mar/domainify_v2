@@ -28,17 +28,17 @@ export const usersAPI = {
     register(username: string, email: string, password: string, profile: TProfile) {
         return instance.post('users/', {username, email, password, profile})
     },
-    get_user_info(pk: number){
-        return instance.get(`users/${pk}/`)
-    },
     patch_field(pk: number, data: any){
-        return instance.patch(`users/${pk}/`, {...data})
+        return instance.patch(`users/${pk}/`, {...data}).then(r => r.data)
     },
     update_profile(pk: number, data: any){
         return instance.put(`users/${pk}/`, {...data})
     },
     get_user_list(page: number){
         return instance.get(`users/?page=${page}`).then(r => r.data)
+    },
+    get_all_user_list(){
+        return instance.get(`users/all/`).then(r => r.data)
     },
     check_notification_method(m: 'jabber' | 'email'){
         return instance.get('users/check-notification-method/?method='+m)
