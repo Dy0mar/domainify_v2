@@ -10,7 +10,7 @@ const LOGIN_ERROR_MESSAGES = 'auth/LOGIN_ERROR_MESSAGES'
 
 const initialState = {
     isAuth: false,
-    loginErrors: '',
+    loginErrors: [] as Array<string>,
 }
 
 type TInitialState = typeof initialState
@@ -38,7 +38,7 @@ export const actions = {
     setAuthComplete: (isAuth: boolean) => ({
         type: SET_AUTH_COMPLETE, payload: {isAuth}
     } as const),
-    loginErrorsAction: (loginErrors: any) => ({
+    loginErrorsAction: (loginErrors: Array<string>) => ({
         type: LOGIN_ERROR_MESSAGES,
         payload: {loginErrors}
     } as const)
@@ -66,12 +66,10 @@ export const login = (username: string, password: string): TThunk => async (disp
     try {
         const response = await authAPI.login(username, password)
         if (response.status === 200 && response.data.token){
-            dispatch(actions.setAuthComplete(true))
             localStorage.setItem("token", response.data.token)
-
             const {pk, username, email, profile, settings} = response.data.user
-            // todo: dispatch it
             dispatch(actionsApp.setCurrentUserAction(pk, username, email, profile, settings))
+            dispatch(actions.setAuthComplete(true))
         }
     } catch (e) {
         if (e && e.response && e.response.data){
@@ -90,6 +88,7 @@ export const logout = (): TThunk => async (dispatch) => {
         dispatch (actionsApp.setCurrentUserAction(
             0, "", "", {jabber_nick:''}, {email: false, jabber: false})
         )
+        dispatch(actions.loginErrorsAction([]))
         localStorage.removeItem("token")
     }
 }

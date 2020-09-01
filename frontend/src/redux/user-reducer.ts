@@ -4,7 +4,6 @@ import {
     TActions as TActionsApp,
     addSuccessMessage,
     commonAsyncHandler,
-    errorHandler
 } from "./app-reducer"
 import {TBaseThunk, TInferActions} from "./redux-store"
 import {TProfile, TSettings, TUser} from "../types/g-types"
@@ -17,21 +16,43 @@ const GET_MANAGER_LIST = 'user/GET_MANAGER_LIST'
 const GET_FULL_USER_LIST = 'user/GET_FULL_USER_LIST'
 
 
+// LOCAL TYPES
+type TUsersPaginator = {
+    count: number
+    next: null | string
+    previous: null | string
+    page_size: number
+    results: Array<TUser>
+}
+
+type TManager = {
+    pk: number
+    username: string
+}
+type TRegisterErrors = {
+    username: null | Array<string>,
+    email: null |Array<string>,
+    password: null |Array<string>,
+    jabber_nick: null | Array<string>,
+}
+
+
+// STATE
 const initialState = {
     pk: 0,
     username: "",
     email: "",
     profile: undefined as TProfile | undefined,
     settings: undefined as TSettings | undefined,
-    registerErrors: {},
+    registerErrors: {} as TRegisterErrors,
     users: {
         count: 0,
         next: null as string | null,
         previous: null as string | null,
         page_size: 10,
         results: [] as Array<TUser>
-    },
-    managers: []
+    } as TUsersPaginator,
+    managers: [] as Array<TManager>
 }
 
 type TInitialState = typeof initialState
@@ -59,9 +80,6 @@ const userReducer = (state=initialState, action: TActions): TInitialState => {
     }
 }
 
-// TYPES
-export type TActions = TInferActions<typeof actions>
-
 // ACTIONS
 export const actions = {
     setCurrentUserAction: (pk: number, username: string, email: string, profile: TProfile, settings: TSettings) => ({
@@ -69,30 +87,32 @@ export const actions = {
         payload: {pk, username, email, profile, settings}
     } as const),
 
-    registerErrorsAction: (registerErrors: any) => ({
+    registerErrorsAction: (registerErrors: TRegisterErrors) => ({
         type: REGISTER_ERROR_MESSAGES,
         payload: {registerErrors}
     } as const),
 
-    userListAction: (users: any) => ({
+    userListAction: (users: TUsersPaginator) => ({
         type: GET_USER_LIST,
         payload: {users}
     } as const ),
 
-    userFullListAction: (users: any) => ({
+    userFullListAction: (users: Array<TUser>) => ({
         type: GET_FULL_USER_LIST,
         users: users
     } as const),
 
-    managersListAction: (managers: any) => ({
-            type: GET_MANAGER_LIST,
-            payload: {managers}} as const
-    ),
+    managersListAction: (managers: Array<TManager>) => ({
+        type: GET_MANAGER_LIST,
+        payload: {managers}
+    } as const),
 }
 
 
 // THUNKS
+export type TActions = TInferActions<typeof actions>
 type TThunk = TBaseThunk<TActions | TActionsApp>
+
 // todo move to domains reducer
 export const getManagerList = (update=false): TThunk => async (dispatch, getState) => {
     const managers = getState().user.managers
@@ -114,7 +134,7 @@ export const getUserFullList = (): TThunk => async (dispatch) => {
     dispatch(actions.userFullListAction(data.results))
 }
 
-export const register = (username: string, email: string, password:string, jabber_nick: string): TThunk => async (dispatch) => {
+export const register = (username: string, email: string, password: string, jabber_nick: string): TThunk => async (dispatch) => {
     const profile = {
         'jabber_nick': jabber_nick,
     }
@@ -132,7 +152,6 @@ export const register = (username: string, email: string, password:string, jabbe
             const errors = response.data
             dispatch(actions.registerErrorsAction(errors))
         }
-        errorHandler(e, dispatch)
     }
 }
 

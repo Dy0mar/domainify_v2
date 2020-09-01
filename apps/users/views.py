@@ -28,17 +28,6 @@ class UserViewSet(BaseViewSetMixin, ModelViewSet):
     serializer_class = UserSerializer
     pagination_class = UserPagination
 
-    def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-
     @action(['GET'], detail=False, url_path='all',
             permission_classes=(IsAuthenticated,))
     def list_of_all_users(self, request):
