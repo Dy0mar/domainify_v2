@@ -18,7 +18,7 @@ const { confirm } = Modal;
 
 const DomainDetailContainer = (props) => {
 
-    const {currentDomain, loadCurrentDomain} = props;
+    const {currentDomain, loadCurrentDomain, deleteDomain} = props;
     const {domainId} = props.match.params;
     const editLink = '/domains/'+domainId+'/edit/';
 
@@ -35,7 +35,7 @@ const DomainDetailContainer = (props) => {
             okType: 'danger',
             cancelText: 'No',
             onOk() {
-                props.deleteDomain(domainId)
+                deleteDomain(domainId)
             },
             onCancel() {},
         });

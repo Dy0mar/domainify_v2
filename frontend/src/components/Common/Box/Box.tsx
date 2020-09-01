@@ -5,7 +5,7 @@ import css from "./Box.module.css"
 
 type TBoxProps = {
     boxTitleText: string
-    onClickMethod: () => void
+    onClickMethod?: () => void
     icon: string
     children: React.ReactNode
 }

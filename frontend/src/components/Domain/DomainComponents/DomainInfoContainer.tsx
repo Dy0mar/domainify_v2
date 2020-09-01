@@ -3,19 +3,24 @@ import {Button, Col, Row, Typography} from 'antd';
 import "antd/dist/antd.css";
 import {Box} from "../../Common/Box/Box";
 import {NavLink} from "react-router-dom";
+import {TDomain} from "../../../types/g-types";
 
 const { Title, Text} = Typography;
 
+type TProps = {
+    domain: TDomain
+    editLink: string
+    deleteConfirm: () => void
+}
 
-const DomainInfoContainer = (props) => {
+const DomainInfoContainer: React.FC<TProps> = (props) => {
     const {domain, editLink, deleteConfirm} = props;
-
 
     return (
         <>
             <Row>
                 <Col span={12}>
-                    <Box boxTitleText={'Domain'} icon={'info-circle'} onClickMethod={null}>
+                    <Box boxTitleText={'Domain'} icon={'info-circle'} >
                         <Title level={3} copyable>{domain.name}</Title>
                         <Row><Text strong>Manager:</Text> {domain.manager ? domain.manager.username : '-'}</Row>
                         <Row><Text strong>Status:</Text> {domain.status}</Row>
@@ -24,7 +29,7 @@ const DomainInfoContainer = (props) => {
                     </Box>
                 </Col>
                 <Col span={12}>
-                    <Box boxTitleText={'Company'} icon={'info-circle'} onClickMethod={null}>
+                    <Box boxTitleText={'Company'} icon={'info-circle'} >
                         <Row><Text strong>Company:</Text> {domain.company ? domain.company.name: '--'}</Row>
                         <Row><Text strong>Company address:</Text> {domain.company ? domain.company.address: '--'}</Row>
                         <Row>&nbsp;</Row>
@@ -36,7 +41,7 @@ const DomainInfoContainer = (props) => {
             </Row>
             <Row>
                 <Col span={12}>
-                    <Box boxTitleText={'Contacts'} icon={'phone'} onClickMethod={null}>
+                    <Box boxTitleText={'Contacts'} icon={'phone'} >
                         <Row><Text strong>Emails:</Text> {domain.emails ? domain.emails.map(item=>item.email).join(', ') : '-'}</Row>
                         <Row><Text strong>Redirect email:</Text> {domain.redirect}</Row>
                         <Row>&nbsp;</Row>
@@ -44,7 +49,7 @@ const DomainInfoContainer = (props) => {
                     </Box>
                 </Col>
                 <Col span={12}>
-                    <Box boxTitleText={'Alexa traffic'} icon={'stock'} onClickMethod={null}>
+                    <Box boxTitleText={'Alexa traffic'} icon={'stock'} >
                         <Row><Text strong>Alexa status:</Text> {domain.alexa_status}</Row>
                         <Row><Text strong>Alexa comment:</Text> {domain.alexa_comment}</Row>
                     </Box>
