@@ -21,3 +21,11 @@ export type TCompany = {
     address: string
     url: string
 }
+
+export type TUser = {
+    pk: number
+    email: string
+    username: string
+    profile: TProfile | undefined
+    settings: TSettings | undefined
+}

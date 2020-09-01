@@ -1,5 +1,5 @@
 import {authAPI} from "../api/api"
-import {setCurrentUserAction} from "./user-reducer"
+import {TActions as TActionsApp, actions as actionsApp} from "./user-reducer"
 import {errorHandler} from "./app-reducer"
 import {TBaseThunk, TInferActions} from "./redux-store"
 
@@ -46,7 +46,7 @@ export const actions = {
 
 
 // THUNKS
-type TThunk = TBaseThunk<TActions>
+type TThunk = TBaseThunk<TActions | TActionsApp>
 
 export const verifyToken = (): TThunk => async (dispatch) => {
     const token = localStorage.getItem("token")
@@ -71,7 +71,7 @@ export const login = (username: string, password: string): TThunk => async (disp
 
             const {pk, username, email, profile, settings} = response.data.user
             // todo: dispatch it
-            setCurrentUserAction(pk, username, email, profile, settings)
+            dispatch(actionsApp.setCurrentUserAction(pk, username, email, profile, settings))
         }
     } catch (e) {
         if (e && e.response && e.response.data){
@@ -87,8 +87,9 @@ export const logout = (): TThunk => async (dispatch) => {
     const response = await authAPI.logout()
     if (response.status === 200){
         dispatch(actions.setAuthComplete(false))
-        // todo: dispatch it
-        setCurrentUserAction(null, "", "", {}, {})
+        dispatch (actionsApp.setCurrentUserAction(
+            0, "", "", {jabber_nick:''}, {email: false, jabber: false})
+        )
         localStorage.removeItem("token")
     }
 }
