@@ -28,10 +28,6 @@ const authReducer = (state=initialState, action: TActions): TInitialState => {
     }
 }
 
-// TYPES
-export type TActions = TInferActions<typeof actions>
-
-
 // ACTIONS
 export const actions = {
     setAuthComplete: (isAuth: boolean) => ({
@@ -45,6 +41,7 @@ export const actions = {
 
 
 // THUNKS
+export type TActions = TInferActions<typeof actions>
 type TThunk = TBaseThunk<TActions | TActionsApp>
 
 export const verifyToken = (): TThunk => async (dispatch) => {
@@ -69,8 +66,11 @@ export const login = (username: string, password: string): TThunk => async (disp
         dispatch(actionsApp.setCurrentUserAction(pk, username, email, profile, settings))
         dispatch(actions.setAuthComplete(true))
     } else {
-        const errors = data.non_field_errors
-        dispatch(actions.loginErrorsAction(errors))
+        const errors = data?.non_field_errors
+        if (errors)
+            dispatch(actions.loginErrorsAction(errors))
+        else
+            dispatch(actions.loginErrorsAction(['Unknown error']))
     }
 }
 
