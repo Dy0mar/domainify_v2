@@ -1,8 +1,7 @@
 import React from 'react'
 import {Breadcrumb} from "antd"
-import {Link, withRouter} from "react-router-dom"
+import {Link, RouteComponentProps, withRouter} from "react-router-dom"
 import {compose} from "redux"
-import {RouteComponentProps} from "react-router"
 
 const BreadcrumbComponent: React.FC<RouteComponentProps> = (props) => {
 
