@@ -40,10 +40,10 @@ const CompanyEditContainer = (props) => {
 const CompanyEditComponent = Form.create({ name: 'company_edit_form',  })(CompanyEditContainer);
 
 const mapStateToProps = (state, ownProps) => {
-    const { companyId } = ownProps.match.params;
+    const { companyId } = ownProps.match.params
     return {
         formErrors: state.companies.formErrors,
-        company: getCompanyByIdS(state, companyId)
+        company: getCompanyByIdS(state, parseInt(companyId))
     }
 };
 
