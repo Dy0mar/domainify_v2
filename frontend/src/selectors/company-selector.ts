@@ -9,4 +9,4 @@ export const getCompanyListPageSizeS = (state: TAppState) => state.companies.pag
 
 
 export const getCompanyByIdS = (state:TAppState, companyId: number): TCompany =>
-    state.companies.results[companyId]
+    state.companies.results.filter((i: TCompany) => i.pk === companyId)[0]
