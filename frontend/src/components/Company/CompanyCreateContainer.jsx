@@ -11,11 +11,11 @@ import {createCompany} from "../../redux/company-reducer";
 
 const CompanyCreateContainer = (props) => {
     const {getFieldDecorator, validateFields } = props.form;
-    const {formErrors} = props;
+    const {formErrors, createCompany} = props;
 
     const onSubmit = (e) => {
         e.preventDefault();
-        submitCreateUpdateForm(validateFields, props.createCompany);
+        submitCreateUpdateForm(validateFields, createCompany);
     };
     const cancelLink = '/companies';
 
