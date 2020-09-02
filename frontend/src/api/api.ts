@@ -108,6 +108,13 @@ export const companyAPI = {
     },
     create(data: any){
         return instance.post('companies/', {...data})
+            .then(r => r.data)
+            .catch(e => {
+                return {
+                    ...e.response.data,
+                    error: true
+                }
+            })
     },
     patch_field(pk: number, data: any){
         return instance.patch(`companies/${pk}/`, {...data})

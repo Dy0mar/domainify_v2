@@ -70,3 +70,13 @@ export type TManager = {
 type TUrl = {
     url: string
 }
+
+// PAGINATOR
+
+export type TPaginator <A = []> = {
+    count: number
+    next: null | string
+    previous: null | string
+    page_size: number
+    results: Array<A>
+}

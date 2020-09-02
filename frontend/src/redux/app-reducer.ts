@@ -16,7 +16,7 @@ const SET_REDIRECT_TO = 'app/SET_REDIRECT_TO'
 const SET_ERROR_INFO = 'app/SET_ERROR_INFO'
 const SET_LOADING = 'app/SET_LOADING'
 
-
+// todo: remove redirectTo
 const initialState = {
     initialized: false,
     redirectTo: '',

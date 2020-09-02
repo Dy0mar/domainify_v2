@@ -6,7 +6,13 @@ import {
     commonAsyncHandler,
 } from "./app-reducer"
 import {TBaseThunk, TInferActions} from "./redux-store"
-import {TManager, TProfile, TSettings, TUser} from "../types/g-types"
+import {
+    TManager,
+    TPaginator,
+    TProfile,
+    TSettings,
+    TUser
+} from "../types/g-types"
 
 
 const SET_CURRENT_USER = 'user/SET_CURRENT_USER'
@@ -17,13 +23,7 @@ const GET_FULL_USER_LIST = 'user/GET_FULL_USER_LIST'
 
 
 // LOCAL TYPES
-type TUsersPaginator = {
-    count: number
-    next: null | string
-    previous: null | string
-    page_size: number
-    results: Array<TUser>
-}
+type TUsersPaginator = TPaginator<TUser>
 
 type TRegisterErrors = {
     username: null | Array<string>,
