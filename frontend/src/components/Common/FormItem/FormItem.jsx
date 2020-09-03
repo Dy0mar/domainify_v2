@@ -7,16 +7,36 @@ const formItemLayout = {
     wrapperCol: { span: 16 },
 };
 
+function isEmpty(obj) {
+    for(let key in obj)
+        return false;
+    return true;
+}
+
 const getInitialField = (obj, fields) => {
+    if (isEmpty(obj))
+        return
+
     let value;
+
     fields.forEach(field => {
-        value ? value = value[field] : value = obj[field]
+        if (value === undefined)
+            if (obj.hasOwnProperty(field))
+                value = obj[field]
+            else
+                return undefined
+        else
+            if (value && value.hasOwnProperty(field))
+                value = value[field]
+            else
+                return undefined
+
     });
     return value
 };
 
 export const createFormItem = (
-    field, label, formErrors, getFieldDecorator, Component, obj=false, initial='', rules=[], onChange=false
+  field, label, formErrors, getFieldDecorator, Component, obj=false, initial='', rules=[], onChange=false
 ) => {
 
     //set field initial field
