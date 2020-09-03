@@ -59,7 +59,7 @@ export const domainsAPI = {
     patch_field(pk: number, data: any){
         return instance.patch(`domains/${pk}/`, {...data})
     },
-    domain_list(page: number, filters=[]){
+    domain_list(page: number, filters=[{}]){
         let url = `domains/?page=${page}`
         let part_url = convertObjectToUrl(filters)
 
