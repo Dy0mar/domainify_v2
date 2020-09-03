@@ -5,10 +5,9 @@ import {compose} from "redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {connect} from "react-redux";
 import DomainForm from "./DomainForm";
-import {domainCreate, setRedirectTo} from "../../redux/domain-reducer";
+import {domainCreate} from "../../redux/domain-reducer";
 import {additionalDomainProps} from "../../hoc/additionalDomainProps";
 import {getCurrentUserS} from "../../selectors/users-selectors";
-import {redirectHoc} from "../../hoc/redirectTo";
 import {submitCreateUpdateForm} from "../../utils/utils";
 
 
@@ -16,11 +15,12 @@ const DomainCreateContainer = (props) => {
     const {getFieldDecorator, validateFields, getFieldValue, setFieldsValue } = props.form;
     const {
         currentUser, formErrors, managers, statuses, alexa_statuses, companies,
+        domainCreate
     } = props;
 
     const onSubmit = (e) => {
         e.preventDefault();
-        submitCreateUpdateForm(validateFields, props.domainCreate);
+        submitCreateUpdateForm(validateFields, domainCreate);
     };
 
     const _props = {
@@ -42,12 +42,10 @@ const DomainCreateComponent = Form.create({ name: 'domain_create_form', })(Domai
 
 const mapStateToProps = (state) => ({
     currentUser: getCurrentUserS(state),
-    redirectTo: state.domains.redirectTo,
 });
 
 export default compose(
     withAuthRedirect,
-    redirectHoc,
     additionalDomainProps,
-    connect(mapStateToProps, {domainCreate, setRedirectTo})
+    connect(mapStateToProps, {domainCreate})
 )(DomainCreateComponent);

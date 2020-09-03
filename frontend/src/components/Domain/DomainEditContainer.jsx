@@ -8,7 +8,6 @@ import {withRouter} from "react-router-dom";
 import {loadCurrentDomain, updateDomain} from "../../redux/domain-reducer";
 import DomainForm from "./DomainForm";
 import {additionalDomainProps} from "../../hoc/additionalDomainProps";
-import {redirectHoc} from "../../hoc/redirectTo";
 import {submitCreateUpdateForm} from "../../utils/utils";
 
 
@@ -55,7 +54,6 @@ const mapStateToProps = (state) => ({
 export default compose(
     withAuthRedirect,
     withRouter,
-    redirectHoc,
     additionalDomainProps,
     connect(mapStateToProps, {loadCurrentDomain, updateDomain}),
 )(DomainDetailComponent);

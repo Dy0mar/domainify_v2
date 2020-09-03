@@ -9,7 +9,6 @@ import {TBaseThunk, TInferActions} from "./redux-store";
 
 
 const SET_CURRENT_DOMAIN = 'domain/SET_CURRENT_DOMAIN';
-const SET_REDIRECT_TO = 'domain/SET_REDIRECT_TO';
 const SET_DOMAIN_STATUS_LIST = 'domain/SET_DOMAIN_STATUS_LIST';
 const SET_ALEXA_STATUS_LIST = 'domain/SET_ALEXA_STATUS_LIST';
 
@@ -46,7 +45,6 @@ const initialState = {
     statuses: [],
     alexa_statuses: [],
     formErrors: {},
-    redirectTo: '',
     currentDomain: {},
     dataSource: [],
 };
@@ -58,7 +56,6 @@ const domainsReducer = (state=initialState, action: TActions): TInitialState => 
 
     switch (action.type) {
         case SET_CURRENT_DOMAIN:
-        case SET_REDIRECT_TO:
         case SET_DOMAIN_STATUS_LIST:
         case SET_ALEXA_STATUS_LIST:
         case SET_DOMAIN_LIST:
@@ -77,11 +74,6 @@ export const actions ={
     setCurrentDomainAction: (currentDomain: any) => ({
         type: SET_CURRENT_DOMAIN,
         payload: {currentDomain}
-    } as const),
-
-    redirectToAction: (redirectTo: any) => ({
-        type: SET_REDIRECT_TO,
-        payload: {redirectTo}
     } as const),
 
     domainStatusListAction: (statuses: any) => ({
@@ -114,11 +106,6 @@ export const actions ={
 // THUNKS
 export type TActions = TInferActions<typeof actions>
 type TThunk = TBaseThunk<TActions | RouterAction>
-
-// todo del it
-export const setRedirectTo = (redirectTo: string): TThunk => async (dispatch) => {
-    dispatch(actions.redirectToAction(redirectTo));
-};
 
 export const domainCreate = (data: any): TThunk => async (dispatch) => {
     try{

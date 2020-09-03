@@ -11,7 +11,6 @@ import {
     updateDomain
 } from "../../redux/domain-reducer";
 import DomainInfoContainer from "./DomainComponents/DomainInfoContainer";
-import {redirectHoc} from "../../hoc/redirectTo";
 
 
 const { confirm } = Modal;
@@ -56,6 +55,5 @@ const mapStateToProps = (state) => ({
 export default compose(
     withAuthRedirect,
     withRouter,
-    redirectHoc,
     connect(mapStateToProps, {loadCurrentDomain, updateDomain, deleteDomain})
 )(DomainDetailContainer);

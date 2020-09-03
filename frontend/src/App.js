@@ -18,7 +18,6 @@ import {
     Page500,
     Page503Component
 } from "./components/Common/Pages/Pages"
-import {redirectHoc} from "./hoc/redirectTo"
 import Preloader from "./components/Common/Preloader/Preloader"
 import Header from "./components/Header/HeaderContainer"
 import Footer from "./components/Footer/Footer"
@@ -116,7 +115,6 @@ const mapStateToProps = (state) => ({
 
 const AppContainer = compose(
     connect(mapStateToProps, {initializeApp}),
-    redirectHoc,
     showMessage,
 )(App)
 

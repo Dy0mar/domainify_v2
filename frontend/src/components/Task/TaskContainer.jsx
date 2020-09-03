@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react'
-import {Divider, Row, Form} from 'antd'
-import "antd/dist/antd.css"
 import {compose} from "redux"
 import {connect} from "react-redux"
-import {withAuthRedirect} from "../../hoc/withAuthRedirect"
 import {withRouter} from "react-router-dom"
+import {Divider, Row, Form} from 'antd'
+import "antd/dist/antd.css"
+import {history} from "../../redux/redux-store"
+import {withAuthRedirect} from "../../hoc/withAuthRedirect"
 import {submitCreateUpdateForm} from "../../utils/utils"
 import {
     createTask,
@@ -12,18 +13,15 @@ import {
     getStatusList,
     getTaskDetail, updateTask
 } from "../../redux/task-reducer"
-import {TaskItemsType} from "./TaskComponents"
-import {getCodeListS, getStatusListS} from "../../selectors/task-selector"
-import TaskForm from "./TaskForm"
-import {
-    getDomainDataSourceS,
-    getDomainListS
-} from "../../selectors/domains-selectors"
 import {getUserFullList} from "../../redux/user-reducer"
-import {getUserListS} from "../../selectors/users-selectors"
 import {autocompleteDomainList} from "../../redux/domain-reducer"
-import {setRedirectTo} from "../../redux/app-reducer"
 import {getIsLoadingS} from "../../selectors/app-selector"
+import {getUserListS} from "../../selectors/users-selectors"
+import {getCodeListS, getStatusListS} from "../../selectors/task-selector"
+import {getDomainDataSourceS, getDomainListS} from "../../selectors/domains-selectors"
+
+import TaskForm from "./TaskForm"
+import {TaskItemsType} from "./TaskComponents"
 
 
 const TaskContainer = (props) => {
@@ -40,8 +38,7 @@ const TaskContainer = (props) => {
     } = props
     const {
         getTaskDetail, updateTask, createTask,
-        getCodeList, getStatusList, getUserFullList, autocompleteDomainList,
-        setRedirectTo,
+        getCodeList, getStatusList, getUserFullList, autocompleteDomainList
     } = props
 
     const [domainId, setDomainID] = useState(null)
@@ -80,7 +77,8 @@ const TaskContainer = (props) => {
     }
 
     const cancelLink = () => {
-        if (updateAction) setRedirectTo('/tasks')
+        if (updateAction) history.push('tasks')
+
         else setTaskType(0)
     }
 
@@ -138,7 +136,7 @@ export default compose(
     withAuthRedirect,
     withRouter,
     connect(mapStateToProps, {
-        createTask, updateTask, getTaskDetail, setRedirectTo,
-        getCodeList, getStatusList, getUserFullList, autocompleteDomainList
+        createTask, updateTask, getTaskDetail, getCodeList, getStatusList,
+        getUserFullList, autocompleteDomainList
     })
 )(TaskComponent)

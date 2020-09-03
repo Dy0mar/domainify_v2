@@ -8,18 +8,17 @@ import {
 import {getCompanyList} from "./company-reducer"
 import {TBaseThunk, TInferActions} from "./redux-store"
 import {TMessage} from "../types/g-types"
+import {push} from "connected-react-router"
 
 const INITIALIZED_SUCCESS = 'app/INITIALIZED_SUCCESS'
 const SHOW_MESSAGE = 'app/SHOW_MESSAGE'
 const ADD_MESSAGE = 'app/ADD_MESSAGE'
-const SET_REDIRECT_TO = 'app/SET_REDIRECT_TO'
 const SET_ERROR_INFO = 'app/SET_ERROR_INFO'
 const SET_LOADING = 'app/SET_LOADING'
 
-// todo: remove redirectTo
+
 const initialState = {
     initialized: false,
-    redirectTo: '',
     messages: [] as Array<TMessage>,
     errorInfo: '',
     isLoading: false
@@ -36,7 +35,6 @@ const appReducer = (state= initialState, action: TActions): TInitialState => {
                 isLoading: action.isLoading,
             }
         case INITIALIZED_SUCCESS:
-        case SET_REDIRECT_TO:
         case SET_ERROR_INFO:
             return {
                 ...state,
@@ -65,16 +63,11 @@ export const actions = {
     addMessageAction: (msg: TMessage) => ({type: ADD_MESSAGE, msg} as const),
     initializedSuccess: (initialized: boolean) => ({type: INITIALIZED_SUCCESS, payload: {initialized}} as const),
     setAppLoading: (isLoading: boolean) => ({type: SET_LOADING, isLoading} as const),
-    redirectToAction: (redirectTo: string) => ({type: SET_REDIRECT_TO, payload: {redirectTo}} as const),
     setErrorInfoAction: (errorInfo: any) => ({type: SET_ERROR_INFO, payload: {errorInfo}} as const),
 }
 
 // THUNKS
 type TThunk = TBaseThunk<TActions>
-
-export const setRedirectTo = (redirectTo: string): TThunk => async (dispatch) => {
-    dispatch(actions.redirectToAction(redirectTo))
-}
 
 export const showedMessage = (message: TMessage): TThunk => async (dispatch) => {
     dispatch(actions.showMessageAction(message))
@@ -120,6 +113,7 @@ export const commonAsyncHandler = (operation: any, dispatch: any) => {
     return visualized()
 }
 
+//todo: refactor it
 export const errorHandler = (e: any, dispatch: any) => {
     const pageError = '/503'
     let status = null
@@ -128,16 +122,16 @@ export const errorHandler = (e: any, dispatch: any) => {
     }
     switch (status) {
         case 401:
-            dispatch(actions.redirectToAction('/login'))
+            dispatch(push('/login'))
             break
 
         case 404:
         case 500:
-            dispatch(actions.redirectToAction('/'+status))
-
+            dispatch(push('/'+status))
             break
+
         default:
-            dispatch(actions.redirectToAction(pageError))
+            dispatch(push(pageError))
             break
     }
     dispatch(actions.setErrorInfoAction(e))
