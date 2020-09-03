@@ -54,7 +54,7 @@ export const domainsAPI = {
         return instance.delete(`domains/${pk}/`)
     },
     domain_detail(pk: number){
-        return instance.get(`domains/${pk}/`)
+        return instance.get(`domains/${pk}/`).then(r => r.data)
     },
     patch_field(pk: number, data: any){
         return instance.patch(`domains/${pk}/`, {...data})

@@ -21,7 +21,5 @@ export const additionalDomainProps = (Component) => {
         return <Component {...props}/>
     };
 
-    const wrapperComponent = connect(mapStateToProps)(wrapper);
-
-    return wrapperComponent
+    return connect(mapStateToProps)(wrapper);
 };
