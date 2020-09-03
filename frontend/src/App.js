@@ -4,12 +4,12 @@ import css from './App.module.css'
 import {Layout} from 'antd'
 import {compose} from "redux"
 import {connect, Provider} from "react-redux"
-import store from "./redux/redux-store"
+import { ConnectedRouter } from 'connected-react-router'
+import store, {history} from "./redux/redux-store"
 import {
-    BrowserRouter,
     Redirect,
     Route,
-    Switch
+    Switch,
 } from "react-router-dom"
 import {initializeApp} from "./redux/app-reducer"
 import {showMessage} from "./hoc/showMessage"
@@ -123,11 +123,11 @@ const AppContainer = compose(
 
 const MainApp = () => {
     return (
-        <BrowserRouter>
-            <Provider store={store} >
+        <Provider store={store} >
+            <ConnectedRouter history={history}>
                 <AppContainer />
-            </Provider>
-        </BrowserRouter>
+            </ConnectedRouter>
+        </Provider>
     )
 }
 

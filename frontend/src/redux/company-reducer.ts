@@ -1,10 +1,10 @@
+import { push, RouterAction } from 'connected-react-router'
+
 import {companyAPI} from "../api/api"
 import {
     addSuccessMessage,
     commonAsyncHandler,
-    TActions as TActionsApp
 } from "./app-reducer"
-import {actions as appActions} from './app-reducer'
 import {TCompany} from "../types/g-types"
 import {TBaseThunk, TInferActions} from "./redux-store"
 
@@ -66,7 +66,7 @@ export const actions = {
 
 // THUNKS
 export type TActions = TInferActions<typeof actions>
-type TThunk = TBaseThunk<TActions | TActionsApp>
+type TThunk = TBaseThunk<TActions | RouterAction>
 
 export const getCompanyList = (page=1): TThunk => async (dispatch) => {
     await commonAsyncHandler(async () => {
@@ -82,9 +82,9 @@ export const createCompany = (company_data: TCreateCompany): TThunk => async (di
         delete(data.error)
         dispatch(actions.setFormErrorsAction(data))
     } else {
-        await dispatch(addSuccessMessage('Company has been created'))
-        dispatch(appActions.redirectToAction('/companies'))
         dispatch(actions.setFormErrorsAction({}))
+        dispatch(push('/companies'))
+        dispatch(addSuccessMessage('Company has been created'))
     }
 }
 
@@ -94,9 +94,9 @@ export const updateCompany = (company_data: TUpdateCompany): TThunk => async (di
         const response = await companyAPI.patch_field(company_data.pk, {...company_data})
         const msg = response.data.name + ' data was updated successfully'
 
-        dispatch(appActions.redirectToAction('/companies'))
         dispatch(actions.setFormErrorsAction({}))
-        await dispatch(addSuccessMessage(msg))
+        dispatch(push('/companies'))
+        dispatch(addSuccessMessage(msg))
     } catch (e) {
         const response = e.response
         const errors = response.data
