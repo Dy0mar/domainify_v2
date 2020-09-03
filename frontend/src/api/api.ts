@@ -125,7 +125,7 @@ export const companyAPI = {
 }
 
 export const taskAPI = {
-    task_list(page: number, filters=[]){
+    task_list(page: number, filters=[{}]){
         let url = `tasks/?page=${page}`
         let part_url = convertObjectToUrl(filters)
 
@@ -135,6 +135,13 @@ export const taskAPI = {
     },
     create(data: any){
         return instance.post('tasks/', {...data})
+            .then(r => r.data)
+            .catch(e => {
+                return {
+                    ...e.response.data,
+                    error: true
+                }
+            })
     },
     patch_field(pk: number, data: any){
         return instance.patch(`tasks/${pk}/`, {...data})

@@ -109,7 +109,6 @@ export const actions = {
 export type TActions = TInferActions<typeof actions>
 type TThunk = TBaseThunk<TActions | TActionsApp>
 
-// todo move to domains reducer
 export const getManagerList = (update=false): TThunk => async (dispatch, getState) => {
     const managers = getState().user.managers
     if (!update && managers.length !== 0)
@@ -126,7 +125,7 @@ export const getUserList = (page=1): TThunk => async (dispatch) => {
 }
 
 export const getUserFullList = (): TThunk => async (dispatch) => {
-    let data = await usersAPI.get_all_user_list()
+    const data = await usersAPI.get_all_user_list()
     dispatch(actions.userFullListAction(data.results))
 }
 
