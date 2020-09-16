@@ -50,12 +50,13 @@ export const verifyToken = (): TThunk => async (dispatch) => {
         dispatch(actions.setAuthComplete(false))
         return
     }
-
     const data = await authAPI.verify(token)
     if (data?.token)
         dispatch(actions.setAuthComplete(true))
-    else
+    else{
+        localStorage.removeItem("token")
         dispatch(actions.setAuthComplete(false))
+    }
 }
 
 export const login = (username: string, password: string): TThunk => async (dispatch) => {

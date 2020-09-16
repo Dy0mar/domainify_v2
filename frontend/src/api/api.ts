@@ -84,9 +84,9 @@ export const domainsAPI = {
 
 export const authAPI = {
     verify(token: string) {
-        return instance.post(
-            'api-token-verify/', {'token': token}
-            ).then(r => r.data)
+        return instance.post('api-token-verify/', {'token': token})
+            .then(r => r.data)
+            .catch(e => e.response.data)
     },
     me() {
         return instance.get('auth/user/').then(r => r.data)
