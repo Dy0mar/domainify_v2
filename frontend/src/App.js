@@ -19,7 +19,7 @@ import {
     Page503Component
 } from "./components/Common/Pages/Pages"
 import Preloader from "./components/Common/Preloader/Preloader"
-import Header from "./components/Header/HeaderContainer"
+import {Header} from "./components/Header/Header"
 import {Footer} from "./components/Footer/Footer"
 import Login from "./components/Login/Login"
 import UsersContainer from "./components/Users/UsersContainer"

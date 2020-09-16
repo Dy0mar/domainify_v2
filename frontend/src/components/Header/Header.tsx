@@ -1,16 +1,29 @@
 import React, {useState, useEffect} from 'react'
 import {Layout, Menu, Button} from 'antd'
 import css from './Header.module.css'
-import {NavLink} from "react-router-dom"
-import {RouteComponentProps} from "react-router"
-import {TDispatchProps, TMapStateProps} from "./HeaderContainer"
+import {NavLink, useHistory} from "react-router-dom"
+import {useDispatch, useSelector} from "react-redux"
+import {isAuthS} from "../../selectors/g-selector"
+import {TAppState} from "../../redux/redux-store"
+import {logout} from "../../redux/auth-reducer"
 const {Item} = Menu
 
 const { SubMenu } = Menu
 
-const Header: React.FC<TMapStateProps & TDispatchProps & RouteComponentProps> = (props) => {
-    const disabled = !props.isAuth
+export const Header: React.FC = React.memo(() => {
     const [currentItem, setCurrentItem] = useState('')
+
+    const isAuth = useSelector(isAuthS)
+    const username = useSelector((state: TAppState) => state.user.username)
+
+    const dispatch = useDispatch()
+    const history = useHistory()
+
+    const _logout = () => {
+        dispatch(logout())
+    }
+
+    const disabled = !isAuth
 
     const setMenu = (path: string) => {
         switch (path) {
@@ -26,8 +39,8 @@ const Header: React.FC<TMapStateProps & TDispatchProps & RouteComponentProps> = 
         }
     }
     useEffect(() => {
-        setCurrentItem(setMenu(props.location.pathname))
-    }, [props.location.pathname])
+        setCurrentItem(setMenu(history.location.pathname))
+    }, [history.location.pathname])
 
 
     return (
@@ -46,17 +59,17 @@ const Header: React.FC<TMapStateProps & TDispatchProps & RouteComponentProps> = 
                 <Item disabled={disabled} key="settings"><NavLink to='/settings'>Settings</NavLink></Item>
 
                 <Item key="login_logout" style={{float: 'right'}} >
-                    {props.isAuth
-                        ? <Button onClick={props.logout} type="link">Logout</Button>
+                    {isAuth
+                        ? <Button onClick={_logout} type="link">Logout</Button>
                         : <NavLink to="/login" activeClassName='active'>Login</NavLink>
                     }
                 </Item>
                 <Item disabled={disabled} key="profile" style={{float: 'right'}}>
-                    <NavLink to='/profile'> {props.username}</NavLink>
+                    <NavLink to='/profile'> {username}</NavLink>
                 </Item>
             </Menu>
         </Layout.Header>
     )
-}
+})
 
 export default Header
