@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react'
-import {Divider, Row, Col, Table, Typography, Tag} from 'antd'
+import {Col, Divider, Row, Table, Tag, Typography} from 'antd'
 import "antd/dist/antd.css"
 import {compose} from "redux"
 import {withAuthRedirect} from "../../hoc/withAuthRedirect"
-import {connect} from "react-redux"
-import {withRouter} from "react-router-dom"
+import {useDispatch, useSelector} from "react-redux"
 import {
     getUserListPageTotalS,
     getUserListS,
@@ -13,23 +12,32 @@ import {
 import {getUserList} from "../../redux/user-reducer"
 import style from './Users.module.css'
 import {getIsLoadingS} from "../../selectors/app-selector"
+import {TAppState} from "../../redux/redux-store"
+import {TSettings, TUser} from "../../types/g-types"
 
 const {Text} = Typography
 
-const UsersContainer = (props) => {
-    const {user, users, total, getUserList, isLoading, page_size} = props
+const Users: React.FC = () => {
+
+    const user = useSelector((state:TAppState) => state.user)
+    const users = useSelector(getUserListS)
+    const total = useSelector(getUserListPageTotalS)
+    const page_size = useSelector(getUserPageSizeS)
+    const isLoading = useSelector(getIsLoadingS)
+
+    const dispatch = useDispatch()
 
     useEffect(() => {
-        getUserList()
+        dispatch(getUserList())
     }, [getUserList])
 
-    const onApplyFilter = (pagination, filters, sorter, extra) => {
+    const onApplyFilter = (pagination: any, filters: any, sorter: any, extra: any) => {
         getUserList(pagination.current)
     }
 
     const [config, setConfig] = useState({})
     useEffect(() => {
-        const getColumn = (title, field) => ({title: title, dataIndex: field, key: field})
+        const getColumn = (title: string, field: string) => ({title: title, dataIndex: field, key: field})
 
         setConfig({
             pagination : {
@@ -37,18 +45,18 @@ const UsersContainer = (props) => {
                 pageSize: page_size,
                 position: total >= page_size ? 'bottom' : 'none'
             },
-            rowClassName: row => row.username === user.username ? style.highlightRow: '',
+            rowClassName: (row: TUser) => row.username === user.username ? style.highlightRow: '',
             loading: isLoading,
             columns: [
                 {
                     ...getColumn('Username', 'username'),
-                    render: text => <Text strong >{text}</Text>
+                    render: (text: string) => <Text strong >{text}</Text>
                 },
                 {...getColumn('Email', 'email'),},
                 {...getColumn('Jabber', 'profile.jabber_nick'),},
                 {
                     ...getColumn('Notification On/Off', 'settings'),
-                    render: settings => (
+                    render: (settings: TSettings) => (
                         <span>
                             {settings && <Tag color={settings.jabber ? 'green' : 'volcano'}>jabber</Tag>}
                             {settings && <Tag color={settings.email ? 'green' : 'volcano'}>email</Tag>}
@@ -57,7 +65,7 @@ const UsersContainer = (props) => {
                 },
             ],
             dataSource: users,
-            rowKey: u => u.pk
+            rowKey: (row: TUser) => row.pk
         })
     }, [isLoading, users, total, user.username, page_size])
 
@@ -73,16 +81,6 @@ const UsersContainer = (props) => {
     )
 }
 
-const mapStateToProps = (state) => ({
-    user: state.user,
-    users: getUserListS(state),
-    total: getUserListPageTotalS(state),
-    page_size: getUserPageSizeS(state),
-    isLoading: getIsLoadingS(state)
-})
-
 export default compose(
     withAuthRedirect,
-    withRouter,
-    connect(mapStateToProps, {getUserList})
-)(UsersContainer)
+)(Users)
