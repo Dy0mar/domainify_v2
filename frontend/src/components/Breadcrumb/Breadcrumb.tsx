@@ -1,11 +1,10 @@
 import React from 'react'
 import {Breadcrumb} from "antd"
-import {Link, RouteComponentProps, withRouter} from "react-router-dom"
-import {compose} from "redux"
+import {Link, useLocation} from "react-router-dom"
 
-const BreadcrumbComponent: React.FC<RouteComponentProps> = (props) => {
+export const BreadCrumb: React.FC = React.memo((props) => {
 
-    const { location } = props
+    const location = useLocation()
     const pathSnippets = location.pathname.split('/').filter(i => i)
 
     const extraBreadcrumbItems = pathSnippets.map((item, index) => {
@@ -27,9 +26,4 @@ const BreadcrumbComponent: React.FC<RouteComponentProps> = (props) => {
             {breadcrumbItems}
         </Breadcrumb>
     )
-}
-
-
-export default compose<React.ComponentType>(
-    withRouter,
-)(BreadcrumbComponent)
+})

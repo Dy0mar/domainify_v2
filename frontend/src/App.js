@@ -32,7 +32,7 @@ import DomainEditContainer from "./components/Domain/DomainEditContainer"
 import CompaniesContainer from "./components/Companies/CompaniesContainer"
 import CompanyEditContainer from "./components/Company/CompanyEditContainer"
 import CompanyCreateContainer from "./components/Company/CompanyCreateContainer"
-import BreadcrumbComponent from "./components/Breadcrumb/Breadcrumb"
+import {BreadCrumb} from "./components/Breadcrumb/Breadcrumb"
 import TasksContainer from "./components/Tasks/TasksContainer"
 import SettingsContainer from "./components/Settings/SettingsContainer"
 import StatusEditContainer from "./components/Settings/Statuses/StatusEditContainer"
@@ -61,7 +61,7 @@ class App extends Component {
             <Layout className="layout">
                 <Header />
                 <Content style={{ padding: '0 50px' }}>
-                    <BreadcrumbComponent />
+                    <BreadCrumb />
                     <div className={css.appWrapperContent}>
                         <Switch>
                             <Route path='/404' render={() => <Page404 />} />
