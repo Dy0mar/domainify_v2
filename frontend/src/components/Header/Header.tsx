@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {Layout, Menu, Button} from 'antd'
 import css from './Header.module.css'
-import {NavLink, useHistory} from "react-router-dom"
+import {NavLink, useLocation} from "react-router-dom"
 import {useDispatch, useSelector} from "react-redux"
 import {isAuthS} from "../../selectors/g-selector"
 import {TAppState} from "../../redux/redux-store"
@@ -17,7 +17,7 @@ export const Header: React.FC = React.memo(() => {
     const username = useSelector((state: TAppState) => state.user.username)
 
     const dispatch = useDispatch()
-    const history = useHistory()
+    const location = useLocation()
 
     const _logout = () => {
         dispatch(logout())
@@ -39,8 +39,8 @@ export const Header: React.FC = React.memo(() => {
         }
     }
     useEffect(() => {
-        setCurrentItem(setMenu(history.location.pathname))
-    }, [history.location.pathname])
+        setCurrentItem(setMenu(location.pathname))
+    }, [location.pathname])
 
 
     return (
@@ -71,5 +71,3 @@ export const Header: React.FC = React.memo(() => {
         </Layout.Header>
     )
 })
-
-export default Header
