@@ -29,7 +29,7 @@ const Users: React.FC = () => {
 
     useEffect(() => {
         dispatch(getUserList())
-    }, [getUserList])
+    }, [dispatch])
 
     const onApplyFilter = (pagination: any, filters: any, sorter: any, extra: any) => {
         getUserList(pagination.current)
@@ -81,6 +81,4 @@ const Users: React.FC = () => {
     )
 }
 
-export default compose(
-    withAuthRedirect,
-)(Users)
+export default compose(withAuthRedirect)(Users)
