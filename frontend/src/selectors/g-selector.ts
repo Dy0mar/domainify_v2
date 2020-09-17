@@ -19,5 +19,3 @@ export const newMessage = (state: TAppState, type: TMessageTypes, msg: string): 
         message: msg
     }
 }
-
-export const isAuthS = (state: TAppState) => state.auth.isAuth

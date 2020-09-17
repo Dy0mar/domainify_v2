@@ -12,6 +12,8 @@ const initialState = {
     loginErrors: [] as Array<string>,
 }
 
+export type TLoginErrors = typeof initialState.loginErrors
+
 type TInitialState = typeof initialState
 
 const authReducer = (state=initialState, action: TActions): TInitialState => {

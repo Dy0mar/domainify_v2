@@ -3,7 +3,7 @@ import {Layout, Menu, Button} from 'antd'
 import css from './Header.module.css'
 import {NavLink, useLocation} from "react-router-dom"
 import {useDispatch, useSelector} from "react-redux"
-import {isAuthS} from "../../selectors/g-selector"
+import {isAuthS} from "../../selectors/auth-selector"
 import {TAppState} from "../../redux/redux-store"
 import {logout} from "../../redux/auth-reducer"
 const {Item} = Menu

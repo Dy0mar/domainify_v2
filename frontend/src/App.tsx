@@ -17,7 +17,7 @@ import {
 import Preloader from "./components/Common/Preloader/Preloader"
 import {Header} from "./components/Header/Header"
 import {Footer} from "./components/Footer/Footer"
-import Login from "./components/Login/Login"
+import {Login} from "./components/Login/Login"
 import UsersContainer from "./components/Users/UsersContainer"
 import Register from "./components/Register/Register"
 import ProfileContainer from "./components/Profile/ProfileContainer"
