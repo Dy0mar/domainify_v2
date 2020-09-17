@@ -32,10 +32,18 @@ class UserAdmin(BaseUserAdmin):
         }),
     )
     list_display = (
-        'username', 'email', 'jabber_nick', 'is_staff', 'is_superuser')
+        'username', 'email', 'jabber_nick', 'is_staff', 'is_superuser',
+        'get_groups'
+    )
+
     search_fields = ('email', 'first_name', 'last_name')
     ordering = ('email',)
     inlines = (UserProfileInline, UserSettingInline)
+
+    def get_groups(self, obj):
+        return ', '.join(list(obj.groups.values_list('name', flat=True)))
+
+    get_groups.short_description = 'Groups'
 
     def jabber_nick(self, x):
         return x.profile.jabber_nick

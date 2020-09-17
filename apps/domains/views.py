@@ -55,17 +55,6 @@ class DomainViewSet(BaseViewSetMixin, ModelViewSet):
     def alexa_status_list(self, request):
         return Response({'results': Domain.ALEXA_STATUS})
 
-    @action(['GET'], url_path='manager-list', detail=False,
-            permission_classes=(IsAuthenticated,))
-    def manager_list(self, request):
-        queryset = self.get_queryset().filter(
-            manager__username__isnull=False
-        ).annotate(pk=F('manager__pk'), username=F('manager__username')).values(
-            'pk', 'username'
-        ).order_by('manager__username').distinct()
-        r = list(queryset)
-        return Response({'results': r})
-
     @action(detail=False, url_path='search-domain-list',
             permission_classes=(IsAuthenticated,))
     def search_domain_list(self, request):

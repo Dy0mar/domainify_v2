@@ -1,4 +1,4 @@
-import {usersAPI, authAPI, domainsAPI} from "../api/api"
+import {usersAPI, authAPI} from "../api/api"
 import {login} from "./auth-reducer"
 import {
     TActions as TActionsApp,
@@ -113,7 +113,7 @@ export const getManagerList = (update=false): TThunk => async (dispatch, getStat
     const managers = getState().user.managers
     if (!update && managers.length !== 0)
         return
-    const data = await domainsAPI.manager_list()
+    const data = await usersAPI.manager_list()
     dispatch(actions.managersListAction(data.results))
 }
 

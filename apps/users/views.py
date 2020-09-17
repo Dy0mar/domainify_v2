@@ -35,6 +35,14 @@ class UserViewSet(BaseViewSetMixin, ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response({'results': serializer.data})
 
+    @action(['GET'], url_path='manager-list', detail=False,
+            permission_classes=(IsAuthenticated,))
+    def manager_list(self, request):
+        queryset = self.get_queryset().filter(groups__name='managers').values(
+            'pk', 'username'
+        )
+        return Response({'results': list(queryset)})
+
 
 class CheckNotificationMethod(BaseViewSetMixin, ViewSet):
     def get(self, request, *args, **kwargs):

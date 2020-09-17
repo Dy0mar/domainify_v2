@@ -42,6 +42,9 @@ export const usersAPI = {
     },
     check_notification_method(m: 'jabber' | 'email'){
         return instance.get('users/check-notification-method/?method='+m)
+    },
+    manager_list(){
+        return instance.get('users/manager-list/').then(r => r.data)
     }
 
 }
@@ -75,9 +78,6 @@ export const domainsAPI = {
     },
     alexa_status_list(){
         return instance.get('domains/alexa-status-list/').then(r => r.data)
-    },
-    manager_list(){
-        return instance.get('domains/manager-list/').then(r => r.data)
     },
 }
 
