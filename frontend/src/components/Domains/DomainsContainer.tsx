@@ -3,8 +3,8 @@ import {Divider, Icon, Row, Col, Table, Popover, Button, Input} from 'antd'
 import "antd/dist/antd.css"
 import {compose} from "redux"
 import {withAuthRedirect} from "../../hoc/withAuthRedirect"
-import {connect} from "react-redux"
-import {NavLink, withRouter} from "react-router-dom"
+import {useDispatch, useSelector} from "react-redux"
+import {NavLink} from "react-router-dom"
 import {getDomainList} from "../../redux/domain-reducer"
 import {
     getDomainListPageTotalS,
@@ -14,40 +14,47 @@ import style from "./Domains.module.css"
 import {getManagerListS} from "../../selectors/users-selectors"
 import Highlighter from 'react-highlight-words'
 import {getIsLoadingS, getUrlOr404S} from "../../selectors/app-selector"
+import {TDomain, TManager, TTelephones} from "../../types/g-types";
+import {PaginationConfig} from "antd/lib/pagination";
 
-const DomainsContainer = (props) => {
-    const {domains, managers, total, isLoading} = props
-    const {getDomainList} = props
-
+const DomainsContainer = () => {
     const [searchText, setSearchText] = useState('')
     const [searchedColumn, setSearchedColumn] = useState('')
 
+    const domains = useSelector(getDomainListS)
+    const total = useSelector(getDomainListPageTotalS)
+    const isLoading = useSelector(getIsLoadingS)
+    const managers = useSelector(getManagerListS)
 
-    // load
-    useEffect(() => {
-        getDomainList()
-    }, [getDomainList])
+    const dispatch = useDispatch()
 
-    const onApplyFilter = (pagination, filters, sorter, extra) => {
-        getDomainList(pagination.current, filters)
+    const initDomains = () => {
+        dispatch(getDomainList())
+    }
+
+    useEffect(initDomains, [])
+
+    const onApplyFilter = (pagination: PaginationConfig, filters: any) => {
+        dispatch(getDomainList(pagination.current, filters))
     }
 
     const [config, setConfig] = useState({})
     useEffect(() => {
-        const handleSearch = (selectedKeys, confirm, dataIndex) => {
+        const handleSearch = (selectedKeys: any, confirm: any, dataIndex: string) => {
             confirm()
             setSearchText(selectedKeys[0])
             setSearchedColumn(dataIndex)
         }
 
-        const handleReset = clearFilters => {
+        const handleReset = (clearFilters: any) => {
             clearFilters()
             setSearchText('')
         }
-        const getColumn = (title, field) => ({title: title, dataIndex: field, key: field})
-        const getColumnSearchProps = dataIndex => ({
+        const getColumn = (title: string, field: string) => ({title: title, dataIndex: field, key: field})
+        const getColumnSearchProps = (dataIndex: string) => ({
 
-            filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }:
+                                 {setSelectedKeys: any, selectedKeys: any, confirm: any, clearFilters: any}) => (
               <div style={{ padding: 8 }}>
                   <Input
                     placeholder={`Search ${dataIndex}`}
@@ -72,25 +79,26 @@ const DomainsContainer = (props) => {
                   </Button>
               </div>
             ),
-            filterIcon: filtered => (
+            filterIcon: (filtered: boolean) => (
               <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
             ),
-            onFilter: (value, record) => {
+            onFilter: (value: string, row: any) => {
                 if (searchedColumn === 'telephones'){
-                    const a = record[dataIndex].map(i => i.telephone
+
+                    const a = row[dataIndex].map((i: any) => i.telephone
                       .toString()
                       .toLowerCase()
                     ).join(', ')
 
                     return a.includes(value.toLowerCase())
                 } else
-                    return record[dataIndex]
+                    return row[dataIndex]
                       .toString()
                       .toLowerCase()
                       .includes(value.toLowerCase())
             },
 
-            render: text =>
+            render: (text: string) =>
               searchedColumn === dataIndex ? (
                 <Highlighter
                   highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
@@ -111,35 +119,35 @@ const DomainsContainer = (props) => {
                 position: total >= 10 ? 'bottom' : 'none'
             },
             loading: isLoading,
-            rowClassName: record => style['highlight'+record.status],
+            rowClassName: (row: TDomain) => style['highlight' + row.status],
             columns: [
                 {
                     ...getColumn('Name', 'name'),
                     ...getColumnSearchProps('name'),
-                    render: (text, row) => <NavLink to={getUrlOr404S(row.url)} >{text}</NavLink>
+                    render: (text: string, row: TDomain) => <NavLink to={getUrlOr404S(row.url)} >{text}</NavLink>
                 },
                 {
                     ...getColumn('Phones', 'telephones'),
                     ...getColumnSearchProps('telephones'),
-                    render: (text, row) => (row.telephones
-                      ? row.telephones.map(i => i.telephone + ' ')
+                    render: (text: string, row: TDomain) => (row.telephones
+                      ? row.telephones.map((i: TTelephones) => i.telephone + ' ')
                       : '--')
                 },
                 {
                     ...getColumn('Manager', 'manager'),
                     filters: managers,
-                    render: manager => (manager ? manager.username : '--')
+                    render: (manager: TManager) => (manager ? manager.username : '--')
                 },
                 {
                     ...getColumn('Company', 'company.name'),
-                    render: (name, row) => (row.company
+                    render: (name: string, row: TDomain) => (row.company
                         ? <NavLink to={getUrlOr404S(row.company.url)} >{name}</NavLink>
                         : '--'
                     )
                 },
                 {
                     ...getColumn('Address', 'company.custom_company_address'),
-                    render: (address, row) => (row.use_custom_address
+                    render: (address: string, row: TDomain) => (row.use_custom_address
                         ? <Popover content={row.company.address} title="Custom address"><Button type={'link'}>{row.custom_company_address.substr(0,10)}...</Button></Popover>
                         : row.company
                           ? <Popover content={row.company.address} title="Company address"><Button type={'link'}>{row.company.address.substr(0,10)}...</Button></Popover>
@@ -154,13 +162,13 @@ const DomainsContainer = (props) => {
                 {...getColumn('Status', 'status'),},
             ],
             dataSource: isLoading ? [] : domains,
-            rowKey: row => row.name
+            rowKey: (row: TDomain) => row.name
         })
     }, [isLoading, domains, managers, searchedColumn, searchText, total])
 
     return (
       <div>
-          <Divider>Domains here / <NavLink to={'domains/create/'} >Add domain</NavLink> </Divider>
+          <Divider>Domains here / <NavLink to={'domains/create/'} >Add domain</NavLink></Divider>
           <Row>
               <Col span={24}>
                   <Table {...config} onChange={onApplyFilter}/>
@@ -170,15 +178,5 @@ const DomainsContainer = (props) => {
     )
 }
 
-const mapStateToProps = (state) => ({
-    domains: getDomainListS(state),
-    total: getDomainListPageTotalS(state),
-    isLoading: getIsLoadingS(state),
-    managers: getManagerListS(state),
-})
 
-export default compose(
-  withAuthRedirect,
-  withRouter,
-  connect(mapStateToProps, {getDomainList})
-)(DomainsContainer)
+export default compose(withAuthRedirect)(DomainsContainer)
