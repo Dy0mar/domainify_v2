@@ -23,10 +23,6 @@ type TUpdateCompany = { pk: number } & TCreateCompany
 
 // STATE
 const initialState = {
-    count: 0,
-    next: null,
-    previous: null,
-    page_size: 10,
     results: [{
         pk: 0,
         name: "",
@@ -53,9 +49,9 @@ const companyReducer = (state=initialState, action: TActions): TInitialState => 
 
 // ACTIONS
 export const actions = {
-    companyListAction: (results: Array<TCompany>, count: number, page_size: number) => ({
+    companyListAction: (results: Array<TCompany>) => ({
         type: SET_COMPANY_LIST,
-        payload: {results, count, page_size}
+        payload: {results}
     } as const),
     setFormErrorsAction: (formErrors: any) => ({
         type: SET_FORM_ERROR_MESSAGES,
@@ -68,10 +64,10 @@ export const actions = {
 export type TActions = TInferActions<typeof actions>
 type TThunk = TBaseThunk<TActions | RouterAction>
 
-export const getCompanyList = (page=1): TThunk => async (dispatch) => {
+export const getCompanyList = (): TThunk => async (dispatch) => {
     await commonAsyncHandler(async () => {
-        const data = await companyAPI.company_list(page)
-        dispatch(actions.companyListAction(data.results, data.count, data.page_size))
+        const data = await companyAPI.company_list()
+        dispatch(actions.companyListAction(data))
     }, dispatch)
 }
 

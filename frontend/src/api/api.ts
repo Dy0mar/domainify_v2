@@ -102,11 +102,10 @@ export const authAPI = {
 }
 
 export const companyAPI = {
-    company_list(page: number){
-        let url = `companies/?page=${page}`
-        return instance.get(url).then(r => r.data)
+    company_list(){
+        return instance.get('companies/').then(r => r.data)
     },
-    create(data: any){
+    create(data: {name: string, address: string}){
         return instance.post('companies/', {...data})
             .then(r => r.data)
             .catch(e => {
