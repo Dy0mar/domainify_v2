@@ -7,19 +7,12 @@ import {
 } from "./app-reducer"
 import {TCompany} from "../types/g-types"
 import {TBaseThunk, TInferActions} from "./redux-store"
+import {TCreateCompany, TFormCompanyData} from "../types/company-types"
 
 
 const SET_COMPANY_LIST = 'company/SET_COMPANY_LIST'
 const SET_FORM_ERROR_MESSAGES = 'company/SET_FORM_ERROR_MESSAGES'
 
-
-// LOCAL TYPES
-type TCreateCompany = {
-    name: string
-    address: string
-}
-
-type TUpdateCompany = { pk: number } & TCreateCompany
 
 // STATE
 const initialState = {
@@ -84,13 +77,12 @@ export const createCompany = (company_data: TCreateCompany): TThunk => async (di
     }
 }
 
-// todo: refactor it
-export const updateCompany = (company_data: TUpdateCompany): TThunk => async (dispatch) => {
+export const updateCompany = (companyId: number, company_data: TFormCompanyData): TThunk => async (dispatch) => {
     try{
-        const response = await companyAPI.patch_field(company_data.pk, {...company_data})
+        const response = await companyAPI.update(companyId, company_data)
         const msg = response.data.name + ' data was updated successfully'
-
         dispatch(actions.setFormErrorsAction({}))
+        await dispatch(getCompanyList())
         dispatch(push('/companies'))
         dispatch(addSuccessMessage(msg))
     } catch (e) {

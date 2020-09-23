@@ -5,3 +5,5 @@ export const getCompanyListS = (state: TAppState) => state.companies.results
 
 export const getCompanyByIdS = (state:TAppState, companyId: number): TCompany =>
     state.companies.results.filter((i: TCompany) => i.pk === companyId)[0]
+
+export const getCompanyFormErrorsS = (state: TAppState) => state.companies.formErrors

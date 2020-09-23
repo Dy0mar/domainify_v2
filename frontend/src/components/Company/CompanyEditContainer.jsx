@@ -1,30 +1,45 @@
 import React from 'react'
-import {Divider, Row, Col, Form} from 'antd';
-import "antd/dist/antd.css";
-import {compose} from "redux";
-import {connect} from "react-redux";
-import {withAuthRedirect} from "../../hoc/withAuthRedirect";
-import {withRouter} from "react-router-dom";
-import CompanyForm from "./CompanyForm";
-import {submitCreateUpdateForm} from "../../utils/utils";
-import {updateCompany} from "../../redux/company-reducer";
-import {getCompanyByIdS} from "../../selectors/company-selector";
+import {Divider, Row, Col, Form} from 'antd'
+import "antd/dist/antd.css"
+import {compose} from "redux"
+import {useDispatch, useSelector} from "react-redux"
+import {withAuthRedirect} from "../../hoc/withAuthRedirect"
+import {CompanyForm} from "./CompanyForm"
+import {updateCompany} from "../../redux/company-reducer"
+import {
+    getCompanyByIdS,
+    getCompanyFormErrorsS
+} from "../../selectors/company-selector"
+import {useParams} from "react-router-dom"
 
 
 const CompanyEditContainer = (props) => {
-    const {companyId} = props.match.params;
-    const {getFieldDecorator, validateFields } = props.form;
-    const {formErrors, company} = props;
+    const {getFieldDecorator, validateFields } = props.form
+
+    const dispatch = useDispatch()
+    const {companyId} = useParams()
+
+    const company = useSelector( state => getCompanyByIdS(state, parseInt(companyId)))
+    const formErrors = useSelector(getCompanyFormErrorsS)
 
     const onSubmit = (e) => {
-        e.preventDefault();
-        submitCreateUpdateForm(validateFields, props.updateCompany, companyId);
-    };
-    const cancelLink = '/companies';
+        e.preventDefault()
+        validateFields((err, values) => {
+            if (!err) {
+                const data = {
+                    pk: companyId,
+                    ...values,
+                }
+                dispatch(updateCompany(companyId, data))
+            }
+        }
+        )
+    }
+    const cancelLink = '/companies'
 
     const _props = {
         cancelLink, company, getFieldDecorator, formErrors, onSubmit
-    };
+    }
     return (
         <div>
             <Divider>Company edit</Divider>
@@ -35,20 +50,8 @@ const CompanyEditContainer = (props) => {
             </Row>
         </div>
     )
-};
+}
 
-const CompanyEditComponent = Form.create({ name: 'company_edit_form',  })(CompanyEditContainer);
+const CompanyEditComponent = Form.create({ name: 'company_edit_form',  })(CompanyEditContainer)
 
-const mapStateToProps = (state, ownProps) => {
-    const { companyId } = ownProps.match.params
-    return {
-        formErrors: state.companies.formErrors,
-        company: getCompanyByIdS(state, parseInt(companyId))
-    }
-};
-
-export default compose(
-    withAuthRedirect,
-    withRouter,
-    connect(mapStateToProps, {updateCompany})
-)(CompanyEditComponent);
+export default compose(withAuthRedirect)(CompanyEditComponent)

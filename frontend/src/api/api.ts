@@ -1,6 +1,7 @@
 import axios from "axios"
 import {url} from './privacy'
 import {TProfile} from "../types/g-types"
+import {TFormCompanyData} from "../types/company-types"
 
 
 const instance = axios.create({
@@ -115,8 +116,8 @@ export const companyAPI = {
                 }
             })
     },
-    patch_field(pk: number, data: any){
-        return instance.patch(`companies/${pk}/`, {...data})
+    update(companyId: number, data: TFormCompanyData){
+        return instance.put(`companies/${companyId}/`, {...data})
     },
     delete(pk: number){
         return instance.delete(`companies/${pk}/`)
