@@ -80,6 +80,11 @@ export const domainsAPI = {
     alexa_status_list(){
         return instance.get('domains/alexa-status-list/').then(r => r.data)
     },
+    actualize_whois(pk: number){
+        return instance.get('domains/actualize-whois/'+pk)
+            .then(r => r.data)
+            .catch(e => e.response.data)
+    },
 }
 
 

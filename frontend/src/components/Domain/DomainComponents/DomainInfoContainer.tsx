@@ -10,12 +10,13 @@ const { Title, Text} = Typography
 type TProps = {
     domain: TDomain
     editLink: string
+    isLoading: boolean
     deleteConfirm: () => void
+    actuator: () => void
 }
 
 const DomainInfoContainer: React.FC<TProps> = (props) => {
-    const {domain, editLink, deleteConfirm} = props
-
+    const {domain, isLoading, editLink, actuator, deleteConfirm} = props
     return (
         <>
             <Row>
@@ -26,6 +27,11 @@ const DomainInfoContainer: React.FC<TProps> = (props) => {
                         <Row><Text strong>Status:</Text> {domain.status}</Row>
                         <Row><Text strong>Register date:</Text> {domain.register_date}</Row>
                         <Row><Text strong>Expire date:</Text> {domain.expire_date}</Row>
+                        <Row>
+                            <Button type="primary" loading={isLoading} onClick={actuator}>
+                                Actualize whois
+                            </Button>
+                        </Row>
                     </Box>
                 </Col>
                 <Col span={12}>

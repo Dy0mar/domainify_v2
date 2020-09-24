@@ -23,7 +23,7 @@ import Register from "./components/Register/Register"
 import ProfileContainer from "./components/Profile/ProfileContainer"
 import DomainsContainer from "./components/Domains/DomainsContainer"
 import DomainCreateContainer from "./components/Domain/DomainCreateContainer"
-import DomainDetailContainer from "./components/Domain/DomainDetailContainer"
+import DomainDetail from "./components/Domain/DomainDetailContainer"
 import DomainEditContainer from "./components/Domain/DomainEditContainer"
 import CompaniesContainer from "./components/Companies/CompaniesContainer"
 import CompanyEditContainer from "./components/Company/CompanyEditContainer"
@@ -77,7 +77,7 @@ const App = () => {
 
                         <Route exact path='/domains/create' render={() => <DomainCreateContainer />}/>
                         <Route exact path='/domains/:domainId/edit' render={() => <DomainEditContainer />}/>
-                        <Route exact path='/domains/:domainId(\d+)' render={() => <DomainDetailContainer />}/>
+                        <Route exact path='/domains/:domainId(\d+)' render={() => <DomainDetail />}/>
                         <Route path='/domains' render={() => <DomainsContainer />}/>
 
                         <Route path='/companies/create' render={() => <CompanyCreateContainer />}/>

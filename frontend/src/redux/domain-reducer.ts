@@ -1,11 +1,13 @@
 import {push, RouterAction} from "connected-react-router"
 import {domainsAPI} from "../api/api"
 import {
+    addErrorMessage,
     addSuccessMessage,
     commonAsyncHandler,
     errorHandler
 } from "./app-reducer"
 import {TBaseThunk, TInferActions} from "./redux-store"
+import {TDomain} from "../types/g-types";
 
 
 const SET_CURRENT_DOMAIN = 'domain/SET_CURRENT_DOMAIN'
@@ -45,7 +47,7 @@ const initialState = {
     statuses: [],
     alexa_statuses: [],
     formErrors: {},
-    currentDomain: {},
+    currentDomain: {} as TDomain,
     dataSource: [],
 }
 
@@ -148,6 +150,17 @@ export const deleteDomain = (pk: number): TThunk => async (dispatch) => {
 export const loadCurrentDomain = (pk: number): TThunk => async (dispatch) => {
     const data = await domainsAPI.domain_detail(pk)
     dispatch(actions.setCurrentDomainAction(data))
+}
+
+export const actualize_whois = (pk: number): TThunk => async (dispatch) => {
+    await commonAsyncHandler( async () => {
+        const data = await domainsAPI.actualize_whois(pk)
+        if (data?.error){
+            dispatch(addErrorMessage(data.message))
+        } else {
+            dispatch(actions.setCurrentDomainAction(data))
+        }
+    }, dispatch)
 }
 
 export const getDomainStatusList = (): TThunk => async (dispatch) => {

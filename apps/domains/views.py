@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-from django.db.models import F
+from datetime import datetime
+
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from whois import whois
 
 from api.mixins import BaseViewSetMixin, BasePagination
 from .models import Domain, Company
@@ -54,6 +56,31 @@ class DomainViewSet(BaseViewSetMixin, ModelViewSet):
             permission_classes=(IsAuthenticated,))
     def alexa_status_list(self, request):
         return Response({'results': Domain.ALEXA_STATUS})
+
+    @action(['GET'],
+            detail=False,
+            url_path=r'actualize-whois/(?P<pk>\d+)',
+            permission_classes=(IsAuthenticated,))
+    def actualize_whois(self, request, pk):
+        domain = self.get_queryset().filter(pk=pk).first()
+        if not domain:
+            return Response({}, status=404)
+
+        try:
+            w = whois(domain.name)
+            domain.register_date = w.creation_date.date()
+            domain.expire_date = w.expiration_date.date()
+            domain.status = Domain.ACTIVE
+
+            now = datetime.now().date()
+            if domain.status == Domain.CLOSED and domain.expire_date > now:
+                domain.status = Domain.ACTIVE
+
+            domain.save()
+            data = self.get_serializer(domain).data
+            return Response(data)
+        except Exception as e:
+            return Response({'error': True, 'message': 'Fail ' + e.args[0]})
 
     @action(detail=False, url_path='search-domain-list',
             permission_classes=(IsAuthenticated,))
