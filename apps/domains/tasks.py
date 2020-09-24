@@ -31,8 +31,8 @@ def auto_update_whois():
         except Exception:
             continue
 
-        domain.date_register = w.creation_date.date()
-        domain.date_expire = w.expiration_date.date()
+        domain.register_date = w.creation_date.date()
+        domain.expire_date = w.expiration_date.date()
         domain.save()
         time.sleep(2)
 
