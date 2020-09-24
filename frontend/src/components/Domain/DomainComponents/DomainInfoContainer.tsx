@@ -15,7 +15,7 @@ type TProps = {
     actuator: () => void
 }
 
-const DomainInfoContainer: React.FC<TProps> = (props) => {
+export const DomainInfoContainer: React.FC<TProps> = (props) => {
     const {domain, isLoading, editLink, actuator, deleteConfirm} = props
     return (
         <>
@@ -73,5 +73,3 @@ const DomainInfoContainer: React.FC<TProps> = (props) => {
         </>
     )
 }
-
-export default DomainInfoContainer

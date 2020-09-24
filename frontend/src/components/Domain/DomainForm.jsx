@@ -6,15 +6,15 @@ import {
     Input,
     Row,
     Select
-} from 'antd';
-import "antd/dist/antd.css";
-import css from "../Login/Login.module.css";
-import Checkbox from "antd/es/checkbox";
-import {createDynamic} from "../Common/DynamicForm/DynamicFieldSet";
-import {NavLink} from "react-router-dom";
-import {createFormItem} from "../Common/FormItem/FormItem";
+} from 'antd'
+import "antd/dist/antd.css"
+import css from "../Login/Login.module.css"
+import Checkbox from "antd/es/checkbox"
+import {createDynamic} from "../Common/DynamicForm/DynamicFieldSet"
+import {NavLink} from "react-router-dom"
+import {createFormItem} from "../Common/FormItem/FormItem"
 
-const { Option } = Select;
+const { Option } = Select
 
 const EmailDynamic = (props) => {
     const _props = {
@@ -24,10 +24,10 @@ const EmailDynamic = (props) => {
         placeholder: 'email@gmail.com',
         limitCount: 3,
         required: false,
-    };
+    }
 
     return createDynamic(_props)
-};
+}
 
 const TelephoneDynamic = (props) => {
     const _props = {
@@ -37,10 +37,10 @@ const TelephoneDynamic = (props) => {
         placeholder: '+44 (203) 76-91-964',
         limitCount: 3,
         required: false,
-    };
+    }
 
     return createDynamic(_props)
-};
+}
 
 
 const DomainForm = (props) => {
@@ -49,32 +49,32 @@ const DomainForm = (props) => {
         companies, currentDomain, currentUser, onSubmit, getFieldDecorator,
         setFieldsValue, getFieldValue
      */
-    const { onSubmit, getFieldDecorator, getFieldValue, setFieldsValue } = props;
+    const { onSubmit, getFieldDecorator, getFieldValue, setFieldsValue } = props
 
-    const cancelLink = props.cancelLink ? props.cancelLink : '/';
+    const cancelLink = props.cancelLink ? props.cancelLink : '/'
 
     const {
         formErrors, managers, statuses, alexa_statuses,
         companies, currentDomain, currentUser,
-    } = props;
+    } = props
 
-    const [companyAddress, setCompanyAddress] = useState('');
+    const [companyAddress, setCompanyAddress] = useState('')
     useEffect(() => {
         if (currentDomain && currentDomain.company)
             setCompanyAddress(currentDomain.company.address)
-    }, [currentDomain]);
+    }, [currentDomain])
 
-    const [customAddress, setCustomAddress] = useState(currentDomain ? !currentDomain.use_custom_address : true);
+    const [customAddress, setCustomAddress] = useState(currentDomain ? !currentDomain.use_custom_address : true)
 
     const onChangeAddress = (value) => {
-        const company = companies.filter(v => v.pk === value)[0];
+        const company = companies.filter(v => v.pk === value)[0]
         setCompanyAddress(company.address)
-    };
+    }
 
     // wrapper
     const formItem = (field, label, Component, initial='', rules=[], onChange=false) => {
         return createFormItem(field, label, formErrors, getFieldDecorator, Component, currentDomain, initial, rules, onChange)
-    };
+    }
 
     return (
         <Form onSubmit={onSubmit}>
@@ -171,6 +171,6 @@ const DomainForm = (props) => {
             </Row>
         </Form>
     )
-};
+}
 
-export default DomainForm;
+export default DomainForm

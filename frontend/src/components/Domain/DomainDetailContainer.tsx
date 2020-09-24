@@ -10,7 +10,7 @@ import {
     deleteDomain,
     loadCurrentDomain,
 } from "../../redux/domain-reducer"
-import DomainInfoContainer from "./DomainComponents/DomainInfoContainer"
+import {DomainInfoContainer} from "./DomainComponents/DomainInfoContainer"
 import {getCurrentDomainS} from "../../selectors/domains-selectors"
 import {getIsLoadingS} from "../../selectors/app-selector"
 
