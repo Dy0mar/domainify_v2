@@ -4,7 +4,7 @@ import "antd/dist/antd.css"
 import {compose} from "redux"
 import {withAuthRedirect} from "../../hoc/withAuthRedirect"
 import {connect} from "react-redux"
-import DomainForm from "./DomainForm"
+import {DomainForm} from "./DomainForm"
 import {domainCreate} from "../../redux/domain-reducer"
 import {additionalDomainProps} from "../../hoc/additionalDomainProps"
 import {getCurrentUserS} from "../../selectors/users-selectors"
@@ -30,9 +30,7 @@ const DomainCreateContainer = (props) => {
     return (
         <div>
             <Divider>Domain create</Divider>
-            <DomainForm {..._props}
-                        initManagerValuePk={currentUser.pk}
-                        cancelLink={'/domains'}
+            <DomainForm {..._props} cancelLink={'/domains'}
             />
         </div>
     )

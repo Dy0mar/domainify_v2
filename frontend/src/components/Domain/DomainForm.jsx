@@ -43,7 +43,7 @@ const TelephoneDynamic = (props) => {
 }
 
 
-const DomainForm = (props) => {
+export const DomainForm = (props) => {
     /*
     formErrors, managers, statuses, alexa_statuses, cancelLink,
         companies, currentDomain, currentUser, onSubmit, getFieldDecorator,
@@ -172,5 +172,3 @@ const DomainForm = (props) => {
         </Form>
     )
 }
-
-export default DomainForm
