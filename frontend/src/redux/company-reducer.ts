@@ -73,6 +73,7 @@ export const createCompany = (company_data: TCreateCompany): TThunk => async (di
     } else {
         dispatch(actions.setFormErrorsAction({}))
         dispatch(push('/companies'))
+        await dispatch(getCompanyList())
         dispatch(addSuccessMessage('Company has been created'))
     }
 }
